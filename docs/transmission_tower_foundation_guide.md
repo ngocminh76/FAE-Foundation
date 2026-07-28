@@ -29,7 +29,7 @@ Tải trọng tác dụng lên 4 chân móng tháp truyền tải điện hình 
 3. **Phân tách thành Cặp lực ngẫu lực Đẩy - Kéo ($\Delta N$):**
    $$\Delta N = \pm \frac{M_{lật}}{2 \cdot L_{côt}}$$
    * **2 Chân phía đón gió (Windward legs):** Lực nén do tĩnh tải nhỏ hơn lực nhổ do gió ($N_{dead} < \Delta N$), tổng hợp lực bị âm $\rightarrow$ **Chịu Lực Kéo / Nhổ ($N_{uplift} < 0$) bứt ngược lên trên**.
-   * **2 Chân phía khuất gió (Leeward legs):** $N_{total} = N_{dead} + \Delta N \rightarrow$ **Chịu Lực Nén Nặng ($N_{comp} > 0$) ép xuống đất**.
+   * **2 Chân phía khuất gió (Leeward legs):** $N_{total} = N_{dead} + \Delta N \rightarrow$ **Chịu Lực Nén NẶNG ($N_{comp} > 0$) ép xuống đất**.
 
 ---
 
@@ -65,6 +65,20 @@ $$\mathbf{N_i = \frac{N_{tổng}}{4} + \frac{M_{y, tổng} \cdot x_i}{2 \cdot x_
 * **Mô men uốn cổ cột ($H_{col}$):**
   $$M_{x,i} = Q_{y,i} \times H_{col}$$
   $$M_{y,i} = Q_{x,i} \times H_{col}$$
+
+---
+
+## 🪨 8. Đặc Điểm Phân Bố & Vị Trí Tập Trung Ứng Suất Đất Nền Đáy Móng (Soil Stress Hotspots)
+
+### A. Hình Dáng Phân Bố Ứng Suất Đất Nền ($P_{soil}$):
+- Ứng suất phản lực đất nền bên dưới bản móng bè phân bố theo **Biểu đồ hình chêm nghiêng 3D (3D Inclined Wedge)**.
+- **Tại góc móng $Leg_4$ (Chân nén dồn):** Ứng suất đất đạt **Giá trị cực đại $P_{max} = 43.46\text{ kPa}$** (tương ứng vùng màu đỏ thẫm trên Heatmap 3D).
+- **Tại 3 góc móng $Leg_1, Leg_2, Leg_3$ (Các chân bị kéo nhổ):** Vì đất nền không chịu kéo ($P \ge 0$), ứng suất đất nền giảm về **0.0 kPa** (tương ứng vùng màu xanh dương thẫm trên Heatmap 3D), hình thành đường ranh giới hẫng móng.
+
+### B. Các Vị Trí Tập Trung Ứng Suất Lớn Nhất (Stress Concentration Hotspots):
+1. **Góc Bản Móng Bè Phía Dưới $Leg_4$:** Vùng chịu áp lực nền đất nén dồn lớn nhất $P_{max}$.
+2. **Nút Nối Giao Điểm Dầm Sườn & Cổ Cột:** Vùng tập trung Mô men uốn cực đại $M_{max}$ và Lực cắt cực đại $V_{max}$ trên dầm sườn.
+3. **Chu Vi Đáy 4 Cổ Cột:** Vùng tập trung ứng suất đâm thủng (Punching shear) tác dụng lên bản bè.
 
 ---
 
