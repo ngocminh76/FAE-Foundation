@@ -11,12 +11,13 @@ from src.core.models import TowerFoundationProject
 from src.fea.opensees_tower import TowerFoundationFEASolver
 from src.design_codes.manager import CodeCheckerManager
 from src.gui.input_panels import InputPanelsWidget
+from src.gui.viewport_3d import Viewport3DWidget
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("FAE-Foundation | Phần Mềm Tính Toán Kết Cấu Móng Bè Cột Điện (Multi-Standard FEA)")
-        self.resize(1280, 800)
+        self.resize(1350, 850)
         
         self.init_dark_theme()
         self.init_ui()
@@ -76,7 +77,6 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(main_widget)
         layout = QHBoxLayout(main_widget)
 
-        # QSplitter chia 2 màn hình: Nhập liệu bên Trái (40%), Kết quả bên Phải (60%)
         splitter = QSplitter(Qt.Horizontal)
 
         # Khung Nhập Liệu Trái
@@ -88,19 +88,27 @@ class MainWindow(QMainWindow):
         right_container = QWidget()
         right_layout = QVBoxLayout(right_container)
 
-        title_results = QLabel("📊 BÁO CÁO PHÂN TÍCH KẾT CẤU & SO SÁNH TIÊU CHUẨN")
-        title_results.setStyleSheet("font-size: 16px; font-weight: bold; color: #4ec9b0; margin-bottom: 5px;")
+        # 3D Viewport
+        self.viewport_3d = Viewport3DWidget()
+        right_layout.addWidget(self.viewport_3d, stretch=1)
+
+        # Báo cáo Text Report
+        title_results = QLabel("📊 BÁO CÁO KẾT QUẢ SO SÁNH ĐA TIÊU CHUẨN")
+        title_results.setStyleSheet("font-size: 14px; font-weight: bold; color: #4ec9b0; margin-top: 5px;")
         right_layout.addWidget(title_results)
 
         self.text_report = QTextEdit()
         self.text_report.setReadOnly(True)
         self.text_report.setPlaceholderText("Bấm nút 'THỰC THI TÍNH TOÁN & PHÂN TÍCH FEA' để xem báo cáo kết quả chi tiết...")
-        right_layout.addWidget(self.text_report)
+        right_layout.addWidget(self.text_report, stretch=1)
 
         splitter.addWidget(right_container)
-        splitter.setSizes([450, 830])
+        splitter.setSizes([450, 900])
 
         layout.addWidget(splitter)
+        
+        # Cập nhật hiển thị 3D ban đầu
+        self.viewport_3d.update_scene(self.input_widget.get_current_project())
 
     def run_calculation(self, project: TowerFoundationProject, code_key: str):
         """Thực thi giải số FEA và chạy kiểm tra Tiêu chuẩn"""
@@ -118,6 +126,9 @@ class MainWindow(QMainWindow):
         # 1. Chạy FEA Solver
         solver = TowerFoundationFEASolver(project=project, mesh_size=0.5)
         fea_results = solver.run_analysis()
+
+        # Cập nhật khung hiển thị 3D với lực tác dụng thực tế
+        self.viewport_3d.update_scene(project, fea_results)
 
         self.text_report.append("✅ KẾT QUẢ GIẢI HỆ PHƯƠNG TRÌNH FEA:")
         self.text_report.append(f"   • Độ lún lớn nhất (Max Settlement): {fea_results.get('max_settlement_mm'):.2f} mm")
