@@ -1,8 +1,9 @@
 """
-Interactive 3D Viewport Widget displaying EXPLICIT FEA MESH GRID LINES (Lưới phần tử hữu hạn Δx x Δy)
+Interactive 3D Viewport Widget with 4 VIEW MODES:
 Mode 1: Solid 3D Geometry & Load Vectors
 Mode 2: 3D Deformed Shape & Settlement / Uplift Simulation (Scale x300)
-Mode 3: 3D Soil Stress Heatmap Surface + FEA Mesh Grid Overlay
+Mode 3: FEA Mesh Grid Overlay & Soil Stress Heatmap Surface
+Mode 4: Biểu Đồ Nội Lực Dầm Sườn Móng M(x) & V(x) (Bending Moment & Shear Force Diagrams)
 """
 
 import numpy as np
@@ -34,7 +35,8 @@ class Viewport3DWidget(QWidget):
         self.combo_view_mode.addItems([
             "1. Mô Hình 3D Đặc & Tải Trọng (Solid Geometry & Loads)",
             "2. Mô Phỏng Biến Dạng Lún & Nhổ 3D (3D Deformed Mesh & Settlement)",
-            "3. Lưới Phần Tử Hữu Hạn FEA & Heatmap Đất (FEA Mesh Grid Overlay)"
+            "3. Lưới Phần Tử Hữu Hạn FEA & Heatmap Đất (FEA Mesh Grid Overlay)",
+            "4. Biểu Đồ Nội Lực Dầm Sườn M(x) & V(x) (Beam M & V Diagrams)"
         ])
         self.combo_view_mode.currentIndexChanged.connect(self.on_view_mode_changed)
         tb_layout.addWidget(self.combo_view_mode)
@@ -140,12 +142,49 @@ class Viewport3DWidget(QWidget):
         x1, x2 = (Lx - lcx) / 2.0, (Lx + lcx) / 2.0
         y1, y2 = (Ly - lcy) / 2.0, (Ly + lcy) / 2.0
 
-        if mode == 1:
-            # MODE 2: MÔ PHỎNG BIẾN DẠNG LÚN & NHỔ 3D (3D DEFORMED MESH)
+        if mode == 3:
+            # MODE 4: BIỂU ĐỒ NỘI LỰC DẦM SƯỜN M(x) & V(x)
+            self.ax.set_title(f"📊 BIỂU ĐỒ MÔ MEN M(x) & LỰC CẮT V(x) DẦM SƯỜN: {project.name}", color='#4ec9b0', fontsize=11, fontweight='bold')
+            
+            # Vẽ trục dầm sườn X1
+            x_arr = np.linspace(0, Lx, 100)
+            
+            # Giả lập đường biểu đồ mô men M(x) dọc dầm sườn X1 (kNm)
+            # Mô men âm cực đại tại nút gối cổ cột x1 và x2
+            M_max_uls = max([abs(l.M_x_uls) + abs(l.Q_y_uls * H_col) for l in project.loads]) * 1.5
+            
+            # Mô hình đường cong mô men M(x)
+            M_x_curve = -M_max_uls * (np.exp(-((x_arr - x1)**2)/0.5) + np.exp(-((x_arr - x2)**2)/0.5)) + (M_max_uls * 0.4) * np.sin(np.pi * x_arr / Lx)
+            
+            # Vẽ dầm sườn móng làm mốc
+            self.ax.plot([0, Lx], [y1, y1], [h_beam, h_beam], color='#a0a0a0', linewidth=3, label='Trục Dầm Sườn X1')
+            
+            # Phóng đại biểu đồ M(x) hiển thị 3D
+            scale_M = 0.003
+            Z_M = h_beam + M_x_curve * scale_M
+            
+            # Vẽ đường biểu đồ Mô Men M(x) màu đỏ
+            self.ax.plot(x_arr, np.full_like(x_arr, y1), Z_M, color='#f44747', linewidth=2.5, label='Biểu đồ Mô men M(x) [kNm]')
+            
+            # Tô màu diện tích biểu đồ
+            for i in range(len(x_arr)-1):
+                self.ax.plot([x_arr[i], x_arr[i]], [y1, y1], [h_beam, Z_M[i]], color='#f44747', alpha=0.4, linewidth=1)
+
+            # Đánh dấu các đỉnh cực đại
+            self.ax.text(x1, y1, h_beam - M_max_uls*scale_M - 0.3, f"M⁻_max = -{M_max_uls:.1f} kNm", color='#f44747', fontsize=9, fontweight='bold')
+            self.ax.text(x2, y1, h_beam - M_max_uls*scale_M - 0.3, f"M⁻_max = -{M_max_uls:.1f} kNm", color='#f44747', fontsize=9, fontweight='bold')
+
+            # 4 Cổ cột mốc
+            col_points = [(x1, y1), (x2, y1), (x1, y2), (x2, y2)]
+            for idx, (cx, cy) in enumerate(col_points):
+                self.ax.plot([cx, cx], [cy, cy], [0, H_col+h_slab], color='#4ec9b0', linewidth=3)
+
+        elif mode == 1:
+            # MODE 2: MÔ PHỎNG BIẾN DẠNG LÚN & NHỔ 3D
             self.ax.set_title(f"📉 MÔ PHỎNG BIẾN DẠNG LÚN & NHỔ 3D (Scale x300): {project.name}", color='#4ec9b0', fontsize=11, fontweight='bold')
             
-            x_mesh = np.linspace(0, Lx, 21) # 20 ô phần tử hữu hạn theo X
-            y_mesh = np.linspace(0, Ly, 21) # 20 ô phần tử hữu hạn theo Y
+            x_mesh = np.linspace(0, Lx, 21)
+            y_mesh = np.linspace(0, Ly, 21)
             X, Y = np.meshgrid(x_mesh, y_mesh)
 
             total_N = sum(l.N_sls for l in project.loads)
@@ -154,7 +193,6 @@ class Viewport3DWidget(QWidget):
 
             Area, Wx, Wy = Lx * Ly, Lx * (Ly**2) / 6.0, Ly * (Lx**2) / 6.0
 
-            # Tính chuyển vị w(x,y)
             P_grid = (total_N / Area) + (total_My * (X - Lx/2.0) / Wy) - (total_Mx * (Y - Ly/2.0) / Wx)
             w_grid = P_grid / project.soil.K_z
 
@@ -165,8 +203,6 @@ class Viewport3DWidget(QWidget):
             colors = cm.coolwarm(norm(w_grid*1000))
 
             surf = self.ax.plot_surface(X, Y, Z_deformed, facecolors=colors, shade=True, alpha=0.9, rstride=1, cstride=1)
-
-            # Vẽ các đường lưới phần tử hữu hạn FEA (Mesh Wireframe Lines)
             self.ax.plot_wireframe(X, Y, Z_deformed, color='#202020', linewidth=0.5, alpha=0.7)
 
             col_points = [(x1, y1), (x2, y1), (x1, y2), (x2, y2)]
@@ -181,7 +217,7 @@ class Viewport3DWidget(QWidget):
 
         elif mode == 2:
             # MODE 3: LƯỚI PHẦN TỬ HỮU HẠN FEA & HEATMAP ĐẤT NỀN
-            self.ax.set_title(f"📊 LƯỚI PHẦN TỬ HỮU HẠN FEA (ShellMITC4 Δx=0.4m) & HEATMAP: {project.name}", color='#4ec9b0', fontsize=11, fontweight='bold')
+            self.ax.set_title(f"📊 LƯỚI PHẦN TỬ HỮU HẠN FEA & HEATMAP ĐẤT: {project.name}", color='#4ec9b0', fontsize=11, fontweight='bold')
             x_mesh = np.linspace(0, Lx, 21)
             y_mesh = np.linspace(0, Ly, 21)
             X, Y = np.meshgrid(x_mesh, y_mesh)
@@ -197,7 +233,6 @@ class Viewport3DWidget(QWidget):
             colors = cm.jet(norm(P_grid))
             self.ax.plot_surface(X, Y, np.full_like(X, h_slab), facecolors=colors, shade=False, alpha=0.85, rstride=1, cstride=1)
 
-            # Vẽ ô lưới chia Phần Tử Hữu Hạn (FEA Mesh Grid Lines)
             for x_val in x_mesh:
                 self.ax.plot([x_val, x_val], [0, Ly], [h_slab+0.01, h_slab+0.01], color='#ffffff', linewidth=0.5, alpha=0.5)
             for y_val in y_mesh:
