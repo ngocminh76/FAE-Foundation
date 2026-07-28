@@ -248,14 +248,23 @@ class InputPanelsWidget(QWidget):
         loads = []
         for i in range(4):
             try:
-                N = float(self.table_loads.item(i, 0).text())
-                Qx = float(self.table_loads.item(i, 1).text())
-                Qy = float(self.table_loads.item(i, 2).text())
-                Mx = float(self.table_loads.item(i, 3).text())
-                My = float(self.table_loads.item(i, 4).text())
-                loads.append(ColumnLoad(leg_id=i+1, N=N, Q_x=Qx, Q_y=Qy, M_x=Mx, M_y=My))
+                N_val = float(self.table_loads.item(i, 0).text())
+                Qx_val = float(self.table_loads.item(i, 1).text())
+                Qy_val = float(self.table_loads.item(i, 2).text())
+                Mx_val = float(self.table_loads.item(i, 3).text())
+                My_val = float(self.table_loads.item(i, 4).text())
+                
+                # Tải tiêu chuẩn SLS (gamma = 1.0) và Tải tính toán ULS (gamma ~ 1.2)
+                loads.append(ColumnLoad(
+                    leg_id=i+1,
+                    N_sls=N_val / 1.2 if N_val > 0 else N_val / 1.15,
+                    Q_x_sls=Qx_val / 1.2, Q_y_sls=Qy_val / 1.2,
+                    M_x_sls=Mx_val / 1.2, M_y_sls=My_val / 1.2,
+                    N_uls=N_val, Q_x_uls=Qx_val, Q_y_uls=Qy_val,
+                    M_x_uls=Mx_val, M_y_uls=My_val
+                ))
             except (ValueError, AttributeError):
-                loads.append(ColumnLoad(leg_id=i+1, N=100.0))
+                loads.append(ColumnLoad(leg_id=i+1, N_sls=100.0, N_uls=120.0))
 
         self.project.loads = loads
         return self.project

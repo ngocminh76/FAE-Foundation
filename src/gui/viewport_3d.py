@@ -27,7 +27,7 @@ class Viewport3DWidget(QWidget):
 
     def plot_empty_scene(self):
         self.ax.clear()
-        self.ax.set_title("🌐 KHUNG HIỂN THỊ MÓNG BÈ 3D TƯƠNG TÁC", color='#4ec9b0', fontsize=12, fontweight='bold')
+        self.ax.set_title("KHUNG HIỂN THỊ MÓNG BÈ 3D TƯƠNG TÁC", color='#4ec9b0', fontsize=12, fontweight='bold')
         self.ax.set_xlabel("Trục X (m)", color='#cccccc')
         self.ax.set_ylabel("Trục Y (m)", color='#cccccc')
         self.ax.set_zlabel("Chiều Cao Z (m)", color='#cccccc')
@@ -38,7 +38,7 @@ class Viewport3DWidget(QWidget):
         """Vẽ toàn bộ mô hình 3D móng, dầm sườn, cổ cột, lực tác dụng và Heatmap Ứng Suất Đất Nền"""
         self.ax.clear()
         self.ax.set_facecolor('#1e1e1e')
-        self.ax.set_title(f"🌐 MÓNG BÈ 3D & HEATMAP ỨNG SUẤT ĐẤT NỀN: {project.name}", color='#4ec9b0', fontsize=11, fontweight='bold')
+        self.ax.set_title(f"MÓNG BÈ 3D & HEATMAP ỨNG SUẤT ĐẤT NỀN: {project.name}", color='#4ec9b0', fontsize=11, fontweight='bold')
         
         Lx = project.slab.L_x
         Ly = project.slab.L_y
