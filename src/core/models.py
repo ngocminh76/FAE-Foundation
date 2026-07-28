@@ -1,5 +1,6 @@
 """
 Core Data Models for Transmission Tower Foundation Analysis App
+Supporting explicit separation between SLS (Service Loads for Geotechnical) and ULS (Factored Loads for Concrete Design)
 """
 
 from dataclasses import dataclass, field
@@ -8,10 +9,10 @@ from typing import List, Dict
 @dataclass
 class ConcreteMaterial:
     name: str = "B25"
-    f_ck: float = 20.0        # Cường độ chịu nén đặc trưng (MPa)
+    f_ck: float = 20.0        # Cường độ chịu nén đặc trưng mẫu trụ (MPa)
     R_b: float = 14.5         # Cường độ chịu nén tính toán (MPa - TCVN 5574:2018)
     R_bt: float = 1.05        # Cường độ chịu kéo tính toán (MPa - TCVN 5574:2018)
-    E_b: float = 30.0e3       # Modul đàn hồi (MPa = N/mm2 = 10^3 kN/m2 -> 30*10^6 kN/m2)
+    E_b: float = 30.0e3       # Modul đàn hồi (MPa -> 30*10^6 kN/m2)
     density: float = 25.0     # Trọng lượng riêng bê tông (kN/m3)
 
 @dataclass
@@ -25,8 +26,8 @@ class SteelMaterial:
 class SoilSpring:
     K_z: float = 22500.0      # Hệ số nền Winkler (kN/m3)
     gamma_soil: float = 18.5  # Dung trọng đất đè móng (kN/m3)
-    phi: float = 20.0         # Góc ma sát trong (độ)
-    c: float = 15.0           # Lực dính (kPa)
+    phi: float = 18.0         # Góc ma sát trong (độ)
+    c: float = 16.0           # Lực dính (kPa)
 
 @dataclass
 class RaftSlabGeometry:
@@ -38,9 +39,9 @@ class RaftSlabGeometry:
 @dataclass
 class RibBeamGeometry:
     b_beam: float = 0.4       # Bề rộng dầm sườn (m)
-    h_beam: float = 0.8       # Chiều cao dầm sườn (m - tính từ mặt đáy bản hoặc mặt trên bản)
-    full_length_x: bool = True # Dầm X chạy dài từ mép sang mép (L_beam_X = L_x)
-    full_length_y: bool = True # Dầm Y chạy dài từ mép sang mép (L_beam_Y = L_y)
+    h_beam: float = 0.8       # Chiều cao dầm sườn (m)
+    full_length_x: bool = True
+    full_length_y: bool = True
 
 @dataclass
 class StubColumnGeometry:
@@ -53,11 +54,40 @@ class StubColumnGeometry:
 @dataclass
 class ColumnLoad:
     leg_id: int               # ID chân cột (1, 2, 3, 4)
-    N: float                  # Lực dọc (kN) - Âm là Kéo/Nhổ, Dương là Nén
-    Q_x: float = 0.0          # Lực cắt phương X (kN)
-    Q_y: float = 0.0          # Lực cắt phương Y (kN)
-    M_x: float = 0.0          # Mô men uốn quanh trục X (kNm)
-    M_y: float = 0.0          # Mô men uốn quanh trục Y (kNm)
+    # Tải trọng Tiêu Chuẩn - SLS (Dùng tính Nền đất & Chống nhổ & Độ lún)
+    N_sls: float = 0.0        # Lực dọc tiêu chuẩn (kN)
+    Q_x_sls: float = 0.0      # Lực cắt X tiêu chuẩn (kN)
+    Q_y_sls: float = 0.0      # Lực cắt Y tiêu chuẩn (kN)
+    M_x_sls: float = 0.0      # Mô men X tiêu chuẩn (kNm)
+    M_y_sls: float = 0.0      # Mô men Y tiêu chuẩn (kNm)
+
+    # Tải trọng Tính Toán - ULS (Dùng tính Cốt thép bê tông Dầm/Bản)
+    N_uls: float = 0.0        # Lực dọc tính toán (kN)
+    Q_x_uls: float = 0.0      # Lực cắt X tính toán (kN)
+    Q_y_uls: float = 0.0      # Lực cắt Y tính toán (kN)
+    M_x_uls: float = 0.0      # Mô men X tính toán (kNm)
+    M_y_uls: float = 0.0      # Mô men Y tính toán (kNm)
+
+    @property
+    def N(self) -> float:
+        """Thuộc tính mặc định trả về N_uls"""
+        return self.N_uls if self.N_uls != 0.0 else self.N_sls
+
+    @property
+    def Q_x(self) -> float:
+        return self.Q_x_uls if self.Q_x_uls != 0.0 else self.Q_x_sls
+
+    @property
+    def Q_y(self) -> float:
+        return self.Q_y_uls if self.Q_y_uls != 0.0 else self.Q_y_sls
+
+    @property
+    def M_x(self) -> float:
+        return self.M_x_uls if self.M_x_uls != 0.0 else self.M_x_sls
+
+    @property
+    def M_y(self) -> float:
+        return self.M_y_uls if self.M_y_uls != 0.0 else self.M_y_sls
 
 @dataclass
 class TowerFoundationProject:
@@ -72,12 +102,14 @@ class TowerFoundationProject:
 
     def __post_init__(self):
         if not self.loads:
-            # Tạo tổ hợp tải ví dụ tiêu chuẩn cho 4 chân cột điện:
-            # Leg 1 & 2: Windward (Nhổ kéo)
-            # Leg 3 & 4: Leeward (Nén nặng)
+            # Tổ hợp tải mặc định với cả SLS (Tiêu chuẩn - hệ số 1.0) và ULS (Tính toán - hệ số ~1.2)
             self.loads = [
-                ColumnLoad(leg_id=1, N=-480.0, Q_x=85.0, Q_y=60.0, M_x=120.0, M_y=90.0),
-                ColumnLoad(leg_id=2, N=-420.0, Q_x=80.0, Q_y=55.0, M_x=115.0, M_y=85.0),
-                ColumnLoad(leg_id=3, N=1850.0, Q_x=95.0, Q_y=70.0, M_x=140.0, M_y=110.0),
-                ColumnLoad(leg_id=4, N=1790.0, Q_x=90.0, Q_y=65.0, M_x=135.0, M_y=105.0)
+                ColumnLoad(leg_id=1, N_sls=-400.0, Q_x_sls=70.0, Q_y_sls=50.0, M_x_sls=100.0, M_y_sls=75.0,
+                                     N_uls=-480.0, Q_x_uls=85.0, Q_y_uls=60.0, M_x_uls=120.0, M_y_uls=90.0),
+                ColumnLoad(leg_id=2, N_sls=-350.0, Q_x_sls=65.0, Q_y_sls=45.0, M_x_sls=95.0,  M_y_sls=70.0,
+                                     N_uls=-420.0, Q_x_uls=80.0, Q_y_uls=55.0, M_x_uls=115.0, M_y_uls=85.0),
+                ColumnLoad(leg_id=3, N_sls=-120.0, Q_x_sls=35.0, Q_y_sls=30.0, M_x_sls=50.0,  M_y_sls=35.0,
+                                     N_uls=-150.0, Q_x_uls=45.0, Q_y_uls=35.0, M_x_uls=60.0,  M_y_uls=45.0),
+                ColumnLoad(leg_id=4, N_sls=2040.0, Q_x_sls=95.0, Q_y_sls=75.0, M_x_sls=145.0, M_y_sls=110.0,
+                                     N_uls=2450.0, Q_x_uls=115.0,Q_y_uls=90.0, M_x_uls=175.0, M_y_uls=135.0)
             ]

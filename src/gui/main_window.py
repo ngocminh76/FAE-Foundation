@@ -157,8 +157,22 @@ class MainWindow(QMainWindow):
         bm = res['beam_design']
         sl = res['slab_design']
 
-        self.text_report.append(f"   1. Áp lực Đất Nền:  {sb['status_text']} (Pmax = {sb.get('P_max', sb.get('P_max_kPa', 0)):.2f} kPa)")
-        self.text_report.append(f"   2. Chống Nhổ Móng:   {up['status_text']}")
-        self.text_report.append(f"   3. Thép Dầm Sườn:    {bm['status_text']} -> {bm['As_required_cm2']:.2f} cm² (Bố trí: {bm['suggested_rebars']})")
-        self.text_report.append(f"   4. Thép Bản Móng:    {sl['status_text']} -> {sl['As_slab_cm2_per_m']:.2f} cm²/m (Bố trí: {sl['suggested_mesh']})")
-        self.text_report.append("")
+        self.text_report.append("  ------------------------------------------------------------------")
+        self.text_report.append(f"   1. KIỂM TRA ÁP LỰC ĐẤT NỀN ({sb.get('load_type', 'SLS')}): {sb['status_text']}")
+        if "formula_explanation" in sb:
+            self.text_report.append(f"      {sb['formula_explanation'].replace('\n', '\n      ')}")
+
+        self.text_report.append("\n   2. KIỂM TRA CHỐNG NHỔ MÓNG ({up.get('load_type', 'SLS')}): {up['status_text']}")
+        if "formula_explanation" in up:
+            self.text_report.append(f"      {up['formula_explanation'].replace('\n', '\n      ')}")
+
+        self.text_report.append("\n   3. TÍNH CỐT THÉP DẦM SƯỜN MÓNG ({bm.get('load_type', 'ULS')}): {bm['status_text']}")
+        if "formula_explanation" in bm:
+            self.text_report.append(f"      {bm['formula_explanation'].replace('\n', '\n      ')}")
+        self.text_report.append(f"      --> Cốt thép bố trí: {bm['suggested_rebars']}")
+
+        self.text_report.append("\n   4. TÍNH CỐT THÉP BẢN MÓNG BÈ ({sl.get('load_type', 'ULS')}): {sl['status_text']}")
+        if "formula_explanation" in sl:
+            self.text_report.append(f"      {sl['formula_explanation'].replace('\n', '\n      ')}")
+        self.text_report.append(f"      --> Cốt thép lưới bản: {sl['suggested_mesh']}")
+        self.text_report.append("  ------------------------------------------------------------------\n")

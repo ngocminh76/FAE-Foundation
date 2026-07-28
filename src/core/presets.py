@@ -1,5 +1,6 @@
 """
 Preset geological soil profiles and transmission line tower load cases (110kV, 220kV, 500kV)
+Supporting SLS (Service Loads for Geotechnical) and ULS (Factored Loads for Concrete Design)
 """
 
 from typing import Dict
@@ -32,28 +33,40 @@ PRESET_LOAD_CASES: Dict[str, Dict] = {
     "Tải tháp 110kV - Gió vuông góc (Gió 90°)": {
         "description": "2 chân đón gió bị Kéo Nhổ (-350kN), 2 chân khuất gió bị Nén nặng (+1250kN)",
         "loads": [
-            ColumnLoad(leg_id=1, N=-350.0, Q_x=65.0, Q_y=45.0, M_x=85.0, M_y=60.0),
-            ColumnLoad(leg_id=2, N=-310.0, Q_x=60.0, Q_y=40.0, M_x=80.0, M_y=55.0),
-            ColumnLoad(leg_id=3, N=1250.0, Q_x=75.0, Q_y=55.0, M_x=105.0, M_y=75.0),
-            ColumnLoad(leg_id=4, N=1210.0, Q_x=70.0, Q_y=50.0, M_x=100.0, M_y=70.0),
+            ColumnLoad(leg_id=1, N_sls=-290.0, Q_x_sls=55.0, Q_y_sls=40.0, M_x_sls=70.0, M_y_sls=50.0,
+                                 N_uls=-350.0, Q_x_uls=65.0, Q_y_uls=45.0, M_x_uls=85.0, M_y_uls=60.0),
+            ColumnLoad(leg_id=2, N_sls=-260.0, Q_x_sls=50.0, Q_y_sls=35.0, M_x_sls=65.0, M_y_sls=45.0,
+                                 N_uls=-310.0, Q_x_uls=60.0, Q_y_uls=40.0, M_x_uls=80.0, M_y_uls=55.0),
+            ColumnLoad(leg_id=3, N_sls=1040.0, Q_x_sls=60.0, Q_y_sls=45.0, M_x_sls=85.0, M_y_sls=60.0,
+                                 N_uls=1250.0, Q_x_uls=75.0, Q_y_uls=55.0, M_x_uls=105.0,M_y_uls=75.0),
+            ColumnLoad(leg_id=4, N_sls=1000.0, Q_x_sls=55.0, Q_y_sls=40.0, M_x_sls=80.0, M_y_sls=55.0,
+                                 N_uls=1210.0, Q_x_uls=70.0, Q_y_uls=50.0, M_x_uls=100.0,M_y_uls=70.0),
         ]
     },
     "Tải tháp 220kV - Gió Xiên 45° (3 Chân Nhổ, 1 Chân Nén Dồn)": {
         "description": "Gió xiên 45° kết hợp Cột Góc làm 3 chân bị Kéo Nhổ cùng lúc (-480kN), 1 chân bị Nén dồn (+2450kN)",
         "loads": [
-            ColumnLoad(leg_id=1, N=-480.0, Q_x=85.0, Q_y=60.0, M_x=120.0, M_y=90.0),
-            ColumnLoad(leg_id=2, N=-420.0, Q_x=80.0, Q_y=55.0, M_x=115.0, M_y=85.0),
-            ColumnLoad(leg_id=3, N=-150.0, Q_x=45.0, Q_y=35.0, M_x=60.0, M_y=45.0), # Chân thứ 3 cũng bị nhổ nhẹ
-            ColumnLoad(leg_id=4, N=2450.0, Q_x=115.0, Q_y=90.0, M_x=175.0, M_y=135.0), # Chân 4 Nén dồn cực nặng
+            ColumnLoad(leg_id=1, N_sls=-400.0, Q_x_sls=70.0, Q_y_sls=50.0, M_x_sls=100.0, M_y_sls=75.0,
+                                 N_uls=-480.0, Q_x_uls=85.0, Q_y_uls=60.0, M_x_uls=120.0, M_y_uls=90.0),
+            ColumnLoad(leg_id=2, N_sls=-350.0, Q_x_sls=65.0, Q_y_sls=45.0, M_x_sls=95.0,  M_y_sls=70.0,
+                                 N_uls=-420.0, Q_x_uls=80.0, Q_y_uls=55.0, M_x_uls=115.0, M_y_uls=85.0),
+            ColumnLoad(leg_id=3, N_sls=-120.0, Q_x_sls=35.0, Q_y_sls=30.0, M_x_sls=50.0,  M_y_sls=35.0,
+                                 N_uls=-150.0, Q_x_uls=45.0, Q_y_uls=35.0, M_x_uls=60.0,  M_y_uls=45.0),
+            ColumnLoad(leg_id=4, N_sls=2040.0, Q_x_sls=95.0, Q_y_sls=75.0, M_x_sls=145.0, M_y_sls=110.0,
+                                 N_uls=2450.0, Q_x_uls=115.0,Q_y_uls=90.0, M_x_uls=175.0, M_y_uls=135.0)
         ]
     },
     "Tải tháp 500kV - Sự cố Đứt Dây (Conductor Breakage)": {
         "description": "Đứt dây pha sinh ra Mô men xoắn Mz và lực cắt bẻ cực mạnh tại các chân móng",
         "loads": [
-            ColumnLoad(leg_id=1, N=-650.0, Q_x=140.0, Q_y=95.0, M_x=210.0, M_y=155.0),
-            ColumnLoad(leg_id=2, N=-580.0, Q_x=130.0, Q_y=85.0, M_x=195.0, M_y=140.0),
-            ColumnLoad(leg_id=3, N=3100.0, Q_x=160.0, Q_y=115.0, M_x=250.0, M_y=185.0),
-            ColumnLoad(leg_id=4, N=2950.0, Q_x=150.0, Q_y=105.0, M_x=235.0, M_y=170.0),
+            ColumnLoad(leg_id=1, N_sls=-540.0, Q_x_sls=115.0, Q_y_sls=80.0, M_x_sls=175.0, M_y_sls=130.0,
+                                 N_uls=-650.0, Q_x_uls=140.0, Q_y_uls=95.0, M_x_uls=210.0, M_y_uls=155.0),
+            ColumnLoad(leg_id=2, N_sls=-480.0, Q_x_sls=105.0, Q_y_sls=70.0, M_x_sls=160.0, M_y_sls=115.0,
+                                 N_uls=-580.0, Q_x_uls=130.0, Q_y_uls=85.0, M_x_uls=195.0, M_y_uls=140.0),
+            ColumnLoad(leg_id=3, N_sls=2580.0, Q_x_sls=130.0, Q_y_sls=95.0, M_x_sls=205.0, M_y_sls=150.0,
+                                 N_uls=3100.0, Q_x_uls=160.0, Q_y_uls=115.0, M_x_uls=250.0,M_y_uls=185.0),
+            ColumnLoad(leg_id=4, N_sls=2450.0, Q_x_sls=120.0, Q_y_sls=85.0, M_x_sls=195.0, M_y_sls=140.0,
+                                 N_uls=2950.0, Q_x_uls=150.0, Q_y_uls=105.0, M_x_uls=235.0,M_y_uls=170.0),
         ]
     }
 }
