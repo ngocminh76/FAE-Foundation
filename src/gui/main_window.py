@@ -152,27 +152,47 @@ class MainWindow(QMainWindow):
 
     def _format_code_result(self, res: dict):
         self.text_report.append(f"🏛️ TIÊU CHUẨN: {res['code_name']}")
-        sb = res['soil_bearing']
-        up = res['uplift_stability']
-        bm = res['beam_design']
-        sl = res['slab_design']
+        sb = res.get('soil_bearing', {})
+        up = res.get('uplift_stability', {})
+        col = res.get('stub_columns', {})
+        bolt = res.get('anchor_bolts', {})
+        punch = res.get('punching_shear', {})
+        bm = res.get('beam_design', {})
+        sl = res.get('slab_design', {})
 
-        self.text_report.append("  ------------------------------------------------------------------")
-        self.text_report.append(f"   1. KIỂM TRA ÁP LỰC ĐẤT NỀN ({sb.get('load_type', 'SLS')}): {sb['status_text']}")
+        self.text_report.append("  ----------------------------------------------------------------------------------")
+        self.text_report.append(f"   1. ÁP LỰC ĐẤT NỀN ĐÁY MÓNG ({sb.get('load_type', 'SLS')}): {sb.get('status_text', '')}")
         if "formula_explanation" in sb:
             self.text_report.append(f"      {sb['formula_explanation'].replace('\n', '\n      ')}")
 
-        self.text_report.append("\n   2. KIỂM TRA CHỐNG NHỔ MÓNG ({up.get('load_type', 'SLS')}): {up['status_text']}")
+        self.text_report.append(f"\n   2. ỔN ĐỊNH CHỐNG NHỔ MÓNG ({up.get('load_type', 'SLS')}): {up.get('status_text', '')}")
         if "formula_explanation" in up:
             self.text_report.append(f"      {up['formula_explanation'].replace('\n', '\n      ')}")
 
-        self.text_report.append("\n   3. TÍNH CỐT THÉP DẦM SƯỜN MÓNG ({bm.get('load_type', 'ULS')}): {bm['status_text']}")
+        if col:
+            self.text_report.append(f"\n   3. TÍNH CỐT THÉP 4 CỔ CỘT ({col.get('load_type', 'ULS')}): {col.get('status_text', '')}")
+            if "formula_explanation" in col:
+                self.text_report.append(f"      {col['formula_explanation'].replace('\n', '\n      ')}")
+            self.text_report.append(f"      --> Bố trí thép dọc cổ cột: {col.get('suggested_column_rebars', '')}")
+            self.text_report.append(f"      --> Bố trí thép đai đai cột: {col.get('suggested_stirrups', '')}")
+
+        if bolt:
+            self.text_report.append(f"\n   4. KIỂM TRA CUỘC BU-LÔNG NEO M36: {bolt.get('status_text', '')}")
+            if "formula_explanation" in bolt:
+                self.text_report.append(f"      {bolt['formula_explanation'].replace('\n', '\n      ')}")
+
+        if punch:
+            self.text_report.append(f"\n   5. KIỂM TRA CHỐNG CHỌC THỦNG BẢN BÈ: {punch.get('status_text', '')}")
+            if "formula_explanation" in punch:
+                self.text_report.append(f"      {punch['formula_explanation'].replace('\n', '\n      ')}")
+
+        self.text_report.append(f"\n   6. TÍNH CỐT THÉP DẦM SƯỜN MÓNG ({bm.get('load_type', 'ULS')}): {bm.get('status_text', '')}")
         if "formula_explanation" in bm:
             self.text_report.append(f"      {bm['formula_explanation'].replace('\n', '\n      ')}")
-        self.text_report.append(f"      --> Cốt thép bố trí: {bm['suggested_rebars']}")
+        self.text_report.append(f"      --> Cốt thép dọc dầm bố trí: {bm.get('suggested_rebars', '')}")
 
-        self.text_report.append("\n   4. TÍNH CỐT THÉP BẢN MÓNG BÈ ({sl.get('load_type', 'ULS')}): {sl['status_text']}")
+        self.text_report.append(f"\n   7. TÍNH CỐT THÉP BẢN MÓNG BÈ ({sl.get('load_type', 'ULS')}): {sl.get('status_text', '')}")
         if "formula_explanation" in sl:
             self.text_report.append(f"      {sl['formula_explanation'].replace('\n', '\n      ')}")
-        self.text_report.append(f"      --> Cốt thép lưới bản: {sl['suggested_mesh']}")
-        self.text_report.append("  ------------------------------------------------------------------\n")
+        self.text_report.append(f"      --> Lưới thép bản móng: {sl.get('suggested_mesh', '')}")
+        self.text_report.append("  ----------------------------------------------------------------------------------\n")

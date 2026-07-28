@@ -1,6 +1,6 @@
 """
 Core Data Models for Transmission Tower Foundation Analysis App
-Supporting explicit separation between SLS (Service Loads for Geotechnical) and ULS (Factored Loads for Concrete Design)
+Expanded with Anchor Bolt & Stub Column Parameters for Complete Rigorous Verification
 """
 
 from dataclasses import dataclass, field
@@ -21,6 +21,13 @@ class SteelMaterial:
     R_s: float = 350.0        # Cường độ chịu kéo tính toán (MPa)
     R_sw: float = 280.0       # Cường độ cốt đai (MPa)
     E_s: float = 200.0e3      # Modul đàn hồi thép (MPa)
+
+@dataclass
+class AnchorBoltSpec:
+    d_bolt: float = 36.0      # Đường kính bu lông neo (mm - M36)
+    n_bolts_per_leg: int = 4  # Số lượng bu lông neo tại mỗi cổ cột (4 bu lông)
+    f_yb: float = 400.0       # Cường độ chịu kéo tính toán bu lông (MPa)
+    L_anchor: float = 1000.0  # Chiều dài đoạn neo bu lông vào cổ cột (mm)
 
 @dataclass
 class SoilSpring:
@@ -61,7 +68,7 @@ class ColumnLoad:
     M_x_sls: float = 0.0      # Mô men X tiêu chuẩn (kNm)
     M_y_sls: float = 0.0      # Mô men Y tiêu chuẩn (kNm)
 
-    # Tải trọng Tính Toán - ULS (Dùng tính Cốt thép bê tông Dầm/Bản)
+    # Tải trọng Tính Toán - ULS (Dùng tính Cốt thép bê tông Dầm/Bản/Cổ cột & Bu lông neo)
     N_uls: float = 0.0        # Lực dọc tính toán (kN)
     Q_x_uls: float = 0.0      # Lực cắt X tính toán (kN)
     Q_y_uls: float = 0.0      # Lực cắt Y tính toán (kN)
@@ -70,7 +77,6 @@ class ColumnLoad:
 
     @property
     def N(self) -> float:
-        """Thuộc tính mặc định trả về N_uls"""
         return self.N_uls if self.N_uls != 0.0 else self.N_sls
 
     @property
@@ -94,6 +100,7 @@ class TowerFoundationProject:
     name: str = "Móng Cột Điện Truyền Tải"
     concrete: ConcreteMaterial = field(default_factory=ConcreteMaterial)
     steel: SteelMaterial = field(default_factory=SteelMaterial)
+    anchor_bolt: AnchorBoltSpec = field(default_factory=AnchorBoltSpec)
     soil: SoilSpring = field(default_factory=SoilSpring)
     slab: RaftSlabGeometry = field(default_factory=RaftSlabGeometry)
     beam: RibBeamGeometry = field(default_factory=RibBeamGeometry)
@@ -102,7 +109,6 @@ class TowerFoundationProject:
 
     def __post_init__(self):
         if not self.loads:
-            # Tổ hợp tải mặc định với cả SLS (Tiêu chuẩn - hệ số 1.0) và ULS (Tính toán - hệ số ~1.2)
             self.loads = [
                 ColumnLoad(leg_id=1, N_sls=-400.0, Q_x_sls=70.0, Q_y_sls=50.0, M_x_sls=100.0, M_y_sls=75.0,
                                      N_uls=-480.0, Q_x_uls=85.0, Q_y_uls=60.0, M_x_uls=120.0, M_y_uls=90.0),
