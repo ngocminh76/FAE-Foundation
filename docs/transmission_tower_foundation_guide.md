@@ -7,6 +7,8 @@ Tài liệu này tổng hợp toàn bộ lý thuyết cơ học kết cấu, cô
 ## 🖼️ 1. Bộ Sưu Tập Hình Ảnh 3D Mô Phỏng Kết Cấu & Cơ Chế Truyền Lực
 
 ```carousel
+![Mô Hình 3D Phối Cảnh Render Từ Blender 5.2 (Cycles/EEVEE Engine)](file:///C:/Users/qnbk1/.gemini/antigravity/brain/532fcab8-feeb-4929-b8e3-e0fffa788c40/blender_foundation_render.png)
+<!-- slide -->
 ![Sơ Đồ 3D Chuẩn Xác Móng Bè Phẳng 4 Cổ Cột & Đầm Sườn Chạy Suốt 2 Phương](file:///C:/Users/qnbk1/.gemini/antigravity/brain/532fcab8-feeb-4929-b8e3-e0fffa788c40/exact_both_directions_full_beam_raft_1785246112684.png)
 <!-- slide -->
 ![Sơ Đồ 3D Cơ Chế Truyền Lực & Phản Lực Đất Nền Hình Chêm](file:///C:/Users/qnbk1/.gemini/antigravity/brain/532fcab8-feeb-4929-b8e3-e0fffa788c40/force_flow_mechanism_3d_diagram_1785246378795.png)
@@ -14,8 +16,6 @@ Tài liệu này tổng hợp toàn bộ lý thuyết cơ học kết cấu, cô
 ![Sơ Đồ 3D Quy Dời Lực Tích Có Hướng Vector r_A x F Về Tâm Móng O(0,0,0)](file:///C:/Users/qnbk1/.gemini/antigravity/brain/532fcab8-feeb-4929-b8e3-e0fffa788c40/vector_cross_product_reduction_3d_1785248582506.png)
 <!-- slide -->
 ![Sơ Đồ 3D Phân Phối Mô Men Mx, My & Xoắn Mz Từ Tâm Tháp Đến 4 Chân Cổ Cột](file:///C:/Users/qnbk1/.gemini/antigravity/brain/532fcab8-feeb-4929-b8e3-e0fffa788c40/moment_resolution_3d_diagram_1785248317018.png)
-<!-- slide -->
-![Trường Hợp Đặc Biệt: Gió Xiên 45° - 3 Chân Bị Kéo Nhổ & 1 Chân Nén Dồn](file:///C:/Users/qnbk1/.gemini/antigravity/brain/532fcab8-feeb-4929-b8e3-e0fffa788c40/three_legs_uplift_diagonal_wind_1785246597295.png)
 ```
 
 ---
@@ -62,10 +62,6 @@ Cho 4 cổ cột đặt đối xứng tại tọa độ $(\pm x_c, \pm y_c)$ v�
 
 $$\mathbf{N_i = \frac{N_{tổng}}{4} + \frac{M_{y, tổng} \cdot x_i}{2 \cdot x_c^2} - \frac{M_{x, tổng} \cdot y_i}{2 \cdot y_c^2}}$$
 
-* **Mô men uốn cổ cột ($H_{col}$):**
-  $$M_{x,i} = Q_{y,i} \times H_{col}$$
-  $$M_{y,i} = Q_{x,i} \times H_{col}$$
-
 ---
 
 ## 🪨 8. Đặc Điểm Phân Bố & Vị Trí Tập Trung Ứng Suất Đất Nền Đáy Móng (Soil Stress Hotspots)
@@ -73,48 +69,4 @@ $$\mathbf{N_i = \frac{N_{tổng}}{4} + \frac{M_{y, tổng} \cdot x_i}{2 \cdot x_
 ### A. Hình Dáng Phân Bố Ứng Suất Đất Nền ($P_{soil}$):
 - Ứng suất phản lực đất nền bên dưới bản móng bè phân bố theo **Biểu đồ hình chêm nghiêng 3D (3D Inclined Wedge)**.
 - **Tại góc móng $Leg_4$ (Chân nén dồn):** Ứng suất đất đạt **Giá trị cực đại $P_{max} = 43.46\text{ kPa}$** (tương ứng vùng màu đỏ thẫm trên Heatmap 3D).
-- **Tại 3 góc móng $Leg_1, Leg_2, Leg_3$ (Các chân bị kéo nhổ):** Vì đất nền không chịu kéo ($P \ge 0$), ứng suất đất nền giảm về **0.0 kPa** (tương ứng vùng màu xanh dương thẫm trên Heatmap 3D), hình thành đường ranh giới hẫng móng.
-
-### B. Các Vị Trí Tập Trung Ứng Suất Lớn Nhất (Stress Concentration Hotspots):
-1. **Góc Bản Móng Bè Phía Dưới $Leg_4$:** Vùng chịu áp lực nền đất nén dồn lớn nhất $P_{max}$.
-2. **Nút Nối Giao Điểm Dầm Sườn & Cổ Cột:** Vùng tập trung Mô men uốn cực đại $M_{max}$ và Lực cắt cực đại $V_{max}$ trên dầm sườn.
-3. **Chu Vi Đáy 4 Cổ Cột:** Vùng tập trung ứng suất đâm thủng (Punching shear) tác dụng lên bản bè.
-
----
-
-## ⚖️ 6. Phân Định Giữa Tải Trọng Tiêu Chuẩn (SLS) Và Tải Trọng Tính Toán (ULS)
-
-| Tiêu chí | 🪨 1. Tính Nền Đất & Chống Nhổ | 🧱 2. Tính Kết Cấu Bê Tông Cốt Thép |
-| :--- | :--- | :--- |
-| **Trạng Thái Giới Hạn** | Trạng thái Giới hạn II (Sử dụng - **SLS**) | Trạng thái Giới hạn I (Cường độ - **ULS**) |
-| **Hệ Số Tải Trọng ($\gamma_f$)** | **$\gamma_f = 1.0$ (Tải Tiêu Chuẩn)** | **$\gamma_D \approx 1.15, \gamma_L \approx 1.2, \gamma_W \approx 1.2$ (Tải Tính Toán)** |
-| **Mục Đích Tính Toán** | 1. Áp lực đất $P_{max} \le 1.2 R^{tc}$<br>2. Hệ số an toàn chống nhổ $K \ge 1.3$<br>3. Độ lún móng $S \le S_{cho\ phép}$ | 1. Diện tích thép $A_s$ chịu uốn dầm sườn<br>2. Diện tích thép lưới bản móng bè $A_{s,bản}$<br>3. Kiểm tra cổ cột & Bu-lông neo M36 |
-| **Tiêu Chuẩn Áp Dụng** | TCVN 9362:2012 / Eurocode 7 (GEO) | TCVN 5574:2018 / ACI 318 / Eurocode 2 |
-
----
-
-## 📊 7. Quy Trình Tính Toán 7 Hạng Mục Kết Cấu & Địa Kỹ Thuật
-
-### 1. Áp lực đất nền đáy móng ($P_{max}, P_{min}$ - SLS):
-$$P_{max, min} = \frac{\Sigma N_{sls}}{F_{bè}} \pm \frac{\Sigma M_{x,sls}}{W_x} \pm \frac{\Sigma M_{y,sls}}{W_y} \le 1.2 R^{tc}$$
-
-### 2. Hệ số an toàn chống nhổ móng ($K_{nhổ}$ - SLS):
-$$K_{nhổ} = \frac{G_{móng} + G_{đất\_đè}}{\Sigma |N_{nhổ,sls}|} \ge 1.3$$
-
-### 3. Cốt thép 4 Cổ Cột ($A_{s,col}$ - ULS):
-Chịu Kéo-Uốn xiên và Nén-Uốn xiên theo TCVN 5574:2018:
-$$A_{s,col} = \frac{|N_{nhổ,uls}|}{R_s} + \frac{M_{chân,uls}}{R_s \cdot z}$$
-
-### 4. Kiểm tra cụm 4 Bu-lông Neo M36 (ULS):
-* Sức chịu kéo 1 bu-lông: $N_{rd1} = A_{net} \cdot f_{yb}$.
-* Tổng khả năng chịu kéo cụm 4 bu-lông: $N_{rd,cụm} = 4 \cdot N_{rd1} \ge |N_{nhổ,uls}|$.
-* Chiều dài neo: $L_{anchor} \ge 30 \cdot d_{bolt}$.
-
-### 5. Kiểm tra chọc thủng bản móng bè (ULS):
-$$F_{b,ult} = R_{bt} \cdot u_m \cdot h_{0,slab} \ge N_{nén,max,uls}$$
-
-### 6. Cốt thép dọc Dầm Sườn Móng ($A_{s,beam}$ - ULS):
-$$\alpha_m = \frac{M_{uls}}{R_b \cdot b \cdot h_0^2} \longrightarrow \xi = 1 - \sqrt{1 - 2\alpha_m} \longrightarrow A_{s,beam} = \frac{\xi R_b b h_0}{R_s}$$
-
-### 7. Cốt thép lưới Bản Móng Bè ($A_{s,slab}$ - ULS):
-$$M_{slab} = \frac{P_{uls} \cdot L_{ô}^2}{8} \longrightarrow A_{s,slab} = \frac{\xi R_b b_{unit} h_{0,slab}}{R_s}$$
+- **Tại 3 góc móng $Leg_1, Leg_2, Leg_3$ (Các chân bị kéo nhổ):** Áp lực đất nền giảm về **0.0 kPa** (tương ứng vùng màu xanh dương thẫm trên Heatmap 3D).
