@@ -1,9 +1,15 @@
 import bpy
 import bmesh
 import numpy as np
-from src.core.models import TowerFoundationProject, RaftSlabGeometry, RibBeamGeometry, StubColumnGeometry
-from src.core.presets import create_sample_project
-from src.design_codes.tcvn import TCVNCodeChecker
+
+try:
+    from .src.core.models import TowerFoundationProject, RaftSlabGeometry, RibBeamGeometry, StubColumnGeometry
+    from .src.core.presets import create_sample_project
+    from .src.design_codes.tcvn import TCVNCodeChecker
+except ImportError:
+    from src.core.models import TowerFoundationProject, RaftSlabGeometry, RibBeamGeometry, StubColumnGeometry
+    from src.core.presets import create_sample_project
+    from src.design_codes.tcvn import TCVNCodeChecker
 
 class OBJECT_OT_open_full_dialog(bpy.types.Operator):
     bl_idname = "object.fae_open_full_dialog"
