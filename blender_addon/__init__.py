@@ -11,7 +11,6 @@ bl_info = {
 import sys
 import os
 
-# Thêm tự động cả đường dẫn addon và đường dẫn dự án d:\03.MINH\MyApp vào sys.path
 addon_dir = os.path.dirname(os.path.abspath(__file__))
 if addon_dir not in sys.path:
     sys.path.insert(0, addon_dir)
@@ -23,6 +22,7 @@ if os.path.exists(workspace_dir) and workspace_dir not in sys.path:
 import bpy
 from .ui_panel import FAEExtensionPanel, FAEExtensionProperties
 from .operators import (
+    OBJECT_OT_open_full_dialog,
     OBJECT_OT_generate_foundation_3d,
     OBJECT_OT_run_structural_analysis,
     OBJECT_OT_apply_deformed_mesh
@@ -31,6 +31,7 @@ from .operators import (
 classes = (
     FAEExtensionProperties,
     FAEExtensionPanel,
+    OBJECT_OT_open_full_dialog,
     OBJECT_OT_generate_foundation_3d,
     OBJECT_OT_run_structural_analysis,
     OBJECT_OT_apply_deformed_mesh

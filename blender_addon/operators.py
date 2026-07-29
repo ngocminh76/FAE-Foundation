@@ -5,6 +5,58 @@ from src.core.models import TowerFoundationProject, RaftSlabGeometry, RibBeamGeo
 from src.core.presets import create_sample_project
 from src.design_codes.tcvn import TCVNCodeChecker
 
+class OBJECT_OT_open_full_dialog(bpy.types.Operator):
+    bl_idname = "object.fae_open_full_dialog"
+    bl_label = "⚙️ BẢNG NHẬP THÔNG SỐ KĨ THUẬT ĐẦY ĐỦ (FAE FOUNDATION)"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def invoke(self, context, event):
+        return context.window_manager.invoke_props_dialog(self, width=450)
+
+    def draw(self, context):
+        layout = self.layout
+        props = context.scene.fae_props
+
+        layout.label(text="📐 1. THÔNG SỐ HÌNH HỌC MÓNG BÈ 3D", icon='MESH_CUBE')
+        box1 = layout.box()
+        row = box1.row()
+        row.prop(props, "L_x")
+        row.prop(props, "L_y")
+        row = box1.row()
+        row.prop(props, "h_slab")
+        row.prop(props, "h_lean")
+
+        layout.separator()
+        layout.label(text="🧱 2. KHUNG DẦM SƯỜN NỔI 2 PHƯƠNG", icon='MOD_BEVEL')
+        box2 = layout.box()
+        row = box2.row()
+        row.prop(props, "b_beam")
+        row.prop(props, "h_beam")
+
+        layout.separator()
+        layout.label(text="🏛️ 3. KÍCH THƯỚC 4 CỔ CỘT ĐIỆN", icon='COLUMN')
+        box3 = layout.box()
+        row = box3.row()
+        row.prop(props, "spacing_x")
+        row.prop(props, "spacing_y")
+        row = box3.row()
+        row.prop(props, "b_col")
+        row.prop(props, "h_col")
+        box3.prop(props, "H_col")
+
+        layout.separator()
+        layout.label(text="🪨 4. ĐỊA CHẤT ĐẤT NỀN & THÔNG SỐ TIÊU CHUẨN", icon='PHYSICS')
+        box4 = layout.box()
+        box4.prop(props, "K_z")
+        box4.prop(props, "R_tc")
+        box4.prop(props, "selected_code")
+
+    def execute(self, context):
+        bpy.ops.object.fae_generate_3d()
+        self.report({'INFO'}, "✅ Đã cập nhật lại toàn bộ mô hình 3D móng bè trong Blender!")
+        return {'FINISHED'}
+
+
 class OBJECT_OT_generate_foundation_3d(bpy.types.Operator):
     bl_idname = "object.fae_generate_3d"
     bl_label = "Dựng Mô Hình Móng Bè 3D"
@@ -18,31 +70,26 @@ class OBJECT_OT_generate_foundation_3d(bpy.types.Operator):
         lcx, lcy = props.spacing_x, props.spacing_y
         b_col, h_col, H_col = props.b_col, props.h_col, props.H_col
 
-        # 1. Tạo hoặc tìm Collection "FAE_Foundation"
         coll_name = "FAE_Foundation"
         if coll_name in bpy.data.collections:
             coll = bpy.data.collections[coll_name]
-            # Xóa các đối tượng cũ
             for obj in coll.objects:
                 bpy.data.objects.remove(obj, do_unlink=True)
         else:
             coll = bpy.data.collections.new(coll_name)
             bpy.context.scene.collection.children.link(coll)
 
-        # 2. Dựng Bản Móng Bè 3D (Raft Slab Mesh)
         mesh_slab = bpy.data.meshes.new("Raft_Slab_Mesh")
         obj_slab = bpy.data.objects.new("Raft_Slab", mesh_slab)
         coll.objects.link(obj_slab)
 
         bm = bmesh.new()
         bmesh.ops.create_cube(bm, size=1.0)
-        # Scale theo Lx, Ly, h_slab
         bmesh.ops.scale(bm, vec=(Lx, Ly, h_slab), verts=bm.verts)
         bmesh.ops.translate(bm, vec=(0, 0, h_slab / 2.0))
         bm.to_mesh(mesh_slab)
         bm.free()
 
-        # 3. Dựng 4 Dầm Sườn Nổi Chạy Suốt 2 Phương
         x1, x2 = -lcx / 2.0, lcx / 2.0
         y1, y2 = -lcy / 2.0, lcy / 2.0
 
@@ -64,7 +111,6 @@ class OBJECT_OT_generate_foundation_3d(bpy.types.Operator):
             bm.to_mesh(m_beam)
             bm.free()
 
-        # 4. Dựng 4 Cổ Cột Điện Cao
         col_positions = [
             ("StubColumn_Leg1", (x1, y1, h_beam + H_col/2.0)),
             ("StubColumn_Leg2", (x2, y1, h_beam + H_col/2.0)),
