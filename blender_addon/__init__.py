@@ -11,11 +11,14 @@ bl_info = {
 import sys
 import os
 
-# Thêm đường dẫn src vào Python path của Blender
+# Thêm tự động cả đường dẫn addon và đường dẫn dự án d:\03.MINH\MyApp vào sys.path
 addon_dir = os.path.dirname(os.path.abspath(__file__))
-parent_dir = os.path.abspath(os.path.join(addon_dir, ".."))
-if parent_dir not in sys.path:
-    sys.path.append(parent_dir)
+if addon_dir not in sys.path:
+    sys.path.insert(0, addon_dir)
+
+workspace_dir = r"d:\03.MINH\MyApp"
+if os.path.exists(workspace_dir) and workspace_dir not in sys.path:
+    sys.path.insert(0, workspace_dir)
 
 import bpy
 from .ui_panel import FAEExtensionPanel, FAEExtensionProperties
