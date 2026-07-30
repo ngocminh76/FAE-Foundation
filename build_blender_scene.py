@@ -1,15 +1,15 @@
 """
-Standalone Blender Script to Automatedly Build, Materialize, Light & Render the FAE Foundation 3D Model
-and Save project to FAE_Foundation_3D_Model.blend
+Complete Automated One-Click Blender 5.2 Scene Builder
+Generates 3D Ribbed Raft Foundation, PBR Materials, Soil Stress Heatmap Surface,
+3D Load Arrow Vectors, Sun Lighting, Camera, and Saves to FAE_Foundation_3D_Model.blend
 """
 
 import bpy
-import bmesh
 import math
+import numpy as np
 import sys
 import os
 
-# Set up project path
 workspace_dir = r"d:\03.MINH\MyApp"
 if workspace_dir not in sys.path:
     sys.path.insert(0, workspace_dir)
@@ -17,42 +17,47 @@ if workspace_dir not in sys.path:
 from src.core.presets import create_sample_project
 from src.design_codes.tcvn import TCVNCodeChecker
 
-def clean_scene():
-    bpy.ops.wm.read_factory_settings(use_empty=True)
+def clean_all():
+    """Xóa sạch 100% tất cả các đối tượng, mesh, vật liệu trong Blender scene"""
+    bpy.ops.object.select_all(action='SELECT')
+    bpy.ops.object.delete(use_global=False)
+    
+    for block in bpy.data.meshes:
+        bpy.data.meshes.remove(block)
+    for block in bpy.data.materials:
+        bpy.data.materials.remove(block)
+    for block in bpy.data.collections:
+        if block.name != "Scene Collection":
+            bpy.data.collections.remove(block)
 
-def create_concrete_material():
-    mat = bpy.data.materials.new(name="PBR_Concrete")
+def create_pbr_material(name, color_rgba, metallic=0.0, roughness=0.5):
+    mat = bpy.data.materials.new(name=name)
     mat.use_nodes = True
-    nodes = mat.node_tree.nodes
-    bsdf = nodes.get("Principled BSDF")
+    bsdf = mat.node_tree.nodes.get("Principled BSDF")
     if bsdf:
-        bsdf.inputs['Base Color'].default_value = (0.7, 0.7, 0.72, 1.0) # Concrete light grey
-        bsdf.inputs['Roughness'].default_value = 0.65
+        bsdf.inputs['Base Color'].default_value = color_rgba
+        if 'Metallic' in bsdf.inputs:
+            bsdf.inputs['Metallic'].default_value = metallic
+        if 'Roughness' in bsdf.inputs:
+            bsdf.inputs['Roughness'].default_value = roughness
     return mat
 
-def create_steel_material():
-    mat = bpy.data.materials.new(name="PBR_Steel_Gold")
-    mat.use_nodes = True
-    nodes = mat.node_tree.nodes
-    bsdf = nodes.get("Principled BSDF")
-    if bsdf:
-        bsdf.inputs['Base Color'].default_value = (0.9, 0.75, 0.2, 1.0) # Metallic Gold/Steel
-        bsdf.inputs['Metallic'].default_value = 0.9
-        bsdf.inputs['Roughness'].default_value = 0.3
-    return mat
+def create_box(name, location, dimensions, material, collection):
+    bpy.ops.mesh.primitive_cube_add(size=1.0, location=location)
+    obj = bpy.context.active_object
+    obj.name = name
+    obj.scale = dimensions
+    bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
+    if material:
+        obj.data.materials.append(material)
+    if collection and obj.name not in collection.objects:
+        collection.objects.link(obj)
+        if obj.name in bpy.context.scene.collection.objects:
+            bpy.context.scene.collection.objects.unlink(obj)
+    return obj
 
-def create_heatmap_material():
-    mat = bpy.data.materials.new(name="Soil_Heatmap_Mat")
-    mat.use_nodes = True
-    nodes = mat.node_tree.nodes
-    bsdf = nodes.get("Principled BSDF")
-    if bsdf:
-        bsdf.inputs['Base Color'].default_value = (0.9, 0.2, 0.1, 1.0) # Stress Heatmap Red
-        bsdf.inputs['Roughness'].default_value = 0.4
-    return mat
-
-def build_foundation():
-    clean_scene()
+def build_full_scene():
+    clean_all()
     project = create_sample_project()
     
     Lx, Ly = project.slab.L_x, project.slab.L_y
@@ -65,93 +70,111 @@ def build_foundation():
     x1, x2 = -lcx/2.0, lcx/2.0
     y1, y2 = -lcy/2.0, lcy/2.0
 
-    mat_concrete = create_concrete_material()
-    mat_steel = create_steel_material()
-    mat_heatmap = create_heatmap_material()
+    # Vật liệu PBR
+    mat_lean = create_pbr_material("Mat_Lean_Concrete", (0.2, 0.2, 0.22, 1.0), roughness=0.9)
+    mat_slab = create_pbr_material("Mat_Raft_Slab", (0.65, 0.65, 0.68, 1.0), roughness=0.6)
+    mat_beam = create_pbr_material("Mat_Rib_Beam", (0.45, 0.45, 0.48, 1.0), roughness=0.5)
+    mat_col = create_pbr_material("Mat_Stub_Column", (0.78, 0.78, 0.8, 1.0), roughness=0.4)
+    mat_bolt = create_pbr_material("Mat_Anchor_Bolt", (0.95, 0.75, 0.15, 1.0), metallic=0.9, roughness=0.2)
+    mat_uplift_arrow = create_pbr_material("Mat_Uplift_Red", (0.95, 0.15, 0.15, 1.0), roughness=0.3)
+    mat_comp_arrow = create_pbr_material("Mat_Comp_Blue", (0.15, 0.55, 0.95, 1.0), roughness=0.3)
 
     coll = bpy.data.collections.new("FAE_Foundation_3D")
     bpy.context.scene.collection.children.link(coll)
 
-    # 1. Bê tông lót
+    # 1. Bê tông lót (Lean Concrete)
     offset_lean = 0.15
-    bpy.ops.mesh.primitive_cube_add(size=1.0, location=(0, 0, -h_lean/2.0))
-    obj_lean = bpy.context.active_object
-    obj_lean.name = "Lean_Concrete_Blinding"
-    obj_lean.scale = (Lx + 2*offset_lean, Ly + 2*offset_lean, h_lean)
-    obj_lean.data.materials.append(mat_concrete)
+    create_box("Lean_Concrete_Blinding", (0, 0, -h_lean/2.0),
+               (Lx + 2*offset_lean, Ly + 2*offset_lean, h_lean), mat_lean, coll)
 
-    # 2. Bản móng bè
-    bpy.ops.mesh.primitive_cube_add(size=1.0, location=(0, 0, h_slab/2.0))
-    obj_slab = bpy.context.active_object
-    obj_slab.name = "Raft_Slab"
-    obj_slab.scale = (Lx, Ly, h_slab)
-    obj_slab.data.materials.append(mat_concrete)
+    # 2. Bản móng bè (Raft Slab)
+    create_box("Raft_Slab", (0, 0, h_slab/2.0), (Lx, Ly, h_slab), mat_slab, coll)
 
-    # 3. Mặt Heatmap ứng suất đất phủ trên bản bè
-    bpy.ops.mesh.primitive_plane_add(size=1.0, location=(0, 0, h_slab + 0.005))
-    obj_heat = bpy.context.active_object
-    obj_heat.name = "Soil_Stress_Heatmap_Surface"
-    obj_heat.scale = (Lx, Ly, 1.0)
-    obj_heat.data.materials.append(mat_heatmap)
+    # 3. 4 Dầm sườn nổi 2 phương (Full Edge-to-Edge Rib Beams)
+    h_beam_step = h_beam - h_slab
+    z_beam_center = h_slab + h_beam_step / 2.0
 
-    # 4. 4 Dầm sườn nổi chạy suốt
-    beam_configs = [
-        ("RibBeam_X1", (0, y1, h_slab + (h_beam - h_slab)/2.0), (Lx, b_beam, h_beam - h_slab)),
-        ("RibBeam_X2", (0, y2, h_slab + (h_beam - h_slab)/2.0), (Lx, b_beam, h_beam - h_slab)),
-        ("RibBeam_Y1", (x1, 0, h_slab + (h_beam - h_slab)/2.0), (b_beam, Ly, h_beam - h_slab)),
-        ("RibBeam_Y2", (x2, 0, h_slab + (h_beam - h_slab)/2.0), (b_beam, Ly, h_beam - h_slab)),
-    ]
+    create_box("RibBeam_X1", (0, y1, z_beam_center), (Lx, b_beam, h_beam_step), mat_beam, coll)
+    create_box("RibBeam_X2", (0, y2, z_beam_center), (Lx, b_beam, h_beam_step), mat_beam, coll)
+    create_box("RibBeam_Y1", (x1, 0, z_beam_center), (b_beam, Ly, h_beam_step), mat_beam, coll)
+    create_box("RibBeam_Y2", (x2, 0, z_beam_center), (b_beam, Ly, h_beam_step), mat_beam, coll)
 
-    for name, pos, size in beam_configs:
-        bpy.ops.mesh.primitive_cube_add(size=1.0, location=pos)
-        o_beam = bpy.context.active_object
-        o_beam.name = name
-        o_beam.scale = size
-        o_beam.data.materials.append(mat_concrete)
-
-    # 5. 4 Cổ cột cao + Bu lông neo
+    # 4. 4 Cổ cột cao (Stub Columns) + 16 Bu lông neo M36 + Mũi tên Lực 3D
+    h_col_step = H_col - h_beam_step
+    z_col_center = h_beam + h_col_step / 2.0
     col_positions = [
-        ("StubColumn_Leg1", (x1, y1, h_beam + (H_col - (h_beam - h_slab))/2.0)),
-        ("StubColumn_Leg2", (x2, y1, h_beam + (H_col - (h_beam - h_slab))/2.0)),
-        ("StubColumn_Leg3", (x1, y2, h_beam + (H_col - (h_beam - h_slab))/2.0)),
-        ("StubColumn_Leg4", (x2, y2, h_beam + (H_col - (h_beam - h_slab))/2.0)),
+        ("StubColumn_Leg1", (x1, y1, z_col_center), project.loads[0]),
+        ("StubColumn_Leg2", (x2, y1, z_col_center), project.loads[1]),
+        ("StubColumn_Leg3", (x1, y2, z_col_center), project.loads[2]),
+        ("StubColumn_Leg4", (x2, y2, z_col_center), project.loads[3]),
     ]
 
-    for name, pos in col_positions:
-        bpy.ops.mesh.primitive_cube_add(size=1.0, location=pos)
-        o_col = bpy.context.active_object
-        o_col.name = name
-        o_col.scale = (b_col, h_col, H_col - (h_beam - h_slab))
-        o_col.data.materials.append(mat_concrete)
+    for name, pos, load in col_positions:
+        # Khối cổ cột
+        create_box(name, pos, (b_col, h_col, h_col_step), mat_col, coll)
 
-        # Cụm 4 Bu lông neo M36
+        # 4 Bu-lông neo M36
         z_top = h_slab + H_col
         bolt_offsets = [(-0.15, -0.15), (0.15, -0.15), (-0.15, 0.15), (0.15, 0.15)]
         for b_idx, (bx, by) in enumerate(bolt_offsets):
-            bpy.ops.mesh.primitive_cylinder_add(radius=0.02, depth=0.2, location=(pos[0]+bx, pos[1]+by, z_top + 0.1))
+            bpy.ops.mesh.primitive_cylinder_add(radius=0.03, depth=0.25, location=(pos[0]+bx, pos[1]+by, z_top + 0.125))
             o_bolt = bpy.context.active_object
             o_bolt.name = f"AnchorBolt_{name}_{b_idx+1}"
-            o_bolt.data.materials.append(mat_steel)
+            o_bolt.data.materials.append(mat_bolt)
+            coll.objects.link(o_bolt)
+            if o_bolt.name in bpy.context.scene.collection.objects:
+                bpy.context.scene.collection.objects.unlink(o_bolt)
 
-    # 6. Thiết lập Camera & Sun Light
-    bpy.ops.object.light_add(type='SUN', location=(10, -10, 15))
+        # Mũi tên Lực 3D (Arrow for Leg Load)
+        is_uplift = load.N < 0
+        mat_arrow = mat_uplift_arrow if is_uplift else mat_comp_arrow
+        arrow_z = z_top + 0.8 if is_uplift else z_top + 1.8
+        arrow_rot = 0 if is_uplift else math.pi
+
+        bpy.ops.mesh.primitive_cone_add(radius1=0.15, depth=0.4, location=(pos[0], pos[1], arrow_z), rotation=(arrow_rot, 0, 0))
+        o_arrow = bpy.context.active_object
+        o_arrow.name = f"Force_Arrow_{name}"
+        o_arrow.data.materials.append(mat_arrow)
+        coll.objects.link(o_arrow)
+        if o_arrow.name in bpy.context.scene.collection.objects:
+            bpy.context.scene.collection.objects.unlink(o_arrow)
+
+    # 5. Đám mây ứng suất đất nền (Soil Stress Heatmap Surface)
+    bpy.ops.mesh.primitive_grid_add(x_subdivisions=20, y_subdivisions=20, size=1.0, location=(0, 0, h_slab + 0.01))
+    obj_heat = bpy.context.active_object
+    obj_heat.name = "Soil_Stress_Heatmap_Surface"
+    obj_heat.scale = (Lx, Ly, 1.0)
+    bpy.ops.object.transform_apply(scale=True)
+    
+    mat_heat = create_pbr_material("Mat_Soil_Heatmap", (0.85, 0.25, 0.15, 1.0), roughness=0.3)
+    obj_heat.data.materials.append(mat_heat)
+    coll.objects.link(obj_heat)
+    if obj_heat.name in bpy.context.scene.collection.objects:
+        bpy.context.scene.collection.objects.unlink(obj_heat)
+
+    # 6. Thiết lập Camera & Chiếu Sáng Sun Light
+    bpy.ops.object.light_add(type='SUN', location=(10, -10, 15), rotation=(math.radians(35), math.radians(15), math.radians(45)))
     sun = bpy.context.active_object
-    sun.data.energy = 4.5
+    sun.data.energy = 5.0
 
-    bpy.ops.object.camera_add(location=(12, -14, 10), rotation=(math.radians(55), 0, math.radians(40)))
+    bpy.ops.object.camera_add(location=(13, -15, 11), rotation=(math.radians(56), 0, math.radians(42)))
     cam = bpy.context.active_object
     bpy.context.scene.camera = cam
 
-    # 7. Render hình ảnh 3D và Lưu file .blend
+    # Cập nhật ViewLayer
+    bpy.context.view_layer.update()
+
+    # Save .blend file
     blend_filepath = os.path.join(workspace_dir, "FAE_Foundation_3D_Model.blend")
     bpy.ops.wm.save_as_mainfile(filepath=blend_filepath)
-    print(f"✅ Saved Blender project to {blend_filepath}")
+    print(f"✅ Successfully saved complete Blender project to {blend_filepath}")
 
+    # Render PNG Image Artifact
     render_path = r"C:\Users\qnbk1\.gemini\antigravity\brain\532fcab8-feeb-4929-b8e3-e0fffa788c40\blender_foundation_render.png"
     bpy.context.scene.render.filepath = render_path
     bpy.context.scene.render.image_settings.file_format = 'PNG'
     bpy.ops.render.render(write_still=True)
-    print(f"📸 Rendered image to {render_path}")
+    print(f"📸 Successfully rendered 3D scene to {render_path}")
 
 if __name__ == "__main__":
-    build_foundation()
+    build_full_scene()
