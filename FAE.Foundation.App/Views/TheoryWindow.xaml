@@ -1,0 +1,43 @@
+<Window x:Class="FAE.Foundation.App.Views.TheoryWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Lý thuyết tính toán móng (Theory)" Height="600" Width="800" WindowStartupLocation="CenterScreen">
+    <Grid Background="#F5F6FA" Margin="10">
+        <ScrollViewer>
+            <StackPanel>
+                <TextBlock Text="CƠ SỞ TÍNH TOÁN MÓNG BÈ SƯỜN" FontSize="20" FontWeight="Bold" Foreground="#2C3E50" Margin="0,0,0,15"/>
+                
+                <TextBlock Text="1. Áp lực đất và sức chịu tải (Soil Bearing Capacity)" FontSize="16" FontWeight="Bold" Foreground="#2980B9" Margin="0,10,0,5"/>
+                <TextBlock TextWrapping="Wrap" Margin="0,0,0,10" LineHeight="20">
+Sức chịu tải của nền đất được tính toán theo TCVN 9362:2012 dựa trên công thức cơ bản:
+R = (m1 * m2 / k_tc) * (A * b * γ + B * D_f * γ_df + D * c)
+Trong đó:
+- m1, m2: Hệ số điều kiện làm việc
+- k_tc: Hệ số tin cậy
+- A, B, D: Các hệ số phụ thuộc góc ma sát trong φ
+- b: Bề rộng móng
+- D_f: Chiều sâu chôn móng
+                </TextBlock>
+
+                <TextBlock Text="2. Nội lực trong dầm sườn (Internal Forces in Ribs)" FontSize="16" FontWeight="Bold" Foreground="#2980B9" Margin="0,10,0,5"/>
+                <TextBlock TextWrapping="Wrap" Margin="0,0,0,10" LineHeight="20">
+Móng được mô hình như một hệ dầm giao thoa đặt trên nền đàn hồi (Mô hình Winkler).
+Sự phân bố áp lực đất nền p(x,y) phụ thuộc vào độ cứng của dầm sườn và bản móng.
+Các điểm góc (chân cột) chịu tác dụng của các tải trọng N, Mx, My, Qx, Qy sinh ra:
+- Moment uốn trong dầm (Bending Moment)
+- Lực cắt (Shear Force)
+                </TextBlock>
+
+                <TextBlock Text="3. Tính toán cốt thép (Reinforcement Design)" FontSize="16" FontWeight="Bold" Foreground="#2980B9" Margin="0,10,0,5"/>
+                <TextBlock TextWrapping="Wrap" Margin="0,0,0,10" LineHeight="20">
+Tính toán theo TCVN 5574:2018 (Tiêu chuẩn thiết kế kết cấu bê tông cốt thép).
+Diện tích cốt thép As được xác định thông qua:
+α_m = M / (Rb * b * h0^2)
+ξ = 1 - √(1 - 2*α_m)
+As = (ξ * b * h0 * Rb) / Rs
+(Áp dụng tương tự cho kiểm tra chọc thủng bản móng và dầm sườn).
+                </TextBlock>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Window>
