@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using System;
+using System.Windows.Controls;
 
 namespace FAE.Foundation.App
 {
@@ -30,13 +31,91 @@ namespace FAE.Foundation.App
             };
 
             this.DataContext = this;
-            
+        }
+
+
+
+        private bool _isDragging3D = false;
+        private Point _lastMousePos;
+
+        private void Viewport3D_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            _isDragging3D = true;
+            _lastMousePos = e.GetPosition(this);
+            ((UIElement)sender).CaptureMouse();
+        }
+
+        private void Viewport3D_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            _isDragging3D = false;
+            ((UIElement)sender).ReleaseMouseCapture();
+        }
+
+        private void Viewport3D_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            if (_isDragging3D && RotX != null && RotY != null)
+            {
+                Point currentPos = e.GetPosition(this);
+                double deltaX = currentPos.X - _lastMousePos.X;
+                double deltaY = currentPos.Y - _lastMousePos.Y;
+                
+                RotY.Angle += deltaX * 0.5;
+                RotX.Angle += deltaY * 0.5;
+
+                _lastMousePos = currentPos;
+            }
+        }
+
+        private void Input_Changed(object sender, RoutedEventArgs e)
+        {
+            if (DrawingCanvas == null) return;
+            RedrawCanvas();
+        }
+
+        private void DrawingCanvas_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            RedrawCanvas();
+        }
+
+        private void RedrawCanvas()
+        {
             try
             {
-                // Try to load the actual generated images for maximum fidelity
-                string basePath = @"C:\Users\qnbk1\.gemini\antigravity\brain\532fcab8-feeb-4929-b8e3-e0fffa788c40";
-                Canvas2DImage.Source = new BitmapImage(new Uri($@"{basePath}\final_hybrid_foundation.png", UriKind.Absolute));
-                Canvas3DImage.Source = new BitmapImage(new Uri($@"{basePath}\force_moment_diagram.png", UriKind.Absolute));
+                double L_span_X = double.TryParse(txt_khoang_cach_cot?.Text, out var v4) ? v4 : 5.0;
+                double L_cons_L = double.TryParse(txt_L_cons_L?.Text, out var cL) ? cL : 1.5;
+                double L_cons_R = double.TryParse(txt_L_cons_R?.Text, out var cR) ? cR : 1.5;
+                
+                double L_mong = L_span_X + L_cons_L + L_cons_R;
+                if (lbl_L_mong != null) lbl_L_mong.Text = L_mong.ToString("F2");
+
+                double L_span_Y = double.TryParse(txt_L_span_Y?.Text, out var sy) ? sy : 5.0;
+                double L_cons_T = double.TryParse(txt_L_cons_T?.Text, out var ct) ? ct : 1.5;
+                double L_cons_B = double.TryParse(txt_L_cons_B?.Text, out var cb) ? cb : 1.5;
+                
+                double B_mong = L_span_Y + L_cons_T + L_cons_B;
+                if (lbl_B_mong != null) lbl_B_mong.Text = B_mong.ToString("F2");
+
+                double h_ban = double.TryParse(txt_h_ban?.Text, out var v1) ? v1 : 0.4;
+                double b_dam = double.TryParse(txt_b_dam?.Text, out var vbd) ? vbd : 0.4;
+                double h_dam = double.TryParse(txt_h_dam?.Text, out var v2) ? v2 : 0.4;
+                double b_cot = double.TryParse(txt_b_cot?.Text, out var v3) ? v3 : 0.6;
+                double d_f = double.TryParse(txt_D_f?.Text, out var v5) ? v5 : 3.5;
+                
+                double h_doi_trong = chk_mound?.IsChecked == true && double.TryParse(txt_h_doi_trong?.Text, out var v6) ? v6 : 0;
+                double h_cat = chk_cushion?.IsChecked == true && double.TryParse(txt_h_cat?.Text, out var v7) ? v7 : 0;
+                double y_gwt = chk_gwt?.IsChecked == true && double.TryParse(txt_y_gwt?.Text, out var v8) ? v8 : -10;
+
+                if (DrawingCanvas != null)
+                    FoundationDrawer.DrawFoundation(DrawingCanvas, L_span_X, L_cons_L, L_cons_R, B_mong, h_ban, b_dam, h_dam, b_cot, d_f, h_doi_trong, h_cat, y_gwt);
+                
+                if (SectionYCanvas != null)
+                    FoundationDrawer.DrawFoundation(SectionYCanvas, L_span_Y, L_cons_T, L_cons_B, L_mong, h_ban, b_dam, h_dam, b_cot, d_f, h_doi_trong, h_cat, y_gwt);
+
+                if (PlanCanvas != null)
+                    PlanViewDrawer.DrawPlan(PlanCanvas, L_span_X, L_cons_L, L_cons_R, L_span_Y, L_cons_T, L_cons_B, b_dam, b_cot);
+
+                if (Model3DGroup != null)
+                    Viewport3DDrawer.Draw3D(Model3DGroup, L_span_X, L_cons_L, L_cons_R, L_span_Y, L_cons_T, L_cons_B, h_ban, b_dam, h_dam, b_cot, d_f);
             }
             catch { }
         }

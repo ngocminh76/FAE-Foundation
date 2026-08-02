@@ -81,6 +81,15 @@
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
@@ -88,25 +97,57 @@
                                 <ColumnDefinition Width="30"/>
                             </Grid.ColumnDefinitions>
                             
-                            <TextBlock Grid.Row="0" Grid.Column="0" Text="Chiều dày bản móng (h_bản):" VerticalAlignment="Center" Margin="0,0,0,8"/>
-                            <TextBox Grid.Row="0" Grid.Column="1" Text="0.4" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="Nhịp cột phương X (L_span_X):" VerticalAlignment="Center" Margin="0,0,0,8" FontWeight="Bold"/>
+                            <TextBox x:Name="txt_khoang_cach_cot" Grid.Row="0" Grid.Column="1" Text="5.0" VerticalAlignment="Center" Margin="0,0,0,8" TextChanged="Input_Changed"/>
                             <TextBlock Grid.Row="0" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
-                            
-                            <TextBlock Grid.Row="1" Grid.Column="0" Text="Chiều cao dầm sườn (h_dầm):" VerticalAlignment="Center" Margin="0,0,0,8"/>
-                            <TextBox Grid.Row="1" Grid.Column="1" Text="0.4" VerticalAlignment="Center" Margin="0,0,0,8"/>
+
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="Độ vươn Console Trái (L_cons_L):" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBox x:Name="txt_L_cons_L" Grid.Row="1" Grid.Column="1" Text="1.5" VerticalAlignment="Center" Margin="0,0,0,8" TextChanged="Input_Changed"/>
                             <TextBlock Grid.Row="1" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
-                            
-                            <TextBlock Grid.Row="2" Grid.Column="0" Text="Bề rộng cổ cột (b_cột):" VerticalAlignment="Center" Margin="0,0,0,8"/>
-                            <TextBox Grid.Row="2" Grid.Column="1" Text="0.6" VerticalAlignment="Center" Margin="0,0,0,8"/>
+
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="Độ vươn Console Phải (L_cons_R):" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBox x:Name="txt_L_cons_R" Grid.Row="2" Grid.Column="1" Text="1.5" VerticalAlignment="Center" Margin="0,0,0,8" TextChanged="Input_Changed"/>
                             <TextBlock Grid.Row="2" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
-                            
-                            <TextBlock Grid.Row="3" Grid.Column="0" Text="Khoảng cách 2 tâm cột:" VerticalAlignment="Center" Margin="0,0,0,8"/>
-                            <TextBox Grid.Row="3" Grid.Column="1" Text="5.0" VerticalAlignment="Center" Margin="0,0,0,8"/>
-                            <TextBlock Grid.Row="3" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
-                            
-                            <TextBlock Grid.Row="4" Grid.Column="0" Text="Chiều sâu chôn móng (D_f):" VerticalAlignment="Center" Margin="0,0,0,8"/>
-                            <TextBox Grid.Row="4" Grid.Column="1" Text="3.5" VerticalAlignment="Center" Margin="0,0,0,8"/>
+
+                            <TextBlock Grid.Row="3" Grid.Column="0" Text="=> Chiều dài móng (L_móng):" VerticalAlignment="Center" Margin="0,0,0,8" Foreground="DarkRed"/>
+                            <TextBlock x:Name="lbl_L_mong" Grid.Row="3" Grid.Column="1" Text="8.0" VerticalAlignment="Center" Margin="0,0,0,8" FontWeight="Bold" Foreground="DarkRed"/>
+                            <TextBlock Grid.Row="3" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8" Foreground="DarkRed"/>
+
+                            <TextBlock Grid.Row="4" Grid.Column="0" Text="Nhịp cột phương Y (L_span_Y):" VerticalAlignment="Center" Margin="0,0,0,8" FontWeight="Bold"/>
+                            <TextBox x:Name="txt_L_span_Y" Grid.Row="4" Grid.Column="1" Text="5.0" VerticalAlignment="Center" Margin="0,0,0,8" TextChanged="Input_Changed"/>
                             <TextBlock Grid.Row="4" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
+
+                            <TextBlock Grid.Row="5" Grid.Column="0" Text="Console Trên (L_cons_Top):" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBox x:Name="txt_L_cons_T" Grid.Row="5" Grid.Column="1" Text="1.5" VerticalAlignment="Center" Margin="0,0,0,8" TextChanged="Input_Changed"/>
+                            <TextBlock Grid.Row="5" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
+
+                            <TextBlock Grid.Row="6" Grid.Column="0" Text="Console Dưới (L_cons_Bot):" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBox x:Name="txt_L_cons_B" Grid.Row="6" Grid.Column="1" Text="1.5" VerticalAlignment="Center" Margin="0,0,0,8" TextChanged="Input_Changed"/>
+                            <TextBlock Grid.Row="6" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
+
+                            <TextBlock Grid.Row="7" Grid.Column="0" Text="=> Chiều rộng móng (B_móng):" VerticalAlignment="Center" Margin="0,0,0,8" Foreground="DarkRed"/>
+                            <TextBlock x:Name="lbl_B_mong" Grid.Row="7" Grid.Column="1" Text="8.0" VerticalAlignment="Center" Margin="0,0,0,8" FontWeight="Bold" Foreground="DarkRed"/>
+                            <TextBlock Grid.Row="7" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8" Foreground="DarkRed"/>
+                            
+                            <TextBlock Grid.Row="8" Grid.Column="0" Text="Chiều dày bản móng (h_bản):" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBox x:Name="txt_h_ban" Grid.Row="8" Grid.Column="1" Text="0.4" VerticalAlignment="Center" Margin="0,0,0,8" TextChanged="Input_Changed"/>
+                            <TextBlock Grid.Row="8" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
+
+                            <TextBlock Grid.Row="9" Grid.Column="0" Text="Bề rộng dầm sườn (b_dầm):" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBox x:Name="txt_b_dam" Grid.Row="9" Grid.Column="1" Text="0.4" VerticalAlignment="Center" Margin="0,0,0,8" TextChanged="Input_Changed"/>
+                            <TextBlock Grid.Row="9" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
+                            
+                            <TextBlock Grid.Row="10" Grid.Column="0" Text="Chiều cao dầm sườn (h_dầm):" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBox x:Name="txt_h_dam" Grid.Row="10" Grid.Column="1" Text="0.4" VerticalAlignment="Center" Margin="0,0,0,8" TextChanged="Input_Changed"/>
+                            <TextBlock Grid.Row="10" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
+                            
+                            <TextBlock Grid.Row="11" Grid.Column="0" Text="Kích thước cạnh cổ cột (b_cột):" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBox x:Name="txt_b_cot" Grid.Row="11" Grid.Column="1" Text="0.6" VerticalAlignment="Center" Margin="0,0,0,8" TextChanged="Input_Changed"/>
+                            <TextBlock Grid.Row="11" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
+                            
+                            <TextBlock Grid.Row="12" Grid.Column="0" Text="Chiều sâu chôn móng (D_f):" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBox x:Name="txt_D_f" Grid.Row="12" Grid.Column="1" Text="3.5" VerticalAlignment="Center" Margin="0,0,0,8" TextChanged="Input_Changed"/>
+                            <TextBlock Grid.Row="12" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
                         </Grid>
                     </Expander>
                     
@@ -114,30 +155,30 @@
                     <Expander Header="4. MÔI TRƯỜNG &amp; LỚP ĐỆM" IsExpanded="True" Margin="0,0,0,10">
                         <StackPanel Margin="5,10,0,0">
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                <CheckBox Content="Có đệm cát thay đất" IsChecked="True" VerticalAlignment="Center" Width="180"/>
+                                <CheckBox x:Name="chk_cushion" Content="Có đệm cát thay đất" IsChecked="True" VerticalAlignment="Center" Width="180" Click="Input_Changed"/>
                                 <TextBlock Text="Dày:" VerticalAlignment="Center" Margin="10,0,5,0"/>
-                                <TextBox Text="0.5" Width="50" VerticalAlignment="Center"/>
+                                <TextBox x:Name="txt_h_cat" Text="0.5" Width="50" VerticalAlignment="Center" TextChanged="Input_Changed"/>
                                 <TextBlock Text="m" VerticalAlignment="Center" Margin="5,0,0,0"/>
                             </StackPanel>
                             
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                <CheckBox Content="Có ụ đất đối trọng" IsChecked="True" VerticalAlignment="Center" Width="180"/>
+                                <CheckBox x:Name="chk_mound" Content="Có ụ đất đối trọng" IsChecked="True" VerticalAlignment="Center" Width="180" Click="Input_Changed"/>
                                 <TextBlock Text="Cao:" VerticalAlignment="Center" Margin="10,0,5,0"/>
-                                <TextBox Text="1.5" Width="50" VerticalAlignment="Center"/>
+                                <TextBox x:Name="txt_h_doi_trong" Text="1.5" Width="50" VerticalAlignment="Center" TextChanged="Input_Changed"/>
                                 <TextBlock Text="m" VerticalAlignment="Center" Margin="5,0,0,0"/>
                             </StackPanel>
                             
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                <CheckBox Content="Có mực nước ngầm" IsChecked="True" VerticalAlignment="Center" Width="180"/>
+                                <CheckBox x:Name="chk_gwt" Content="Có mực nước ngầm" IsChecked="True" VerticalAlignment="Center" Width="180" Click="Input_Changed"/>
                                 <TextBlock Text="Cao độ:" VerticalAlignment="Center" Margin="10,0,5,0"/>
-                                <TextBox Text="-1.2" Width="50" VerticalAlignment="Center"/>
+                                <TextBox x:Name="txt_y_gwt" Text="-1.2" Width="50" VerticalAlignment="Center" TextChanged="Input_Changed"/>
                                 <TextBlock Text="m" VerticalAlignment="Center" Margin="5,0,0,0"/>
                             </StackPanel>
                         </StackPanel>
                     </Expander>
                     
                     <!-- BUTTONS -->
-                    <Button Content="THIẾT KẾ VÀ KIỂM TOÁN" Background="#2980B9" Foreground="White" Height="40" FontSize="14" FontWeight="Bold" Margin="0,20,0,0"/>
+                    <Button x:Name="btnDesign" Content="THIẾT KẾ VÀ KIỂM TOÁN" Background="#2980B9" Foreground="White" Height="40" FontSize="14" FontWeight="Bold" Margin="0,20,0,0"/>
                 </StackPanel>
             </ScrollViewer>
         </Border>
@@ -145,29 +186,76 @@
         <!-- SPLITTER -->
         <GridSplitter Grid.Column="1" Width="4" HorizontalAlignment="Stretch" Background="#BDC3C7"/>
         
-        <!-- RIGHT PANEL: VIEWPORTS -->
-        <Grid Grid.Column="2" Margin="10">
+        <!-- RIGHT PANEL: VIEWPORTS (2x2 GRID) -->
+        <Grid Grid.Column="2" Margin="10" Background="#DFE6E9">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="4"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="4"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
             
-            <!-- TOP RIGHT: 2D CANVAS -->
-            <Border Grid.Row="0" Background="White" CornerRadius="5" Padding="5">
+            <!-- TOP-LEFT: PLAN VIEW -->
+            <Border Grid.Row="0" Grid.Column="0" Background="White" CornerRadius="5" Padding="5" Margin="2">
                 <Grid>
-                    <Image x:Name="Canvas2DImage" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    <TextBlock Text="MẶT CẮT KẾT HỢP ĐỊA TẦNG (2D CANVAS)" FontWeight="Bold" Foreground="#34495E" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5"/>
+                    <TextBlock Text="MẶT BẰNG MÓNG (PLAN VIEW)" FontWeight="Bold" Foreground="#2C3E50" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5" Panel.ZIndex="1"/>
+                    <Canvas x:Name="PlanCanvas" ClipToBounds="True" Background="#F8FAFC" SizeChanged="DrawingCanvas_SizeChanged"/>
                 </Grid>
             </Border>
-            
-            <GridSplitter Grid.Row="1" Height="4" HorizontalAlignment="Stretch" Background="Transparent"/>
-            
-            <!-- BOTTOM RIGHT: 3D VIEWPORT -->
-            <Border Grid.Row="2" Background="White" CornerRadius="5" Padding="5">
+
+            <GridSplitter Grid.Row="0" Grid.Column="1" Grid.RowSpan="3" Width="4" HorizontalAlignment="Stretch" Background="Transparent"/>
+
+            <!-- TOP-RIGHT: 3D VIEWPORT -->
+            <Border Grid.Row="0" Grid.Column="2" Background="White" CornerRadius="5" Padding="5" Margin="2" MouseLeftButtonDown="Viewport3D_MouseLeftButtonDown" MouseLeftButtonUp="Viewport3D_MouseLeftButtonUp" MouseMove="Viewport3D_MouseMove" ClipToBounds="True">
                 <Grid>
-                    <Image x:Name="Canvas3DImage" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    <TextBlock Text="MÔ HÌNH KHÔNG GIAN (3D VIEWPORT)" FontWeight="Bold" Foreground="#34495E" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5"/>
+                    <TextBlock Text="MÔ HÌNH 3D (Kéo chuột để xoay)" FontWeight="Bold" Foreground="#2C3E50" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5" Panel.ZIndex="1"/>
+                    <Viewport3D x:Name="MainViewport3D">
+                        <Viewport3D.Camera>
+                            <PerspectiveCamera x:Name="Camera3D" Position="15,18,22" LookDirection="-15,-18,-22" UpDirection="0,1,0" FieldOfView="45"/>
+                        </Viewport3D.Camera>
+                        <ModelVisual3D>
+                            <ModelVisual3D.Content>
+                                <Model3DGroup x:Name="Model3DGroup">
+                                    <Model3DGroup.Transform>
+                                        <Transform3DGroup>
+                                            <RotateTransform3D>
+                                                <RotateTransform3D.Rotation>
+                                                    <AxisAngleRotation3D x:Name="RotX" Axis="1,0,0" Angle="0"/>
+                                                </RotateTransform3D.Rotation>
+                                            </RotateTransform3D>
+                                            <RotateTransform3D>
+                                                <RotateTransform3D.Rotation>
+                                                    <AxisAngleRotation3D x:Name="RotY" Axis="0,1,0" Angle="0"/>
+                                                </RotateTransform3D.Rotation>
+                                            </RotateTransform3D>
+                                        </Transform3DGroup>
+                                    </Model3DGroup.Transform>
+                                </Model3DGroup>
+                            </ModelVisual3D.Content>
+                        </ModelVisual3D>
+                    </Viewport3D>
+                </Grid>
+            </Border>
+
+            <GridSplitter Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Height="4" HorizontalAlignment="Stretch" Background="Transparent"/>
+
+            <!-- BOTTOM-LEFT: SECTION X -->
+            <Border Grid.Row="2" Grid.Column="0" Background="White" CornerRadius="5" Padding="5" Margin="2">
+                <Grid>
+                    <TextBlock Text="MẶT CẮT PHƯƠNG X (SECTION X)" FontWeight="Bold" Foreground="#2C3E50" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5" Panel.ZIndex="1"/>
+                    <Canvas x:Name="DrawingCanvas" ClipToBounds="True" Background="#F8FAFC" SizeChanged="DrawingCanvas_SizeChanged"/>
+                </Grid>
+            </Border>
+
+            <!-- BOTTOM-RIGHT: SECTION Y -->
+            <Border Grid.Row="2" Grid.Column="2" Background="White" CornerRadius="5" Padding="5" Margin="2">
+                <Grid>
+                    <TextBlock Text="MẶT CẮT PHƯƠNG Y (SECTION Y)" FontWeight="Bold" Foreground="#2C3E50" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5" Panel.ZIndex="1"/>
+                    <Canvas x:Name="SectionYCanvas" ClipToBounds="True" Background="#F8FAFC" SizeChanged="DrawingCanvas_SizeChanged"/>
                 </Grid>
             </Border>
         </Grid>
