@@ -64,6 +64,7 @@ namespace FAE.Foundation.App.Features.RibbedRaft
 
         private void DrawingCanvas_SizeChanged(object sender, SizeChangedEventArgs e)
         {
+            if (e.NewSize == e.PreviousSize || e.NewSize.Width == 0 || e.NewSize.Height == 0) return;
             RedrawCanvas();
         }
 

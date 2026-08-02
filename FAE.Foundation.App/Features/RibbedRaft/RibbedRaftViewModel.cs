@@ -9,7 +9,26 @@ namespace FAE.Foundation.App.Features.RibbedRaft
         public RibbedRaftModel Model
         {
             get => _model;
-            set => SetProperty(ref _model, value);
+            set
+            {
+                if (_model != null)
+                {
+                    _model.PropertyChanged -= Model_PropertyChanged;
+                }
+                if (SetProperty(ref _model, value))
+                {
+                    if (_model != null)
+                    {
+                        _model.PropertyChanged += Model_PropertyChanged;
+                    }
+                    RequestDraw();
+                }
+            }
+        }
+
+        private void Model_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            RequestDraw();
         }
 
         public event Action DrawRequested;
@@ -39,7 +58,7 @@ namespace FAE.Foundation.App.Features.RibbedRaft
             };
 
             // Subscribe to model property changes to trigger redraw
-            Model.PropertyChanged += (s, e) => RequestDraw();
+            Model.PropertyChanged += Model_PropertyChanged;
         }
 
         public void RequestDraw()

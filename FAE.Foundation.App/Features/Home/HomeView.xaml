@@ -70,7 +70,7 @@
                 
                 <!-- Card 1: Ribbed Raft -->
                 <Button Style="{StaticResource CardButtonStyle}" 
-                        Command="{Binding DataContext.NavigateRibbedRaftCommand, RelativeSource={RelativeSource AncestorType=Window}}">
+                        Command="{Binding DataContext.NavigateProjectCommand, RelativeSource={RelativeSource AncestorType=Window}}">
                     <Border Style="{StaticResource CardStyle}">
                         <Grid Margin="20">
                             <Grid.RowDefinitions>
@@ -81,12 +81,12 @@
                             
                             <!-- Icon Placeholder -->
                             <Border Grid.Row="0" Width="60" Height="60" Background="#E8F4F8" CornerRadius="30" HorizontalAlignment="Left">
-                                <TextBlock Text="MBS" FontSize="20" FontWeight="Bold" Foreground="#2980B9" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBlock Text="PRJ" FontSize="20" FontWeight="Bold" Foreground="#2980B9" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Border>
 
                             <StackPanel Grid.Row="1" Margin="0,15,0,0">
-                                <TextBlock Text="Móng Bè Sườn" FontSize="22" FontWeight="Bold" Foreground="#2C3E50"/>
-                                <TextBlock Text="Tính toán và vẽ cấu tạo móng bè sườn bê tông cốt thép chịu tải trọng phức tạp." 
+                                <TextBlock Text="Dự Án Đường Dây" FontSize="22" FontWeight="Bold" Foreground="#2C3E50"/>
+                                <TextBlock Text="Quản lý và tính toán hàng loạt móng bè sườn cho dự án có nhiều trụ (Copy từ Excel)." 
                                            FontSize="14" Foreground="#7F8C8D" TextWrapping="Wrap" Margin="0,10,0,0"/>
                             </StackPanel>
 
