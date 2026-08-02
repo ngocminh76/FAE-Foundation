@@ -256,8 +256,8 @@
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Text="Đường dẫn:" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                                <TextBox Grid.Column="1" Text="{Binding ExcelFilePath}" IsReadOnly="True" VerticalAlignment="Center" Padding="5"/>
-                                <Button Grid.Column="2" Content="..." Width="40" Padding="5" Margin="5,0,0,0" Click="BrowseExcel_Click" Background="#ECF0F1" BorderBrush="#BDC3C7" BorderThickness="1"/>
+                                <TextBox Grid.Column="1" Text="{Binding GeologyExcelFilePath}" IsReadOnly="True" VerticalAlignment="Center" Padding="5"/>
+                                <Button Grid.Column="2" Content="..." Width="40" Padding="5" Margin="5,0,0,0" Click="BrowseGeologyExcel_Click" Background="#ECF0F1" BorderBrush="#BDC3C7" BorderThickness="1"/>
                             </Grid>
 
                             <!-- Hàng 2: Chọn Sheet & Nhập -->
@@ -270,7 +270,7 @@
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Text="Chọn Sheet:" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                                <ComboBox Grid.Column="1" ItemsSource="{Binding ExcelSheets}" SelectedItem="{Binding SelectedExcelSheet}" VerticalAlignment="Center" Padding="5"/>
+                                <ComboBox Grid.Column="1" ItemsSource="{Binding GeologyExcelSheets}" SelectedItem="{Binding SelectedGeologyExcelSheet}" VerticalAlignment="Center" Padding="5"/>
                                 <Button Grid.Column="2" Content="Nhập Excel" Width="120" Padding="10,5" Click="ImportGeologyExcel_Click" Background="#3498DB" Foreground="White" FontWeight="Bold" BorderThickness="0" Margin="15,0,10,0"/>
                                 <Button Grid.Column="3" Content="Dán từ Clipboard" Width="130" Padding="10,5" Click="PasteGeologyButton_Click" Background="#2ECC71" Foreground="White" FontWeight="Bold" BorderThickness="0"/>
                             </Grid>

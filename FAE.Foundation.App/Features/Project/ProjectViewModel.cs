@@ -81,6 +81,27 @@ namespace FAE.Foundation.App.Features.Project
             set => SetProperty(ref _selectedExcelSheet, value);
         }
 
+        private string _geologyExcelFilePath;
+        public string GeologyExcelFilePath
+        {
+            get => _geologyExcelFilePath;
+            set => SetProperty(ref _geologyExcelFilePath, value);
+        }
+
+        private ObservableCollection<string> _geologyExcelSheets;
+        public ObservableCollection<string> GeologyExcelSheets
+        {
+            get => _geologyExcelSheets;
+            set => SetProperty(ref _geologyExcelSheets, value);
+        }
+
+        private string _selectedGeologyExcelSheet;
+        public string SelectedGeologyExcelSheet
+        {
+            get => _selectedGeologyExcelSheet;
+            set => SetProperty(ref _selectedGeologyExcelSheet, value);
+        }
+
         private string _searchQuery;
         public string SearchQuery
         {
@@ -113,6 +134,7 @@ namespace FAE.Foundation.App.Features.Project
             };
             Boreholes = new ObservableCollection<BoreholeModel>();
             ExcelSheets = new ObservableCollection<string>();
+            GeologyExcelSheets = new ObservableCollection<string>();
             DetailViewModel = new RibbedRaftViewModel();
 
             // Mock Data for Geology

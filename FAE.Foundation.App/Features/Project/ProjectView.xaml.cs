@@ -32,6 +32,7 @@ namespace FAE.Foundation.App.Features.Project
         }
         
         private System.Data.DataSet _currentExcelDataSet;
+        private System.Data.DataSet _currentGeologyExcelDataSet;
 
         private void BrowseExcel_Click(object sender, RoutedEventArgs e)
         {
@@ -211,12 +212,50 @@ namespace FAE.Foundation.App.Features.Project
                 vm.SelectedBorehole = vm.Boreholes.Last();
         }
 
+        private void BrowseGeologyExcel_Click(object sender, RoutedEventArgs e)
+        {
+            var vm = this.DataContext as ProjectViewModel;
+            if (vm == null) return;
+            
+            var dlg = new OpenFileDialog { Filter = "Excel Files (*.xlsx;*.xls)|*.xlsx;*.xls" };
+            if (dlg.ShowDialog() == true)
+            {
+                try
+                {
+                    vm.GeologyExcelFilePath = dlg.FileName;
+                    System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+                    using (var stream = File.Open(dlg.FileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                    {
+                        using (var reader = ExcelReaderFactory.CreateReader(stream))
+                        {
+                            _currentGeologyExcelDataSet = reader.AsDataSet();
+                            
+                            vm.GeologyExcelSheets.Clear();
+                            foreach (System.Data.DataTable table in _currentGeologyExcelDataSet.Tables)
+                            {
+                                vm.GeologyExcelSheets.Add(table.TableName);
+                            }
+                            
+                            if (vm.GeologyExcelSheets.Count > 0)
+                            {
+                                vm.SelectedGeologyExcelSheet = vm.GeologyExcelSheets[0];
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Lỗi khi đọc file Excel địa chất: {ex.Message}", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
         private void ImportGeologyExcel_Click(object sender, RoutedEventArgs e)
         {
             var vm = this.DataContext as ProjectViewModel;
             if (vm == null) return;
             
-            if (_currentExcelDataSet == null || string.IsNullOrEmpty(vm.SelectedExcelSheet))
+            if (_currentGeologyExcelDataSet == null || string.IsNullOrEmpty(vm.SelectedGeologyExcelSheet))
             {
                 MessageBox.Show("Vui lòng chọn file và sheet Excel trước khi nhập!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
@@ -224,7 +263,7 @@ namespace FAE.Foundation.App.Features.Project
             
             try
             {
-                var dataTable = _currentExcelDataSet.Tables[vm.SelectedExcelSheet];
+                var dataTable = _currentGeologyExcelDataSet.Tables[vm.SelectedGeologyExcelSheet];
                 if (dataTable == null) return;
                 
                 List<string> rows = new List<string>();
