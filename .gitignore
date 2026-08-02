@@ -10,3 +10,10 @@ dist/
 build/
 *.egg-info/
 .DS_Store
+
+[Bb]in/
+[Oo]bj/
+
+
+.vs/
+

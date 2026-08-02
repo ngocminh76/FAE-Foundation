@@ -82,6 +82,7 @@ class MainWindow(QMainWindow):
         # Khung Nhập Liệu Trái
         self.input_widget = InputPanelsWidget()
         self.input_widget.calculate_requested.connect(self.run_calculation)
+        self.input_widget.bind_live_updates() # Kích hoạt Reactive UI (Live Update)
         splitter.addWidget(self.input_widget)
 
         # Khung Kết Quả Phải

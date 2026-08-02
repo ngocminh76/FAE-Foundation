@@ -1,0 +1,175 @@
+<Window x:Class="FAE.Foundation.App.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FAE.Foundation.App"
+        mc:Ignorable="d"
+        Title="FAE-Foundation - Truyền Tải" Height="800" Width="1400"
+        Background="#F0F2F5"
+        WindowStartupLocation="CenterScreen">
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="380"/>
+            <ColumnDefinition Width="4"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        
+        <!-- LEFT PANEL: INPUTS -->
+        <Border Grid.Column="0" Background="White" BorderBrush="#E0E0E0" BorderThickness="0,0,1,0" Padding="10">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <TextBlock Text="BẢNG NHẬP LIỆU" FontSize="18" FontWeight="Bold" Foreground="#2C3E50" Margin="0,0,0,15"/>
+                    
+                    <!-- 1. TẢI TRỌNG -->
+                    <Expander Header="1. NỘI LỰC (INTERNAL FORCES)" IsExpanded="True" Margin="0,0,0,10">
+                        <StackPanel Margin="5,10,0,0">
+                            <DataGrid ItemsSource="{Binding Loads}" AutoGenerateColumns="False" HeadersVisibility="Column" Background="White" CanUserAddRows="False" 
+                                      RowHeight="25" AlternatingRowBackground="#F9F9F9" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="#E0E0E0" BorderBrush="#CCCCCC">
+                                <DataGrid.Resources>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="Background" Value="#34495E"/>
+                                        <Setter Property="Foreground" Value="White"/>
+                                        <Setter Property="FontWeight" Value="SemiBold"/>
+                                        <Setter Property="Padding" Value="5"/>
+                                    </Style>
+                                </DataGrid.Resources>
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Chân" Binding="{Binding Name}" Width="60"/>
+                                    <DataGridTextColumn Header="N (kN)" Binding="{Binding N}" Width="*"/>
+                                    <DataGridTextColumn Header="Mx (kNm)" Binding="{Binding Mx}" Width="*"/>
+                                    <DataGridTextColumn Header="My (kNm)" Binding="{Binding My}" Width="*"/>
+                                    <DataGridTextColumn Header="Qx (kN)" Binding="{Binding Qx}" Width="*"/>
+                                    <DataGridTextColumn Header="Qy (kN)" Binding="{Binding Qy}" Width="*"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </StackPanel>
+                    </Expander>
+                    
+                    <!-- 2. SỐ LIỆU ĐỊA CHẤT -->
+                    <Expander Header="2. SỐ LIỆU ĐỊA CHẤT" IsExpanded="True" Margin="0,0,0,10">
+                        <StackPanel Margin="5,10,0,0">
+                            <DataGrid ItemsSource="{Binding Soils}" AutoGenerateColumns="False" HeadersVisibility="Column" Background="White" CanUserAddRows="True"
+                                      RowHeight="25" AlternatingRowBackground="#F9F9F9" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="#E0E0E0" BorderBrush="#CCCCCC">
+                                <DataGrid.Resources>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="Background" Value="#34495E"/>
+                                        <Setter Property="Foreground" Value="White"/>
+                                        <Setter Property="FontWeight" Value="SemiBold"/>
+                                        <Setter Property="Padding" Value="5"/>
+                                    </Style>
+                                </DataGrid.Resources>
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Lớp" Binding="{Binding Name}" Width="80"/>
+                                    <DataGridTextColumn Header="Dày(m)" Binding="{Binding Thickness}" Width="50"/>
+                                    <DataGridTextColumn Header="γ" Binding="{Binding Gamma}" Width="40"/>
+                                    <DataGridTextColumn Header="c" Binding="{Binding C}" Width="40"/>
+                                    <DataGridTextColumn Header="φ" Binding="{Binding Phi}" Width="40"/>
+                                    <DataGridTextColumn Header="E0" Binding="{Binding E0}" Width="50"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </StackPanel>
+                    </Expander>
+                    
+                    <!-- 3. KÍCH THƯỚC BÊ TÔNG -->
+                    <Expander Header="3. THÔNG SỐ HÌNH HỌC" IsExpanded="True" Margin="0,0,0,10">
+                        <Grid Margin="5,10,0,0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="70"/>
+                                <ColumnDefinition Width="30"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="Chiều dày bản móng (h_bản):" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBox Grid.Row="0" Grid.Column="1" Text="0.4" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBlock Grid.Row="0" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
+                            
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="Chiều cao dầm sườn (h_dầm):" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBox Grid.Row="1" Grid.Column="1" Text="0.4" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBlock Grid.Row="1" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
+                            
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="Bề rộng cổ cột (b_cột):" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBox Grid.Row="2" Grid.Column="1" Text="0.6" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBlock Grid.Row="2" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
+                            
+                            <TextBlock Grid.Row="3" Grid.Column="0" Text="Khoảng cách 2 tâm cột:" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBox Grid.Row="3" Grid.Column="1" Text="5.0" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBlock Grid.Row="3" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
+                            
+                            <TextBlock Grid.Row="4" Grid.Column="0" Text="Chiều sâu chôn móng (D_f):" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBox Grid.Row="4" Grid.Column="1" Text="3.5" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBlock Grid.Row="4" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
+                        </Grid>
+                    </Expander>
+                    
+                    <!-- 4. MÔI TRƯỜNG -->
+                    <Expander Header="4. MÔI TRƯỜNG &amp; LỚP ĐỆM" IsExpanded="True" Margin="0,0,0,10">
+                        <StackPanel Margin="5,10,0,0">
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                <CheckBox Content="Có đệm cát thay đất" IsChecked="True" VerticalAlignment="Center" Width="180"/>
+                                <TextBlock Text="Dày:" VerticalAlignment="Center" Margin="10,0,5,0"/>
+                                <TextBox Text="0.5" Width="50" VerticalAlignment="Center"/>
+                                <TextBlock Text="m" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                            </StackPanel>
+                            
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                <CheckBox Content="Có ụ đất đối trọng" IsChecked="True" VerticalAlignment="Center" Width="180"/>
+                                <TextBlock Text="Cao:" VerticalAlignment="Center" Margin="10,0,5,0"/>
+                                <TextBox Text="1.5" Width="50" VerticalAlignment="Center"/>
+                                <TextBlock Text="m" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                            </StackPanel>
+                            
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                <CheckBox Content="Có mực nước ngầm" IsChecked="True" VerticalAlignment="Center" Width="180"/>
+                                <TextBlock Text="Cao độ:" VerticalAlignment="Center" Margin="10,0,5,0"/>
+                                <TextBox Text="-1.2" Width="50" VerticalAlignment="Center"/>
+                                <TextBlock Text="m" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Expander>
+                    
+                    <!-- BUTTONS -->
+                    <Button Content="THIẾT KẾ VÀ KIỂM TOÁN" Background="#2980B9" Foreground="White" Height="40" FontSize="14" FontWeight="Bold" Margin="0,20,0,0"/>
+                </StackPanel>
+            </ScrollViewer>
+        </Border>
+        
+        <!-- SPLITTER -->
+        <GridSplitter Grid.Column="1" Width="4" HorizontalAlignment="Stretch" Background="#BDC3C7"/>
+        
+        <!-- RIGHT PANEL: VIEWPORTS -->
+        <Grid Grid.Column="2" Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="4"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            
+            <!-- TOP RIGHT: 2D CANVAS -->
+            <Border Grid.Row="0" Background="White" CornerRadius="5" Padding="5">
+                <Grid>
+                    <Image x:Name="Canvas2DImage" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <TextBlock Text="MẶT CẮT KẾT HỢP ĐỊA TẦNG (2D CANVAS)" FontWeight="Bold" Foreground="#34495E" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5"/>
+                </Grid>
+            </Border>
+            
+            <GridSplitter Grid.Row="1" Height="4" HorizontalAlignment="Stretch" Background="Transparent"/>
+            
+            <!-- BOTTOM RIGHT: 3D VIEWPORT -->
+            <Border Grid.Row="2" Background="White" CornerRadius="5" Padding="5">
+                <Grid>
+                    <Image x:Name="Canvas3DImage" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <TextBlock Text="MÔ HÌNH KHÔNG GIAN (3D VIEWPORT)" FontWeight="Bold" Foreground="#34495E" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5"/>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</Window>

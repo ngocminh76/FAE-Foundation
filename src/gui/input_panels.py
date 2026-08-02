@@ -164,10 +164,29 @@ class InputPanelsWidget(QWidget):
         self.spin_Rtc.setValue(250.0)
         self.spin_Rtc.setSuffix(" kPa")
 
+        # Mực nước ngầm
+        self.spin_GWT = QDoubleSpinBox()
+        self.spin_GWT.setRange(0.0, 20.0)
+        self.spin_GWT.setValue(10.0)
+        self.spin_GWT.setSuffix(" m (0=Ngập mặt)")
+
         form_soil.addRow("Hệ số nền Winkler (Kz):", self.spin_Kz)
         form_soil.addRow("Dung trọng đất đè (gamma):", self.spin_gamma_soil)
         form_soil.addRow("Sức chịu tải đất (Rtc):", self.spin_Rtc)
+        form_soil.addRow("Chiều sâu Nước ngầm (GWT):", self.spin_GWT)
         layout.addWidget(group_soil_detail)
+        
+        # Phương pháp giải
+        group_engine = QGroupBox("Phương Pháp Giải (Engine)")
+        layout_engine = QVBoxLayout(group_engine)
+        self.combo_engine = QComboBox()
+        self.combo_engine.addItems([
+            "1. Tính tay Bóc tách Ô bản (Theo Cẩm nang PECC5)",
+            "2. Giải tích Lưới lò xo Winkler (Phương pháp FEM)"
+        ])
+        layout_engine.addWidget(self.combo_engine)
+        layout.addWidget(group_engine)
+        
         layout.addStretch()
 
     def init_loads_tab(self):
@@ -278,6 +297,19 @@ class InputPanelsWidget(QWidget):
         elif "EUROCODE" in text:
             return "EUROCODE"
         return "ALL"
+
+    def bind_live_updates(self):
+        """Bind all input changes to automatically trigger calculation"""
+        spinboxes = [
+            self.spin_Lx, self.spin_Ly, self.spin_hslab, 
+            self.spin_bbeam, self.spin_hbeam, 
+            self.spin_lcx, self.spin_lcy, self.spin_Hcol,
+            self.spin_Kz, self.spin_gamma_soil, self.spin_Rtc, self.spin_GWT
+        ]
+        for spin in spinboxes:
+            spin.valueChanged.connect(lambda val: self.on_calculate_clicked())
+            
+        self.combo_engine.currentIndexChanged.connect(self.on_calculate_clicked)
 
     def on_calculate_clicked(self):
         project = self.get_current_project()

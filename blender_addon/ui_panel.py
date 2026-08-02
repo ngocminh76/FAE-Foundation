@@ -45,8 +45,16 @@ class FAEExtensionPanel(bpy.types.Panel):
         layout = self.layout
         props = context.scene.fae_props
 
-        # Nút mở Cửa sổ Popup Toàn Màn Hình
+        # 🚀 ĐẶT 3 NÚT THỰC THI CHÍNH LÊN TRÊN CÙNG ĐỂ THẤY NGAY LẬP TỨC
         layout.operator("object.fae_open_full_dialog", text="⚙️ Mở Cửa Sổ Nhập Đầy Đủ (Full Dialog)", icon='WINDOW')
+        
+        box_actions = layout.box()
+        box_actions.label(text="⚡ THỰC THI & TÍNH TOÁN 3D", icon='PLAY')
+        col_act = box_actions.column(align=True)
+        col_act.operator("object.fae_generate_3d", text="🧱 1. DỰNG MÓNG BÈ 3D", icon='OUTLINER_OB_MESH')
+        col_act.operator("object.fae_run_analysis", text="🚀 2. TÍNH NỘI LỰC & VẼ MÔ MEN 3D", icon='GRAPH')
+        col_act.operator("object.fae_apply_deformed", text="📉 3. PHÓNG ĐẠI BIẾN DẠNG 3D", icon='MOD_DISPLACE')
+
         layout.separator()
 
         # Group 1: Kích thước móng
@@ -76,11 +84,6 @@ class FAEExtensionPanel(bpy.types.Panel):
         col.prop(props, "H_col")
 
         layout.separator()
-        layout.operator("object.fae_generate_3d", text="🧱 Dựng Mô Hình 3D Trong Blender", icon='OUTLINER_OB_MESH')
-
-        layout.separator()
         box_code = layout.box()
-        box_code.label(text="📋 Phân Tích & Kiểm Tra Kết Cấu", icon='PHYSICS')
+        box_code.label(text="📋 Tiêu Chuẩn Phân Tích", icon='PHYSICS')
         box_code.prop(props, "selected_code", text="")
-        box_code.operator("object.fae_run_analysis", text="🚀 Chạy Phân Tích 7 Hạng Mục", icon='PLAY')
-        box_code.operator("object.fae_apply_deformed", text="📉 Phóng Đại Biến Dạng 3D", icon='MOD_DISPLACE')
