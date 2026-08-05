@@ -52,9 +52,11 @@ namespace FAE.Foundation.App.Features.RibbedRaft
             // Default Initialization
             Model = new RibbedRaftModel
             {
+                BaseDimension = 5.0,
+                HoleSize = 1.3, // Math.Round(5.0 / 4, 1)
                 SpanX = 5.0,
-                ConsLX = 1.5,
-                ConsRX = 1.5,
+                ConsLX = 2.5,
+                ConsRX = 2.5,
                 SpanY = 5.0,
                 ConsTY = 1.5,
                 ConsBY = 1.5,

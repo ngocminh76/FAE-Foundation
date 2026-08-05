@@ -11,21 +11,21 @@ namespace FAE.Foundation.App.Features.RibbedRaft
         public double SpanX
         {
             get => _spanX;
-            set { SetProperty(ref _spanX, value); OnPropertyChanged(nameof(TotalLength)); }
+            set { SetProperty(ref _spanX, value); OnPropertyChanged(nameof(TotalLength)); OnPropertyChanged(nameof(FoundationName)); }
         }
 
         private double _consLX;
         public double ConsLX
         {
             get => _consLX;
-            set { SetProperty(ref _consLX, value); OnPropertyChanged(nameof(TotalLength)); }
+            set { SetProperty(ref _consLX, value); OnPropertyChanged(nameof(TotalLength)); OnPropertyChanged(nameof(FoundationName)); }
         }
 
         private double _consRX;
         public double ConsRX
         {
             get => _consRX;
-            set { SetProperty(ref _consRX, value); OnPropertyChanged(nameof(TotalLength)); }
+            set { SetProperty(ref _consRX, value); OnPropertyChanged(nameof(TotalLength)); OnPropertyChanged(nameof(FoundationName)); }
         }
 
         // Y Direction
@@ -33,24 +33,40 @@ namespace FAE.Foundation.App.Features.RibbedRaft
         public double SpanY
         {
             get => _spanY;
-            set { SetProperty(ref _spanY, value); OnPropertyChanged(nameof(TotalWidth)); }
+            set { SetProperty(ref _spanY, value); OnPropertyChanged(nameof(TotalWidth)); OnPropertyChanged(nameof(FoundationName)); }
         }
 
         private double _consTY;
         public double ConsTY
         {
             get => _consTY;
-            set { SetProperty(ref _consTY, value); OnPropertyChanged(nameof(TotalWidth)); }
+            set { SetProperty(ref _consTY, value); OnPropertyChanged(nameof(TotalWidth)); OnPropertyChanged(nameof(FoundationName)); }
         }
 
         private double _consBY;
         public double ConsBY
         {
             get => _consBY;
-            set { SetProperty(ref _consBY, value); OnPropertyChanged(nameof(TotalWidth)); }
+            set { SetProperty(ref _consBY, value); OnPropertyChanged(nameof(TotalWidth)); OnPropertyChanged(nameof(FoundationName)); }
         }
 
         // Components
+        private double _baseDimension;
+        public double BaseDimension
+        {
+            get => _baseDimension;
+            set { SetProperty(ref _baseDimension, value); OnPropertyChanged(nameof(FoundationName)); }
+        }
+
+        private double _holeSize;
+        public double HoleSize
+        {
+            get => _holeSize;
+            set => SetProperty(ref _holeSize, value);
+        }
+
+        public string FoundationName => $"MB{BaseDimension}-{TotalWidth}x{TotalLength}";
+
         private double _slabThickness;
         public double SlabThickness
         {

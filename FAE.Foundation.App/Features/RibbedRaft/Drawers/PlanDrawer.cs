@@ -86,6 +86,20 @@ namespace FAE.Foundation.App.Features.RibbedRaft.Drawers
             DrawCol(x_tam_trai, y_tam_bot);
             DrawCol(x_tam_phai, y_tam_bot);
 
+            // 4.5. Hole
+            if (foundation.HoleSize > 0)
+            {
+                Rectangle hole = new Rectangle { Width = S(foundation.HoleSize), Height = S(foundation.HoleSize), Fill = Brushes.White, Stroke = Brushes.Black, StrokeThickness = 1.5 };
+                Canvas.SetLeft(hole, WX(-foundation.HoleSize/2));
+                Canvas.SetTop(hole, WY(foundation.HoleSize/2)); // Y is inverted
+                canvas.Children.Add(hole);
+
+                Line hl1 = new Line { X1 = WX(-foundation.HoleSize/2), Y1 = WY(foundation.HoleSize/2), X2 = WX(foundation.HoleSize/2), Y2 = WY(-foundation.HoleSize/2), Stroke = Brushes.Black, StrokeThickness = 1 };
+                Line hl2 = new Line { X1 = WX(-foundation.HoleSize/2), Y1 = WY(-foundation.HoleSize/2), X2 = WX(foundation.HoleSize/2), Y2 = WY(foundation.HoleSize/2), Stroke = Brushes.Black, StrokeThickness = 1 };
+                canvas.Children.Add(hl1);
+                canvas.Children.Add(hl2);
+            }
+
             // 5. Centerlines
             Line clX = new Line { X1 = WX(-L_mong/2 - 1), Y1 = WY(0), X2 = WX(L_mong/2 + 1), Y2 = WY(0), Stroke = Brushes.Red, StrokeThickness = 1, StrokeDashArray = new DoubleCollection { 10, 2, 2, 2 } };
             Line clY = new Line { X1 = WX(0), Y1 = WY(B_mong/2 + 1), X2 = WX(0), Y2 = WY(-B_mong/2 - 1), Stroke = Brushes.Red, StrokeThickness = 1, StrokeDashArray = new DoubleCollection { 10, 2, 2, 2 } };

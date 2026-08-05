@@ -20,10 +20,20 @@
             </Border.Effect>
             <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                 <StackPanel Margin="0,0,10,0">
+                    <!-- 0. TEN MONG -->
+                    <Border Background="#E8F8F5" BorderBrush="#1ABC9C" BorderThickness="1" CornerRadius="4" Padding="10" Margin="0,0,0,10">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Tên Móng:" FontWeight="Bold" Foreground="#16A085" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                            <TextBlock Text="{Binding Model.FoundationName}" FontWeight="Bold" Foreground="#2C3E50" FontSize="14" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Border>
+                    
                     <!-- 1. THONG SO KICH THUOC -->
                     <Expander Header="{Binding Path=Strings[InputParams], Source={x:Static loc:LocalizationService.Instance}}" IsExpanded="True" Margin="0,0,0,10">
                         <Grid Margin="5,10,0,0">
                             <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
@@ -44,57 +54,65 @@
                                 <ColumnDefinition Width="30"/>
                             </Grid.ColumnDefinitions>
                             
-                            <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding Path=Strings[SpanX], Source={x:Static loc:LocalizationService.Instance}}" VerticalAlignment="Center" Margin="0,0,0,8" FontWeight="Bold"/>
-                            <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Model.SpanX, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="Kích thước Trụ (Base Dimension)" VerticalAlignment="Center" Margin="0,0,0,8" FontWeight="Bold" Foreground="#8E44AD"/>
+                            <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Model.BaseDimension, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="0,0,0,8"/>
                             <TextBlock Grid.Row="0" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
-
-                            <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding Path=Strings[ConsLX], Source={x:Static loc:LocalizationService.Instance}}" VerticalAlignment="Center" Margin="0,0,0,8"/>
-                            <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Model.ConsLX, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="Lỗ hổng giữa móng (Hole Size)" VerticalAlignment="Center" Margin="0,0,0,8" FontWeight="Bold" Foreground="#8E44AD"/>
+                            <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Model.HoleSize, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="0,0,0,8"/>
                             <TextBlock Grid.Row="1" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
 
-                            <TextBlock Grid.Row="2" Grid.Column="0" Text="{Binding Path=Strings[ConsRX], Source={x:Static loc:LocalizationService.Instance}}" VerticalAlignment="Center" Margin="0,0,0,8"/>
-                            <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Model.ConsRX, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="{Binding Path=Strings[SpanX], Source={x:Static loc:LocalizationService.Instance}}" VerticalAlignment="Center" Margin="0,0,0,8" FontWeight="Bold"/>
+                            <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Model.SpanX, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="0,0,0,8"/>
                             <TextBlock Grid.Row="2" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
 
-                            <TextBlock Grid.Row="3" Grid.Column="0" Text="{Binding Path=Strings[TotalLength], Source={x:Static loc:LocalizationService.Instance}}" VerticalAlignment="Center" Margin="0,0,0,8" Foreground="DarkRed"/>
-                            <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding Model.TotalLength, StringFormat=F2}" VerticalAlignment="Center" Margin="0,0,0,8" FontWeight="Bold" Foreground="DarkRed"/>
-                            <TextBlock Grid.Row="3" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8" Foreground="DarkRed"/>
+                            <TextBlock Grid.Row="3" Grid.Column="0" Text="{Binding Path=Strings[ConsLX], Source={x:Static loc:LocalizationService.Instance}}" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding Model.ConsLX, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBlock Grid.Row="3" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
 
-                            <TextBlock Grid.Row="4" Grid.Column="0" Text="{Binding Path=Strings[SpanY], Source={x:Static loc:LocalizationService.Instance}}" VerticalAlignment="Center" Margin="0,0,0,8" FontWeight="Bold"/>
-                            <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding Model.SpanY, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBlock Grid.Row="4" Grid.Column="0" Text="{Binding Path=Strings[ConsRX], Source={x:Static loc:LocalizationService.Instance}}" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding Model.ConsRX, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="0,0,0,8"/>
                             <TextBlock Grid.Row="4" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
 
-                            <TextBlock Grid.Row="5" Grid.Column="0" Text="{Binding Path=Strings[ConsTY], Source={x:Static loc:LocalizationService.Instance}}" VerticalAlignment="Center" Margin="0,0,0,8"/>
-                            <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding Model.ConsTY, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="0,0,0,8"/>
-                            <TextBlock Grid.Row="5" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
+                            <TextBlock Grid.Row="5" Grid.Column="0" Text="{Binding Path=Strings[TotalLength], Source={x:Static loc:LocalizationService.Instance}}" VerticalAlignment="Center" Margin="0,0,0,8" Foreground="DarkRed"/>
+                            <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding Model.TotalLength, StringFormat=F2}" VerticalAlignment="Center" Margin="0,0,0,8" FontWeight="Bold" Foreground="DarkRed"/>
+                            <TextBlock Grid.Row="5" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8" Foreground="DarkRed"/>
 
-                            <TextBlock Grid.Row="6" Grid.Column="0" Text="{Binding Path=Strings[ConsBY], Source={x:Static loc:LocalizationService.Instance}}" VerticalAlignment="Center" Margin="0,0,0,8"/>
-                            <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding Model.ConsBY, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBlock Grid.Row="6" Grid.Column="0" Text="{Binding Path=Strings[SpanY], Source={x:Static loc:LocalizationService.Instance}}" VerticalAlignment="Center" Margin="0,0,0,8" FontWeight="Bold"/>
+                            <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding Model.SpanY, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="0,0,0,8"/>
                             <TextBlock Grid.Row="6" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
 
-                            <TextBlock Grid.Row="7" Grid.Column="0" Text="{Binding Path=Strings[TotalWidth], Source={x:Static loc:LocalizationService.Instance}}" VerticalAlignment="Center" Margin="0,0,0,8" Foreground="DarkRed"/>
-                            <TextBlock Grid.Row="7" Grid.Column="1" Text="{Binding Model.TotalWidth, StringFormat=F2}" VerticalAlignment="Center" Margin="0,0,0,8" FontWeight="Bold" Foreground="DarkRed"/>
-                            <TextBlock Grid.Row="7" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8" Foreground="DarkRed"/>
-                            
-                            <TextBlock Grid.Row="8" Grid.Column="0" Text="{Binding Path=Strings[SlabThickness], Source={x:Static loc:LocalizationService.Instance}}" VerticalAlignment="Center" Margin="0,0,0,8"/>
-                            <TextBox Grid.Row="8" Grid.Column="1" Text="{Binding Model.SlabThickness, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBlock Grid.Row="7" Grid.Column="0" Text="{Binding Path=Strings[ConsTY], Source={x:Static loc:LocalizationService.Instance}}" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBox Grid.Row="7" Grid.Column="1" Text="{Binding Model.ConsTY, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBlock Grid.Row="7" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
+
+                            <TextBlock Grid.Row="8" Grid.Column="0" Text="{Binding Path=Strings[ConsBY], Source={x:Static loc:LocalizationService.Instance}}" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBox Grid.Row="8" Grid.Column="1" Text="{Binding Model.ConsBY, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="0,0,0,8"/>
                             <TextBlock Grid.Row="8" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
 
-                            <TextBlock Grid.Row="9" Grid.Column="0" Text="{Binding Path=Strings[RibWidth], Source={x:Static loc:LocalizationService.Instance}}" VerticalAlignment="Center" Margin="0,0,0,8"/>
-                            <TextBox Grid.Row="9" Grid.Column="1" Text="{Binding Model.RibWidth, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="0,0,0,8"/>
-                            <TextBlock Grid.Row="9" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
+                            <TextBlock Grid.Row="9" Grid.Column="0" Text="{Binding Path=Strings[TotalWidth], Source={x:Static loc:LocalizationService.Instance}}" VerticalAlignment="Center" Margin="0,0,0,8" Foreground="DarkRed"/>
+                            <TextBlock Grid.Row="9" Grid.Column="1" Text="{Binding Model.TotalWidth, StringFormat=F2}" VerticalAlignment="Center" Margin="0,0,0,8" FontWeight="Bold" Foreground="DarkRed"/>
+                            <TextBlock Grid.Row="9" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8" Foreground="DarkRed"/>
                             
-                            <TextBlock Grid.Row="10" Grid.Column="0" Text="{Binding Path=Strings[RibHeight], Source={x:Static loc:LocalizationService.Instance}}" VerticalAlignment="Center" Margin="0,0,0,8"/>
-                            <TextBox Grid.Row="10" Grid.Column="1" Text="{Binding Model.RibHeight, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBlock Grid.Row="10" Grid.Column="0" Text="{Binding Path=Strings[SlabThickness], Source={x:Static loc:LocalizationService.Instance}}" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBox Grid.Row="10" Grid.Column="1" Text="{Binding Model.SlabThickness, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="0,0,0,8"/>
                             <TextBlock Grid.Row="10" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
-                            
-                            <TextBlock Grid.Row="11" Grid.Column="0" Text="{Binding Path=Strings[ColWidth], Source={x:Static loc:LocalizationService.Instance}}" VerticalAlignment="Center" Margin="0,0,0,8"/>
-                            <TextBox Grid.Row="11" Grid.Column="1" Text="{Binding Model.ColumnWidth, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="0,0,0,8"/>
+
+                            <TextBlock Grid.Row="11" Grid.Column="0" Text="{Binding Path=Strings[RibWidth], Source={x:Static loc:LocalizationService.Instance}}" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBox Grid.Row="11" Grid.Column="1" Text="{Binding Model.RibWidth, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="0,0,0,8"/>
                             <TextBlock Grid.Row="11" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
                             
-                            <TextBlock Grid.Row="12" Grid.Column="0" Text="{Binding Path=Strings[Depth], Source={x:Static loc:LocalizationService.Instance}}" VerticalAlignment="Center" Margin="0,0,0,8"/>
-                            <TextBox Grid.Row="12" Grid.Column="1" Text="{Binding Model.Depth, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBlock Grid.Row="12" Grid.Column="0" Text="{Binding Path=Strings[RibHeight], Source={x:Static loc:LocalizationService.Instance}}" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBox Grid.Row="12" Grid.Column="1" Text="{Binding Model.RibHeight, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="0,0,0,8"/>
                             <TextBlock Grid.Row="12" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
+                            
+                            <TextBlock Grid.Row="13" Grid.Column="0" Text="{Binding Path=Strings[ColWidth], Source={x:Static loc:LocalizationService.Instance}}" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBox Grid.Row="13" Grid.Column="1" Text="{Binding Model.ColumnWidth, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBlock Grid.Row="13" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
+                            
+                            <TextBlock Grid.Row="14" Grid.Column="0" Text="{Binding Path=Strings[Depth], Source={x:Static loc:LocalizationService.Instance}}" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBox Grid.Row="14" Grid.Column="1" Text="{Binding Model.Depth, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBlock Grid.Row="14" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
                         </Grid>
                     </Expander>
                     
