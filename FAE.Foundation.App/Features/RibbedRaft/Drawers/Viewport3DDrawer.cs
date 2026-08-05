@@ -30,7 +30,27 @@ namespace FAE.Foundation.App.Features.RibbedRaft.Drawers
             
             // 1. Slab
             double y_slab_center = foundation.SlabThickness / 2.0;
-            AddBox(group, new Point3D(0, y_slab_center, 0), L_mong, foundation.SlabThickness, B_mong, Colors.LightGray);
+            if (foundation.HoleSize > 0)
+            {
+                double h = foundation.HoleSize;
+                double wX_side = (L_mong - h) / 2.0;
+                double cX_side = (L_mong + h) / 4.0;
+                
+                double wZ_topbot = (B_mong - h) / 2.0;
+                double cZ_topbot = (B_mong + h) / 4.0;
+
+                // Left and Right parts (full depth in Z)
+                AddBox(group, new Point3D(-cX_side, y_slab_center, 0), wX_side, foundation.SlabThickness, B_mong, Colors.LightGray);
+                AddBox(group, new Point3D(cX_side, y_slab_center, 0), wX_side, foundation.SlabThickness, B_mong, Colors.LightGray);
+
+                // Top and Bottom parts (only between left and right parts)
+                AddBox(group, new Point3D(0, y_slab_center, -cZ_topbot), h, foundation.SlabThickness, wZ_topbot, Colors.LightGray);
+                AddBox(group, new Point3D(0, y_slab_center, cZ_topbot), h, foundation.SlabThickness, wZ_topbot, Colors.LightGray);
+            }
+            else
+            {
+                AddBox(group, new Point3D(0, y_slab_center, 0), L_mong, foundation.SlabThickness, B_mong, Colors.LightGray);
+            }
 
             // 2. Ribs (Longitudinal - X direction)
             double y_rib_center = foundation.SlabThickness + foundation.RibHeight / 2.0;
