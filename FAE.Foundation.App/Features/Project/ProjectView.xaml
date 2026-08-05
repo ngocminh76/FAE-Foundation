@@ -345,12 +345,20 @@
                             <ComboBox ItemsSource="{Binding Towers}" 
                                       SelectedItem="{Binding SelectedTower}" 
                                       DisplayMemberPath="TowerName" 
-                                      Width="250" 
+                                      Width="200" 
                                       Padding="5"
                                       VerticalAlignment="Center"/>
                                       
-                            <TextBlock Text="Nhịp tự động (Base Dimension):" VerticalAlignment="Center" Margin="30,0,10,0" Foreground="#7F8C8D"/>
+                            <TextBlock Text="Nhịp tự động (Base Dimension):" VerticalAlignment="Center" Margin="20,0,10,0" Foreground="#7F8C8D"/>
                             <TextBlock Text="{Binding SelectedTower.BaseDimension, StringFormat={}{0:N0} mm}" FontWeight="Bold" Foreground="#E67E22" VerticalAlignment="Center"/>
+                            
+                            <TextBlock Text="Chọn Hố khoan:" FontWeight="Bold" Foreground="#2C3E50" VerticalAlignment="Center" Margin="30,0,10,0"/>
+                            <ComboBox ItemsSource="{Binding Boreholes}" 
+                                      SelectedItem="{Binding DetailViewModel.CurrentBorehole, Mode=TwoWay}" 
+                                      DisplayMemberPath="BoreholeName" 
+                                      Width="120" 
+                                      Padding="5"
+                                      VerticalAlignment="Center"/>
                         </StackPanel>
                     </Border>
                     
