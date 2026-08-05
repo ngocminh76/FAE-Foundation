@@ -48,7 +48,15 @@ namespace FAE.Foundation.App.ViewModels
             
             NavigateHomeCommand = new RelayCommand(_ => CurrentView = _homeViewModel);
             NavigateRibbedRaftCommand = new RelayCommand(_ => CurrentView = _ribbedRaftViewModel);
-            NavigateProjectCommand = new RelayCommand(_ => CurrentView = _projectViewModel);
+            NavigateProjectCommand = new RelayCommand(_ => 
+            {
+                var projectWindow = new ProjectWindow
+                {
+                    DataContext = _projectViewModel,
+                    WindowState = System.Windows.WindowState.Maximized
+                };
+                projectWindow.Show();
+            });
             
             OpenTheoryCommand = new RelayCommand(_ => 
             {
