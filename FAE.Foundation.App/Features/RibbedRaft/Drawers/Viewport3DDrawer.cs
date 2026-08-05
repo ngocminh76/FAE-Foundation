@@ -82,33 +82,43 @@ namespace FAE.Foundation.App.Features.RibbedRaft.Drawers
             MeshGeometry3D mesh = new MeshGeometry3D();
             double x = wX/2; double y = hY/2; double z = dZ/2;
 
-            Point3D p0 = new Point3D(center.X - x, center.Y - y, center.Z + z);
-            Point3D p1 = new Point3D(center.X + x, center.Y - y, center.Z + z);
-            Point3D p2 = new Point3D(center.X + x, center.Y - y, center.Z - z);
-            Point3D p3 = new Point3D(center.X - x, center.Y - y, center.Z - z);
-            Point3D p4 = new Point3D(center.X - x, center.Y + y, center.Z + z);
-            Point3D p5 = new Point3D(center.X + x, center.Y + y, center.Z + z);
-            Point3D p6 = new Point3D(center.X + x, center.Y + y, center.Z - z);
-            Point3D p7 = new Point3D(center.X - x, center.Y + y, center.Z - z);
+            Point3D p0 = new Point3D(center.X - x, center.Y - y, center.Z + z); // Front-Bot-Left
+            Point3D p1 = new Point3D(center.X + x, center.Y - y, center.Z + z); // Front-Bot-Right
+            Point3D p2 = new Point3D(center.X + x, center.Y - y, center.Z - z); // Back-Bot-Right
+            Point3D p3 = new Point3D(center.X - x, center.Y - y, center.Z - z); // Back-Bot-Left
+            Point3D p4 = new Point3D(center.X - x, center.Y + y, center.Z + z); // Front-Top-Left
+            Point3D p5 = new Point3D(center.X + x, center.Y + y, center.Z + z); // Front-Top-Right
+            Point3D p6 = new Point3D(center.X + x, center.Y + y, center.Z - z); // Back-Top-Right
+            Point3D p7 = new Point3D(center.X - x, center.Y + y, center.Z - z); // Back-Top-Left
 
-            mesh.Positions.Add(p0); mesh.Positions.Add(p1); mesh.Positions.Add(p2); mesh.Positions.Add(p3);
-            mesh.Positions.Add(p4); mesh.Positions.Add(p5); mesh.Positions.Add(p6); mesh.Positions.Add(p7);
-
-            AddTriangle(mesh, 0, 1, 5); AddTriangle(mesh, 0, 5, 4); // Front
-            AddTriangle(mesh, 1, 2, 6); AddTriangle(mesh, 1, 6, 5); // Right
-            AddTriangle(mesh, 2, 3, 7); AddTriangle(mesh, 2, 7, 6); // Back
-            AddTriangle(mesh, 3, 0, 4); AddTriangle(mesh, 3, 4, 7); // Left
-            AddTriangle(mesh, 4, 5, 6); AddTriangle(mesh, 4, 6, 7); // Top
-            AddTriangle(mesh, 3, 2, 1); AddTriangle(mesh, 3, 1, 0); // Bottom
+            // Add faces with distinct vertices to avoid smooth shading across sharp edges
+            AddFace(mesh, p0, p1, p5, p4); // Front
+            AddFace(mesh, p1, p2, p6, p5); // Right
+            AddFace(mesh, p2, p3, p7, p6); // Back
+            AddFace(mesh, p3, p0, p4, p7); // Left
+            AddFace(mesh, p4, p5, p6, p7); // Top
+            AddFace(mesh, p3, p2, p1, p0); // Bottom
 
             Material material = new DiffuseMaterial(new SolidColorBrush(color));
             GeometryModel3D model = new GeometryModel3D(mesh, material);
             group.Children.Add(model);
         }
 
-        private static void AddTriangle(MeshGeometry3D mesh, int p1, int p2, int p3)
+        private static void AddFace(MeshGeometry3D mesh, Point3D pA, Point3D pB, Point3D pC, Point3D pD)
         {
-            mesh.TriangleIndices.Add(p1); mesh.TriangleIndices.Add(p2); mesh.TriangleIndices.Add(p3);
+            int startIndex = mesh.Positions.Count;
+            mesh.Positions.Add(pA);
+            mesh.Positions.Add(pB);
+            mesh.Positions.Add(pC);
+            mesh.Positions.Add(pD);
+
+            mesh.TriangleIndices.Add(startIndex);
+            mesh.TriangleIndices.Add(startIndex + 1);
+            mesh.TriangleIndices.Add(startIndex + 2);
+
+            mesh.TriangleIndices.Add(startIndex);
+            mesh.TriangleIndices.Add(startIndex + 2);
+            mesh.TriangleIndices.Add(startIndex + 3);
         }
     }
 }
