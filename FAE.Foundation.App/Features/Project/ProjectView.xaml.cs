@@ -159,6 +159,8 @@ namespace FAE.Foundation.App.Features.Project
                         if (cells.Length > 0 && double.TryParse(cells[0].Replace(",", ""), out double dim))
                         {
                             currentTower.BaseDimension = dim;
+                            currentTower.Foundation.SpanX = dim / 1000.0;
+                            currentTower.Foundation.SpanY = dim / 1000.0;
                         }
                     }
                 }

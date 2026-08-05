@@ -1,5 +1,6 @@
 using System;
 using FAE.Foundation.App.Core;
+using FAE.Foundation.App.Models;
 
 namespace FAE.Foundation.App.Features.RibbedRaft
 {
@@ -21,6 +22,19 @@ namespace FAE.Foundation.App.Features.RibbedRaft
                     {
                         _model.PropertyChanged += Model_PropertyChanged;
                     }
+                    RequestDraw();
+                }
+            }
+        }
+
+        private BoreholeModel _currentBorehole;
+        public BoreholeModel CurrentBorehole
+        {
+            get => _currentBorehole;
+            set
+            {
+                if (SetProperty(ref _currentBorehole, value))
+                {
                     RequestDraw();
                 }
             }

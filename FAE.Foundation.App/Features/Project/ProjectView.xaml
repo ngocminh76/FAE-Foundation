@@ -333,7 +333,28 @@
             <!-- TAB 3: HÌNH HỌC (GEOMETRY & 3D) -->
             <TabItem Header="3. Kích thước Hình học">
                 <Grid Margin="10">
-                    <ribbedRaft:RibbedRaftView DataContext="{Binding DetailViewModel}" />
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    
+                    <!-- Chọn Trụ Thiết Kế -->
+                    <Border Grid.Row="0" Background="#ECF0F1" CornerRadius="4" Padding="10" Margin="0,0,0,10">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Chọn Trụ thiết kế:" FontWeight="Bold" Foreground="#2C3E50" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                            <ComboBox ItemsSource="{Binding Towers}" 
+                                      SelectedItem="{Binding SelectedTower}" 
+                                      DisplayMemberPath="TowerName" 
+                                      Width="250" 
+                                      Padding="5"
+                                      VerticalAlignment="Center"/>
+                                      
+                            <TextBlock Text="Nhịp tự động (Base Dimension):" VerticalAlignment="Center" Margin="30,0,10,0" Foreground="#7F8C8D"/>
+                            <TextBlock Text="{Binding SelectedTower.BaseDimension, StringFormat={}{0:N0} mm}" FontWeight="Bold" Foreground="#E67E22" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Border>
+                    
+                    <ribbedRaft:RibbedRaftView Grid.Row="1" DataContext="{Binding DetailViewModel}" />
                 </Grid>
             </TabItem>
 

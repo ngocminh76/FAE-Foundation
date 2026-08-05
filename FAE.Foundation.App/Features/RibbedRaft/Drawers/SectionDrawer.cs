@@ -9,7 +9,7 @@ namespace FAE.Foundation.App.Features.RibbedRaft.Drawers
 {
     public static class SectionDrawer
     {
-        public static void DrawFoundation(Canvas canvas, RibbedRaftModel foundation, bool isSectionY)
+        public static void DrawFoundation(Canvas canvas, RibbedRaftModel foundation, FAE.Foundation.App.Models.BoreholeModel borehole, bool isSectionY)
         {
             canvas.Children.Clear();
             if (canvas.ActualWidth == 0 || canvas.ActualHeight == 0 || foundation == null) return;
@@ -92,15 +92,44 @@ namespace FAE.Foundation.App.Features.RibbedRaft.Drawers
             SolidColorBrush redBrush = new SolidColorBrush(Colors.Red);
 
             // --- 3. DRAW SOIL LAYERS ---
-            Rectangle soil1 = new Rectangle { Width = S(max_L), Height = S(2.5), Fill = soil1Brush };
-            Canvas.SetLeft(soil1, WX(-max_L/2));
-            Canvas.SetTop(soil1, WY(-0.0));
-            canvas.Children.Add(soil1);
+            if (borehole != null && borehole.Layers.Count > 0)
+            {
+                double currentY = 0.0;
+                string[] soilColors = new[] { "#dcb897", "#e6c280", "#c1a470", "#ab8c58", "#cdb492", "#deb887" };
+                
+                for (int i = 0; i < borehole.Layers.Count; i++)
+                {
+                    var layer = borehole.Layers[i];
+                    double thickness = layer.Thickness > 0 ? layer.Thickness : (mathHeight - currentY);
+                    if (currentY + thickness > mathHeight) thickness = mathHeight - currentY;
+                    
+                    SolidColorBrush soilBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString(soilColors[i % soilColors.Length]));
+                    Rectangle soilRect = new Rectangle { Width = S(max_L), Height = S(thickness), Fill = soilBrush };
+                    Canvas.SetLeft(soilRect, WX(-max_L/2));
+                    Canvas.SetTop(soilRect, WY(-currentY));
+                    canvas.Children.Add(soilRect);
+                    
+                    TextBlock soilText = new TextBlock { Text = $"{layer.LayerId}: {layer.LayerName} ({layer.Thickness}m)", Foreground = Brushes.SaddleBrown, FontSize = 12, FontWeight = FontWeights.Bold };
+                    Canvas.SetLeft(soilText, WX(-max_L/2 + 0.5));
+                    Canvas.SetTop(soilText, WY(-currentY) + 5);
+                    canvas.Children.Add(soilText);
+                    
+                    currentY += thickness;
+                    if (currentY >= mathHeight) break;
+                }
+            }
+            else
+            {
+                Rectangle soil1 = new Rectangle { Width = S(max_L), Height = S(2.5), Fill = soil1Brush };
+                Canvas.SetLeft(soil1, WX(-max_L/2));
+                Canvas.SetTop(soil1, WY(-0.0));
+                canvas.Children.Add(soil1);
 
-            Rectangle soil2 = new Rectangle { Width = S(max_L), Height = S(mathHeight - 2.5), Fill = soil2Brush };
-            Canvas.SetLeft(soil2, WX(-max_L/2));
-            Canvas.SetTop(soil2, WY(-2.5));
-            canvas.Children.Add(soil2);
+                Rectangle soil2 = new Rectangle { Width = S(max_L), Height = S(mathHeight - 2.5), Fill = soil2Brush };
+                Canvas.SetLeft(soil2, WX(-max_L/2));
+                Canvas.SetTop(soil2, WY(-2.5));
+                canvas.Children.Add(soil2);
+            }
 
             // --- 4. EXCAVATION PIT ---
             Polygon pit = new Polygon { Fill = pitBrush, Stroke = Brushes.Transparent };

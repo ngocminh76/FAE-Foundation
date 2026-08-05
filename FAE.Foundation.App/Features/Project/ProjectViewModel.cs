@@ -148,6 +148,13 @@ namespace FAE.Foundation.App.Features.Project
 
             Boreholes.Add(hk1);
             Boreholes.Add(hk2);
+            for (int i = 3; i <= 7; i++)
+            {
+                var hk = new BoreholeModel { BoreholeName = "HK" + i.ToString("D2") };
+                hk.Layers.Add(new SoilLayer { LayerId = "1a", LayerName = "Sét pha", Thickness = 2.5, GammaW = 1.8, E = 1000 });
+                hk.Layers.Add(new SoilLayer { LayerId = "2", LayerName = "Cát hạt trung", Thickness = 8.0, GammaW = 1.9, E = 2000 });
+                Boreholes.Add(hk);
+            }
 
             if (Boreholes.Count > 0)
             {
@@ -163,6 +170,7 @@ namespace FAE.Foundation.App.Features.Project
             {
                 // Push the selected tower's foundation model into the DetailViewModel
                 DetailViewModel.Model = SelectedTower.Foundation;
+                DetailViewModel.CurrentBorehole = SelectedTower.Borehole;
             }
         }
     }

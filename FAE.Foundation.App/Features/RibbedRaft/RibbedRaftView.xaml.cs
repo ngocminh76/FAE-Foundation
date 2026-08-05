@@ -74,10 +74,10 @@ namespace FAE.Foundation.App.Features.RibbedRaft
             var model = _viewModel.Model;
             
             if (SectionXCanvas != null)
-                SectionDrawer.DrawFoundation(SectionXCanvas, model, isSectionY: false);
+                SectionDrawer.DrawFoundation(SectionXCanvas, model, _viewModel.CurrentBorehole, isSectionY: false);
             
             if (SectionYCanvas != null)
-                SectionDrawer.DrawFoundation(SectionYCanvas, model, isSectionY: true);
+                SectionDrawer.DrawFoundation(SectionYCanvas, model, _viewModel.CurrentBorehole, isSectionY: true);
 
             if (PlanCanvas != null)
                 PlanDrawer.DrawPlan(PlanCanvas, model);
