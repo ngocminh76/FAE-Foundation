@@ -31,7 +31,7 @@ namespace FAE.Foundation.App.Features.RibbedRaft.Drawers
 
             double WX(double x) => offsetX + x * scale;
             double WY(double y) => offsetY - y * scale;
-            double S(double val) => val * scale;
+            double S(double val) => Math.Max(0, val * scale);
 
             SolidColorBrush concreteBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#E0E0E0"));
             SolidColorBrush ribBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#C0C0C0"));

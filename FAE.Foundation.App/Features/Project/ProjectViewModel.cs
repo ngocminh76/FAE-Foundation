@@ -136,25 +136,29 @@ namespace FAE.Foundation.App.Features.Project
             ExcelSheets = new ObservableCollection<string>();
             GeologyExcelSheets = new ObservableCollection<string>();
             DetailViewModel = new RibbedRaftViewModel();
+            DetailViewModel.AvailableBoreholes = Boreholes;
 
-            // Mock Data for Geology
+
             var hk1 = new BoreholeModel { BoreholeName = "HK01" };
-            hk1.Layers.Add(new SoilLayer { LayerId = "1a", LayerName = "Lớp đất thổ cư", Thickness = 1.5, GammaW = 1.88, Delta = 2.76, E0 = 0.971, Phi = 24.93, C = 0.64, E = 1520, GammaDn = 0.893 });
-            hk1.Layers.Add(new SoilLayer { LayerId = "1", LayerName = "Bùn sét, bùn", Thickness = 10.5, GammaW = 1.77, Delta = 2.72, E0 = 1.208, Phi = 6.35, C = 0.74, E = 183.33, GammaDn = 0.779 });
+            hk1.Layers.Add(new SoilLayer { LayerId = "1", LayerName = "Lớp đất thổ cư", Thickness = 1.5, GammaW = 1.88, Delta = 2.76, E0 = 0.971, Phi = 24.93, C = 0.64, E = 1520, GammaDn = 0.893 });
+            hk1.Layers.Add(new SoilLayer { LayerId = "2", LayerName = "Bùn sét, bùn", Thickness = 3.5, GammaW = 1.77, Delta = 2.72, E0 = 1.208, Phi = 6.35, C = 0.74, E = 183.33, GammaDn = 0.779 });
+            hk1.Layers.Add(new SoilLayer { LayerId = "3", LayerName = "Sét, á sét dẻo cứng", Thickness = 5.0, GammaW = 1.95, Phi = 18.2, C = 2.1, E = 2200 });
+            hk1.Layers.Add(new SoilLayer { LayerId = "4", LayerName = "Cát thô", Thickness = 8.0, GammaW = 2.05, Phi = 32.5, C = 0.0, E = 4500 });
             
             var hk2 = new BoreholeModel { BoreholeName = "HK02" };
-            hk2.Layers.Add(new SoilLayer { LayerId = "1a", LayerName = "Sét, á sét", Thickness = 2.0, GammaW = 1.9, Delta = 2.7, E0 = 0.894, Phi = 24.93, C = 0.64, E = 1520, GammaDn = 0.892 });
-            hk2.Layers.Add(new SoilLayer { LayerId = "1", LayerName = "Bùn sét", Thickness = 3.5, GammaW = 1.8, Delta = 2.7, E0 = 0.943, Phi = 11.20, C = 1.27, E = 470, GammaDn = 0.885 });
+            hk2.Layers.Add(new SoilLayer { LayerId = "1", LayerName = "Sét, á sét", Thickness = 2.0, GammaW = 1.9, Delta = 2.7, E0 = 0.894, Phi = 24.93, C = 0.64, E = 1520, GammaDn = 0.892 });
+            hk2.Layers.Add(new SoilLayer { LayerId = "2", LayerName = "Bùn sét dẻo chảy", Thickness = 2.5, GammaW = 1.8, Delta = 2.7, E0 = 0.943, Phi = 11.20, C = 1.27, E = 470, GammaDn = 0.885 });
+            hk2.Layers.Add(new SoilLayer { LayerId = "3", LayerName = "Cát pha sét", Thickness = 6.0, GammaW = 1.85, Phi = 22.0, C = 1.5, E = 1800 });
+            hk2.Layers.Add(new SoilLayer { LayerId = "4", LayerName = "Cát hạt trung, chặt vừa", Thickness = 10.0, GammaW = 1.98, Phi = 30.0, C = 0.0, E = 3500 });
+
+            var hk3 = new BoreholeModel { BoreholeName = "HK03" };
+            hk3.Layers.Add(new SoilLayer { LayerId = "1", LayerName = "Cát san lấp", Thickness = 3.0, GammaW = 1.75, Phi = 28.0, C = 0.0, E = 1200 });
+            hk3.Layers.Add(new SoilLayer { LayerId = "2", LayerName = "Sét pha dẻo mềm", Thickness = 4.5, GammaW = 1.82, Phi = 15.5, C = 1.8, E = 950 });
+            hk3.Layers.Add(new SoilLayer { LayerId = "3", LayerName = "Sét cứng", Thickness = 12.0, GammaW = 2.1, Phi = 20.0, C = 3.5, E = 5000 });
 
             Boreholes.Add(hk1);
             Boreholes.Add(hk2);
-            for (int i = 3; i <= 7; i++)
-            {
-                var hk = new BoreholeModel { BoreholeName = "HK" + i.ToString("D2") };
-                hk.Layers.Add(new SoilLayer { LayerId = "1a", LayerName = "Sét pha", Thickness = 2.5, GammaW = 1.8, E = 1000 });
-                hk.Layers.Add(new SoilLayer { LayerId = "2", LayerName = "Cát hạt trung", Thickness = 8.0, GammaW = 1.9, E = 2000 });
-                Boreholes.Add(hk);
-            }
+            Boreholes.Add(hk3);
 
             if (Boreholes.Count > 0)
             {

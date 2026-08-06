@@ -1,4 +1,5 @@
 using System;
+using System.Collections.ObjectModel;
 using FAE.Foundation.App.Core;
 using FAE.Foundation.App.Models;
 
@@ -38,6 +39,13 @@ namespace FAE.Foundation.App.Features.RibbedRaft
                     RequestDraw();
                 }
             }
+        }
+
+        private ObservableCollection<BoreholeModel> _availableBoreholes;
+        public ObservableCollection<BoreholeModel> AvailableBoreholes
+        {
+            get => _availableBoreholes;
+            set => SetProperty(ref _availableBoreholes, value);
         }
 
         private void Model_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

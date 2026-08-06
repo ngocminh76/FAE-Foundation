@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:loc="clr-namespace:FAE.Foundation.App.Services.Localization"
              mc:Ignorable="d" 
+             Language="en-US"
              d:DesignHeight="700" d:DesignWidth="1200">
     <Grid Background="#F5F6FA">
         <Grid.ColumnDefinitions>
@@ -52,57 +53,57 @@
                             
                             <!-- Kich thuoc chan tru Lx -->
                             <TextBlock Grid.Row="0" Grid.Column="0" Text="Kích thước chân trụ (Lx):" VerticalAlignment="Center" Margin="0,0,0,8" FontWeight="Bold" Foreground="#8E44AD"/>
-                            <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Model.Lx, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Model.Lx, UpdateSourceTrigger=PropertyChanged, Delay=800}" VerticalAlignment="Center" Margin="0,0,0,8"/>
                             <TextBlock Grid.Row="0" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
                             
                             <!-- Kich thuoc chan tru Ly -->
                             <TextBlock Grid.Row="1" Grid.Column="0" Text="Kích thước chân trụ (Ly):" VerticalAlignment="Center" Margin="0,0,0,8" FontWeight="Bold" Foreground="#8E44AD"/>
-                            <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Model.Ly, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Model.Ly, UpdateSourceTrigger=PropertyChanged, Delay=800}" VerticalAlignment="Center" Margin="0,0,0,8"/>
                             <TextBlock Grid.Row="1" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
                             
                             <!-- Kich thuoc mong B -->
                             <TextBlock Grid.Row="2" Grid.Column="0" Text="Bề rộng móng (B):" VerticalAlignment="Center" Margin="0,0,0,8" FontWeight="Bold" Foreground="#2980B9"/>
-                            <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Model.TotalWidth, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Model.TotalWidth, UpdateSourceTrigger=PropertyChanged, Delay=800}" VerticalAlignment="Center" Margin="0,0,0,8"/>
                             <TextBlock Grid.Row="2" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
                             
                             <!-- Kich thuoc mong L -->
                             <TextBlock Grid.Row="3" Grid.Column="0" Text="Chiều dài móng (L):" VerticalAlignment="Center" Margin="0,0,0,8" FontWeight="Bold" Foreground="#2980B9"/>
-                            <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding Model.TotalLength, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding Model.TotalLength, UpdateSourceTrigger=PropertyChanged, Delay=800}" VerticalAlignment="Center" Margin="0,0,0,8"/>
                             <TextBlock Grid.Row="3" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
 
                             <!-- Chieu cao mong H -->
                             <TextBlock Grid.Row="4" Grid.Column="0" Text="Chiều cao móng (H):" VerticalAlignment="Center" Margin="0,0,0,8"/>
-                            <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding Model.Depth, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding Model.Depth, UpdateSourceTrigger=PropertyChanged, Delay=800}" VerticalAlignment="Center" Margin="0,0,0,8"/>
                             <TextBlock Grid.Row="4" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
 
                             <!-- Dam mong a -->
                             <TextBlock Grid.Row="5" Grid.Column="0" Text="Bề rộng dầm móng (a):" VerticalAlignment="Center" Margin="0,0,0,8" FontWeight="Bold"/>
-                            <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding Model.RibWidth, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding Model.RibWidth, UpdateSourceTrigger=PropertyChanged, Delay=800}" VerticalAlignment="Center" Margin="0,0,0,8"/>
                             <TextBlock Grid.Row="5" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
                             
                             <!-- Dam mong h -->
                             <TextBlock Grid.Row="6" Grid.Column="0" Text="Chiều cao dầm móng (h):" VerticalAlignment="Center" Margin="0,0,0,8" FontWeight="Bold"/>
-                            <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding Model.RibHeight, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding Model.RibHeight, UpdateSourceTrigger=PropertyChanged, Delay=800}" VerticalAlignment="Center" Margin="0,0,0,8"/>
                             <TextBlock Grid.Row="6" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
 
                             <!-- Ban mong h1 -->
                             <TextBlock Grid.Row="7" Grid.Column="0" Text="Chiều dày bản móng (h1):" VerticalAlignment="Center" Margin="0,0,0,8" FontWeight="Bold"/>
-                            <TextBox Grid.Row="7" Grid.Column="1" Text="{Binding Model.SlabThickness, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBox Grid.Row="7" Grid.Column="1" Text="{Binding Model.SlabThickness, UpdateSourceTrigger=PropertyChanged, Delay=800}" VerticalAlignment="Center" Margin="0,0,0,8"/>
                             <TextBlock Grid.Row="7" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
                             
                             <!-- Ban mong c -->
                             <TextBlock Grid.Row="8" Grid.Column="0" Text="Kích thước đục lỗ (c):" VerticalAlignment="Center" Margin="0,0,0,8" FontWeight="Bold"/>
-                            <TextBox Grid.Row="8" Grid.Column="1" Text="{Binding Model.HoleSize, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBox Grid.Row="8" Grid.Column="1" Text="{Binding Model.HoleSize, UpdateSourceTrigger=PropertyChanged, Delay=800}" VerticalAlignment="Center" Margin="0,0,0,8"/>
                             <TextBlock Grid.Row="8" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
 
                             <!-- Co mong b1 -->
                             <TextBlock Grid.Row="9" Grid.Column="0" Text="Bề rộng cổ móng (b1):" VerticalAlignment="Center" Margin="0,0,0,8" FontWeight="Bold"/>
-                            <TextBox Grid.Row="9" Grid.Column="1" Text="{Binding Model.B1, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBox Grid.Row="9" Grid.Column="1" Text="{Binding Model.B1, UpdateSourceTrigger=PropertyChanged, Delay=800}" VerticalAlignment="Center" Margin="0,0,0,8"/>
                             <TextBlock Grid.Row="9" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
                             
                             <!-- Co mong b2 -->
                             <TextBlock Grid.Row="10" Grid.Column="0" Text="Chiều dài cổ móng (b2):" VerticalAlignment="Center" Margin="0,0,0,8" FontWeight="Bold"/>
-                            <TextBox Grid.Row="10" Grid.Column="1" Text="{Binding Model.B2, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBox Grid.Row="10" Grid.Column="1" Text="{Binding Model.B2, UpdateSourceTrigger=PropertyChanged, Delay=800}" VerticalAlignment="Center" Margin="0,0,0,8"/>
                             <TextBlock Grid.Row="10" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
                         </Grid>
                     </Expander>
@@ -143,29 +144,24 @@
 
         <!-- RIGHT PANEL: VIEWPORTS -->
         <Grid Grid.Column="2" Background="#E5E8E8" Margin="5">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="4"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="4"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <!-- TOP-LEFT: PLAN VIEW -->
-            <Border Grid.Row="0" Grid.Column="0" Background="White" CornerRadius="5" Padding="5" Margin="2">
+            <!-- LEFT: PLAN VIEW -->
+            <Border Grid.Column="0" Background="White" CornerRadius="5" Padding="5" Margin="2">
                 <Grid>
                     <TextBlock Text="{Binding Path=Strings[PlanView], Source={x:Static loc:LocalizationService.Instance}}" FontWeight="Bold" Foreground="#2C3E50" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5" Panel.ZIndex="1"/>
                     <Canvas x:Name="PlanCanvas" ClipToBounds="True" Background="#F8FAFC" SizeChanged="DrawingCanvas_SizeChanged"/>
                 </Grid>
             </Border>
 
-            <GridSplitter Grid.Row="0" Grid.Column="1" Grid.RowSpan="3" Width="4" HorizontalAlignment="Stretch" Background="Transparent"/>
+            <GridSplitter Grid.Column="1" Width="4" HorizontalAlignment="Stretch" Background="Transparent"/>
 
-            <!-- TOP-RIGHT: 3D VIEWPORT -->
-            <Border Grid.Row="0" Grid.Column="2" Background="White" CornerRadius="5" Padding="5" Margin="2" MouseLeftButtonDown="Viewport3D_MouseLeftButtonDown" MouseLeftButtonUp="Viewport3D_MouseLeftButtonUp" MouseMove="Viewport3D_MouseMove" ClipToBounds="True">
+            <!-- RIGHT: 3D VIEWPORT -->
+            <Border Grid.Column="2" Background="White" CornerRadius="5" Padding="5" Margin="2" MouseLeftButtonDown="Viewport3D_MouseLeftButtonDown" MouseLeftButtonUp="Viewport3D_MouseLeftButtonUp" MouseMove="Viewport3D_MouseMove" ClipToBounds="True">
                 <Grid>
                     <TextBlock Text="{Binding Path=Strings[View3D], Source={x:Static loc:LocalizationService.Instance}}" FontWeight="Bold" Foreground="#2C3E50" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5" Panel.ZIndex="1"/>
                     <Viewport3D x:Name="MainViewport3D">
@@ -193,24 +189,6 @@
                             </ModelVisual3D.Content>
                         </ModelVisual3D>
                     </Viewport3D>
-                </Grid>
-            </Border>
-
-            <GridSplitter Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Height="4" HorizontalAlignment="Stretch" Background="Transparent"/>
-
-            <!-- BOTTOM-LEFT: SECTION X -->
-            <Border Grid.Row="2" Grid.Column="0" Background="White" CornerRadius="5" Padding="5" Margin="2">
-                <Grid>
-                    <TextBlock Text="{Binding Path=Strings[SectionX], Source={x:Static loc:LocalizationService.Instance}}" FontWeight="Bold" Foreground="#2C3E50" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5" Panel.ZIndex="1"/>
-                    <Canvas x:Name="SectionXCanvas" ClipToBounds="True" Background="#F8FAFC" SizeChanged="DrawingCanvas_SizeChanged"/>
-                </Grid>
-            </Border>
-
-            <!-- BOTTOM-RIGHT: SECTION Y -->
-            <Border Grid.Row="2" Grid.Column="2" Background="White" CornerRadius="5" Padding="5" Margin="2">
-                <Grid>
-                    <TextBlock Text="{Binding Path=Strings[SectionY], Source={x:Static loc:LocalizationService.Instance}}" FontWeight="Bold" Foreground="#2C3E50" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5" Panel.ZIndex="1"/>
-                    <Canvas x:Name="SectionYCanvas" ClipToBounds="True" Background="#F8FAFC" SizeChanged="DrawingCanvas_SizeChanged"/>
                 </Grid>
             </Border>
         </Grid>
