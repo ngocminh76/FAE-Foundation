@@ -61,10 +61,7 @@ def main():
         # Loại bỏ các link trùng lặp
         all_links = list(set(all_links))
         
-        # GIỚI HẠN: Chạy 50 link đầu tiên để test
-        all_links = all_links[:50]
-        
-        print(f"\n[CHẾ ĐỘ TEST] Tổng số link cần trích xuất: {len(all_links)} công văn.")
+        print(f"\nTổng số link cần trích xuất: {len(all_links)} công văn. Quá trình này sẽ mất khá nhiều thời gian.")
         
         master_gia_co_so = []
         master_gia_the_gioi = []
@@ -132,15 +129,20 @@ def main():
                 with pd.ExcelWriter(output_file, engine='openpyxl') as writer:
                     if master_gia_co_so:
                         df_gia_co_so = pd.concat(master_gia_co_so, ignore_index=True)
-                        # Sửa lỗi 2: Tạm thời không xóa các dòng header để bạn có thể nhìn thấy tên cột là gì
-                        # df_gia_co_so = df_gia_co_so[~df_gia_co_so.iloc[:, 1].astype(str).str.contains(r'Mặt hàng|^\(\d+\)$|^nan$', regex=True, na=False, case=False)]
+                        # Dọn dẹp các dòng tiêu đề lặp lại
+                        if len(df_gia_co_so.columns) > 1:
+                            df_gia_co_so = df_gia_co_so[~df_gia_co_so.iloc[:, 1].astype(str).str.contains(r'Mặt hàng|^\(\d+\)$|^nan$', regex=True, na=False, case=False)]
                         df_gia_co_so.to_excel(writer, sheet_name="GiaCoSo", index=False)
                     else:
                         pd.DataFrame().to_excel(writer, sheet_name="GiaCoSo")
                         
                     if master_gia_the_gioi:
                         df_gia_the_gioi = pd.concat(master_gia_the_gioi, ignore_index=True)
-                        # Tạm thời không xóa header
+                        # Dọn dẹp các dòng tiêu đề lặp lại
+                        if len(df_gia_the_gioi.columns) > 0:
+                            df_gia_the_gioi = df_gia_the_gioi[~df_gia_the_gioi.iloc[:, 0].astype(str).str.contains(r'TT|^nan$', regex=True, na=False, case=False)]
+                        if len(df_gia_the_gioi.columns) > 1:
+                            df_gia_the_gioi = df_gia_the_gioi[~df_gia_the_gioi.iloc[:, 1].astype(str).str.contains(r'Ngày|^nan$', regex=True, na=False, case=False)]
                         df_gia_the_gioi.to_excel(writer, sheet_name="GiaTheGioi", index=False)
                     else:
                         pd.DataFrame().to_excel(writer, sheet_name="GiaTheGioi")

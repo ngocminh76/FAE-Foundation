@@ -18,8 +18,8 @@ namespace FAE.Foundation.App.Features.RibbedRaft.Drawers
             double B_mong = foundation.TotalWidth;
             
             // Allocate space for dimensions and axes (about 3-4m on right and bottom)
-            double mathWidth = Math.Max(15.0, L_mong + 6.0);
-            double mathHeight = Math.Max(15.0, B_mong + 6.0);
+            double mathWidth = Math.Max(15.0, L_mong + 8.0);
+            double mathHeight = Math.Max(15.0, B_mong + 8.0);
 
             double scaleX = canvas.ActualWidth / mathWidth;
             double scaleY = canvas.ActualHeight / mathHeight;
@@ -111,18 +111,16 @@ namespace FAE.Foundation.App.Features.RibbedRaft.Drawers
                 canvas.Children.Add(axis);
 
                 Ellipse circle = new Ellipse { Width = 20, Height = 20, Stroke = Brushes.Black, StrokeThickness = 1, Fill = Brushes.White };
-                double cx = label == "A" || label == "B" ? WX(x1) - 25 : WX(x2) + 10;
-                double cy = label == "1" || label == "2" ? WY(y1) - 25 : WY(y2) + 10;
-
-                if (label == "A" || label == "B") // Vertical axes
+                
+                if (label == "A" || label == "B") // Vertical axes (circles at bottom)
                 {
-                    Canvas.SetLeft(circle, WX(x1) - 10);
-                    Canvas.SetTop(circle, WY(y2) - 30);
+                    Canvas.SetLeft(circle, WX(x2) - 10);
+                    Canvas.SetTop(circle, WY(y2) - 10);
                 }
-                else // Horizontal axes
+                else // Horizontal axes (circles at right)
                 {
-                    Canvas.SetLeft(circle, WX(x2) + 10);
-                    Canvas.SetTop(circle, WY(y1) - 10);
+                    Canvas.SetLeft(circle, WX(x2) - 10);
+                    Canvas.SetTop(circle, WY(y2) - 10);
                 }
                 
                 canvas.Children.Add(circle);
@@ -130,21 +128,21 @@ namespace FAE.Foundation.App.Features.RibbedRaft.Drawers
                 TextBlock txt = new TextBlock { Text = label, FontSize = 12, FontWeight = FontWeights.Bold, Foreground = Brushes.Black };
                 if (label == "A" || label == "B")
                 {
-                    Canvas.SetLeft(txt, WX(x1) - 4);
-                    Canvas.SetTop(txt, WY(y2) - 26);
+                    Canvas.SetLeft(txt, WX(x2) - 4);
+                    Canvas.SetTop(txt, WY(y2) - 8);
                 }
                 else
                 {
-                    Canvas.SetLeft(txt, WX(x2) + 16);
-                    Canvas.SetTop(txt, WY(y1) - 8);
+                    Canvas.SetLeft(txt, WX(x2) - 4);
+                    Canvas.SetTop(txt, WY(y2) - 8);
                 }
                 canvas.Children.Add(txt);
             };
 
-            DrawAxis(x_tam_trai, B_mong/2 + 0.5, x_tam_trai, -B_mong/2 - 1.5, "A");
-            DrawAxis(x_tam_phai, B_mong/2 + 0.5, x_tam_phai, -B_mong/2 - 1.5, "B");
-            DrawAxis(-L_mong/2 - 0.5, y_tam_top, L_mong/2 + 1.5, y_tam_top, "1");
-            DrawAxis(-L_mong/2 - 0.5, y_tam_bot, L_mong/2 + 1.5, y_tam_bot, "2");
+            DrawAxis(x_tam_trai, B_mong/2 + 0.5, x_tam_trai, -B_mong/2 - 3.5, "A");
+            DrawAxis(x_tam_phai, B_mong/2 + 0.5, x_tam_phai, -B_mong/2 - 3.5, "B");
+            DrawAxis(-L_mong/2 - 0.5, y_tam_top, L_mong/2 + 3.5, y_tam_top, "1");
+            DrawAxis(-L_mong/2 - 0.5, y_tam_bot, L_mong/2 + 3.5, y_tam_bot, "2");
 
             // 6. Dimensions
             Action<double, double, double, double, string, bool> DrawDim = (x1, y1, x2, y2, text, isVertical) => {
@@ -168,33 +166,33 @@ namespace FAE.Foundation.App.Features.RibbedRaft.Drawers
                 if (isVertical)
                 {
                     txt.RenderTransform = new RotateTransform(-90);
-                    Canvas.SetLeft(txt, WX(x1) - 5);
-                    Canvas.SetTop(txt, WY((y1+y2)/2) + 10);
+                    Canvas.SetLeft(txt, WX(x1) - 18);
+                    Canvas.SetTop(txt, WY((y1+y2)/2) + 12);
                 }
                 else
                 {
-                    Canvas.SetLeft(txt, WX((x1+x2)/2) - 10);
-                    Canvas.SetTop(txt, WY(y1) - 20);
+                    Canvas.SetLeft(txt, WX((x1+x2)/2) - 12);
+                    Canvas.SetTop(txt, WY(y1) - 18);
                 }
                 canvas.Children.Add(txt);
             };
 
             // Bottom dimensions (Horizontal)
-            double dimY = -B_mong/2 - 1.0;
+            double dimY = -B_mong/2 - 1.2;
             DrawDim(-L_mong/2, dimY, x_tam_trai, dimY, foundation.ConsLX.ToString("F2"), false);
             DrawDim(x_tam_trai, dimY, x_tam_phai, dimY, foundation.SpanX.ToString("F2"), false);
             DrawDim(x_tam_phai, dimY, L_mong/2, dimY, foundation.ConsRX.ToString("F2"), false);
 
-            double dimY2 = dimY - 1.0;
+            double dimY2 = dimY - 1.2;
             DrawDim(-L_mong/2, dimY2, L_mong/2, dimY2, foundation.TotalLength.ToString("F2"), false);
 
             // Right dimensions (Vertical)
-            double dimX = L_mong/2 + 1.0;
+            double dimX = L_mong/2 + 1.2;
             DrawDim(dimX, B_mong/2, dimX, y_tam_top, foundation.ConsTY.ToString("F2"), true);
             DrawDim(dimX, y_tam_top, dimX, y_tam_bot, foundation.SpanY.ToString("F2"), true);
             DrawDim(dimX, y_tam_bot, dimX, -B_mong/2, foundation.ConsBY.ToString("F2"), true);
 
-            double dimX2 = dimX + 1.0;
+            double dimX2 = dimX + 1.2;
             DrawDim(dimX2, B_mong/2, dimX2, -B_mong/2, foundation.TotalWidth.ToString("F2"), true);
             
             // Extension lines for dimensions
