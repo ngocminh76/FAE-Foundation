@@ -29,12 +29,9 @@
                     </Border>
                     
                     <!-- 1. THONG SO KICH THUOC -->
-                    <Expander Header="{Binding Path=Strings[InputParams], Source={x:Static loc:LocalizationService.Instance}}" IsExpanded="True" Margin="0,0,0,10">
+                    <Expander Header="Thông số kích thước móng" IsExpanded="True" Margin="0,0,0,10">
                         <Grid Margin="5,10,0,0">
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
@@ -50,96 +47,80 @@
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="70"/>
+                                <ColumnDefinition Width="50"/>
+                                <ColumnDefinition Width="15"/>
+                                <ColumnDefinition Width="50"/>
                                 <ColumnDefinition Width="30"/>
                             </Grid.ColumnDefinitions>
                             
-                            <TextBlock Grid.Row="0" Grid.Column="0" Text="Kích thước Trụ (Base Dimension)" VerticalAlignment="Center" Margin="0,0,0,8" FontWeight="Bold" Foreground="#8E44AD"/>
-                            <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Model.BaseDimension, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="0,0,0,8"/>
-                            <TextBlock Grid.Row="0" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
+                            <!-- Kich thuoc chan tru -->
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="Kích thước chân trụ (Lx, Ly):" VerticalAlignment="Center" Margin="0,0,0,8" FontWeight="Bold" Foreground="#8E44AD"/>
+                            <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Model.Lx, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBlock Grid.Row="0" Grid.Column="2" Text="x" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBox Grid.Row="0" Grid.Column="3" Text="{Binding Model.Ly, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBlock Grid.Row="0" Grid.Column="4" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
                             
-                            <TextBlock Grid.Row="1" Grid.Column="0" Text="Lỗ hổng giữa móng (Hole Size)" VerticalAlignment="Center" Margin="0,0,0,8" FontWeight="Bold" Foreground="#8E44AD"/>
-                            <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Model.HoleSize, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="0,0,0,8"/>
-                            <TextBlock Grid.Row="1" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
+                            <!-- Kich thuoc mong -->
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="Kích thước móng (B, L):" VerticalAlignment="Center" Margin="0,0,0,8" FontWeight="Bold" Foreground="#2980B9"/>
+                            <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Model.TotalWidth, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBlock Grid.Row="1" Grid.Column="2" Text="x" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding Model.TotalLength, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBlock Grid.Row="1" Grid.Column="4" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
 
-                            <TextBlock Grid.Row="2" Grid.Column="0" Text="{Binding Path=Strings[SpanX], Source={x:Static loc:LocalizationService.Instance}}" VerticalAlignment="Center" Margin="0,0,0,8" FontWeight="Bold"/>
-                            <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Model.SpanX, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="0,0,0,8"/>
-                            <TextBlock Grid.Row="2" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
+                            <!-- Chieu cao mong H -->
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="Chiều cao móng (H):" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Model.Depth, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="0,0,0,8" Grid.ColumnSpan="3"/>
+                            <TextBlock Grid.Row="2" Grid.Column="4" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
 
-                            <TextBlock Grid.Row="3" Grid.Column="0" Text="{Binding Path=Strings[ConsLX], Source={x:Static loc:LocalizationService.Instance}}" VerticalAlignment="Center" Margin="0,0,0,8"/>
-                            <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding Model.ConsLX, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="0,0,0,8"/>
-                            <TextBlock Grid.Row="3" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
+                            <!-- Dam mong a x h -->
+                            <TextBlock Grid.Row="3" Grid.Column="0" Text="Dầm móng (a, h):" VerticalAlignment="Center" Margin="0,0,0,8" FontWeight="Bold"/>
+                            <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding Model.RibWidth, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBlock Grid.Row="3" Grid.Column="2" Text="x" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBox Grid.Row="3" Grid.Column="3" Text="{Binding Model.RibHeight, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBlock Grid.Row="3" Grid.Column="4" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
 
-                            <TextBlock Grid.Row="4" Grid.Column="0" Text="{Binding Path=Strings[ConsRX], Source={x:Static loc:LocalizationService.Instance}}" VerticalAlignment="Center" Margin="0,0,0,8"/>
-                            <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding Model.ConsRX, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="0,0,0,8"/>
-                            <TextBlock Grid.Row="4" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
+                            <!-- Ban mong h1, c -->
+                            <TextBlock Grid.Row="4" Grid.Column="0" Text="Bản móng (h1, lỗ c):" VerticalAlignment="Center" Margin="0,0,0,8" FontWeight="Bold"/>
+                            <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding Model.SlabThickness, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBlock Grid.Row="4" Grid.Column="2" Text="-" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBox Grid.Row="4" Grid.Column="3" Text="{Binding Model.HoleSize, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBlock Grid.Row="4" Grid.Column="4" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
 
-                            <TextBlock Grid.Row="5" Grid.Column="0" Text="{Binding Path=Strings[TotalLength], Source={x:Static loc:LocalizationService.Instance}}" VerticalAlignment="Center" Margin="0,0,0,8" Foreground="DarkRed"/>
-                            <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding Model.TotalLength, StringFormat=F2}" VerticalAlignment="Center" Margin="0,0,0,8" FontWeight="Bold" Foreground="DarkRed"/>
-                            <TextBlock Grid.Row="5" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8" Foreground="DarkRed"/>
-
-                            <TextBlock Grid.Row="6" Grid.Column="0" Text="{Binding Path=Strings[SpanY], Source={x:Static loc:LocalizationService.Instance}}" VerticalAlignment="Center" Margin="0,0,0,8" FontWeight="Bold"/>
-                            <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding Model.SpanY, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="0,0,0,8"/>
-                            <TextBlock Grid.Row="6" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
-
-                            <TextBlock Grid.Row="7" Grid.Column="0" Text="{Binding Path=Strings[ConsTY], Source={x:Static loc:LocalizationService.Instance}}" VerticalAlignment="Center" Margin="0,0,0,8"/>
-                            <TextBox Grid.Row="7" Grid.Column="1" Text="{Binding Model.ConsTY, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="0,0,0,8"/>
-                            <TextBlock Grid.Row="7" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
-
-                            <TextBlock Grid.Row="8" Grid.Column="0" Text="{Binding Path=Strings[ConsBY], Source={x:Static loc:LocalizationService.Instance}}" VerticalAlignment="Center" Margin="0,0,0,8"/>
-                            <TextBox Grid.Row="8" Grid.Column="1" Text="{Binding Model.ConsBY, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="0,0,0,8"/>
-                            <TextBlock Grid.Row="8" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
-
-                            <TextBlock Grid.Row="9" Grid.Column="0" Text="{Binding Path=Strings[TotalWidth], Source={x:Static loc:LocalizationService.Instance}}" VerticalAlignment="Center" Margin="0,0,0,8" Foreground="DarkRed"/>
-                            <TextBlock Grid.Row="9" Grid.Column="1" Text="{Binding Model.TotalWidth, StringFormat=F2}" VerticalAlignment="Center" Margin="0,0,0,8" FontWeight="Bold" Foreground="DarkRed"/>
-                            <TextBlock Grid.Row="9" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8" Foreground="DarkRed"/>
-                            
-                            <TextBlock Grid.Row="10" Grid.Column="0" Text="{Binding Path=Strings[SlabThickness], Source={x:Static loc:LocalizationService.Instance}}" VerticalAlignment="Center" Margin="0,0,0,8"/>
-                            <TextBox Grid.Row="10" Grid.Column="1" Text="{Binding Model.SlabThickness, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="0,0,0,8"/>
-                            <TextBlock Grid.Row="10" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
-
-                            <TextBlock Grid.Row="11" Grid.Column="0" Text="{Binding Path=Strings[RibWidth], Source={x:Static loc:LocalizationService.Instance}}" VerticalAlignment="Center" Margin="0,0,0,8"/>
-                            <TextBox Grid.Row="11" Grid.Column="1" Text="{Binding Model.RibWidth, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="0,0,0,8"/>
-                            <TextBlock Grid.Row="11" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
-                            
-                            <TextBlock Grid.Row="12" Grid.Column="0" Text="{Binding Path=Strings[RibHeight], Source={x:Static loc:LocalizationService.Instance}}" VerticalAlignment="Center" Margin="0,0,0,8"/>
-                            <TextBox Grid.Row="12" Grid.Column="1" Text="{Binding Model.RibHeight, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="0,0,0,8"/>
-                            <TextBlock Grid.Row="12" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
-                            
-                            <TextBlock Grid.Row="13" Grid.Column="0" Text="{Binding Path=Strings[ColWidth], Source={x:Static loc:LocalizationService.Instance}}" VerticalAlignment="Center" Margin="0,0,0,8"/>
-                            <TextBox Grid.Row="13" Grid.Column="1" Text="{Binding Model.ColumnWidth, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="0,0,0,8"/>
-                            <TextBlock Grid.Row="13" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
-                            
-                            <TextBlock Grid.Row="14" Grid.Column="0" Text="{Binding Path=Strings[Depth], Source={x:Static loc:LocalizationService.Instance}}" VerticalAlignment="Center" Margin="0,0,0,8"/>
-                            <TextBox Grid.Row="14" Grid.Column="1" Text="{Binding Model.Depth, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="0,0,0,8"/>
-                            <TextBlock Grid.Row="14" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
+                            <!-- Co mong b1, b2 -->
+                            <TextBlock Grid.Row="5" Grid.Column="0" Text="Cổ móng (b1, b2):" VerticalAlignment="Center" Margin="0,0,0,8" FontWeight="Bold"/>
+                            <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding Model.B1, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBlock Grid.Row="5" Grid.Column="2" Text="x" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBox Grid.Row="5" Grid.Column="3" Text="{Binding Model.B2, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBlock Grid.Row="5" Grid.Column="4" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
                         </Grid>
                     </Expander>
                     
-                    <!-- 2. MOI TRUONG -->
-                    <Expander Header="{Binding Path=Strings[EnvParams], Source={x:Static loc:LocalizationService.Instance}}" IsExpanded="True" Margin="0,0,0,10">
-                        <StackPanel Margin="5,10,0,0">
-                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                <CheckBox Content="{Binding Path=Strings[HasSand], Source={x:Static loc:LocalizationService.Instance}}" IsChecked="{Binding Model.HasSandCushion}" VerticalAlignment="Center" Width="180"/>
-                                <TextBlock Text="{Binding Path=Strings[Thick], Source={x:Static loc:LocalizationService.Instance}}" VerticalAlignment="Center" Margin="10,0,5,0"/>
-                                <TextBox Text="{Binding Model.SandThickness, UpdateSourceTrigger=PropertyChanged}" Width="50" VerticalAlignment="Center"/>
-                                <TextBlock Text="m" VerticalAlignment="Center" Margin="5,0,0,0"/>
-                            </StackPanel>
+                    <!-- KET QUA TINH TOAN -->
+                    <Expander Header="Kết quả tính toán" IsExpanded="True" Margin="0,0,0,10">
+                        <Grid Margin="5,10,0,0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="40"/>
+                            </Grid.ColumnDefinitions>
                             
-                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                <CheckBox Content="{Binding Path=Strings[HasMound], Source={x:Static loc:LocalizationService.Instance}}" IsChecked="{Binding Model.HasMound}" VerticalAlignment="Center" Width="180"/>
-                                <TextBlock Text="{Binding Path=Strings[High], Source={x:Static loc:LocalizationService.Instance}}" VerticalAlignment="Center" Margin="10,0,5,0"/>
-                                <TextBox Text="{Binding Model.MoundHeight, UpdateSourceTrigger=PropertyChanged}" Width="50" VerticalAlignment="Center"/>
-                                <TextBlock Text="m" VerticalAlignment="Center" Margin="5,0,0,0"/>
-                            </StackPanel>
-                            
-                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                <CheckBox Content="{Binding Path=Strings[HasWater], Source={x:Static loc:LocalizationService.Instance}}" IsChecked="{Binding Model.HasGroundwater}" VerticalAlignment="Center" Width="180"/>
-                                <TextBlock Text="{Binding Path=Strings[Elev], Source={x:Static loc:LocalizationService.Instance}}" VerticalAlignment="Center" Margin="10,0,5,0"/>
-                                <TextBox Text="{Binding Model.GroundwaterElev, UpdateSourceTrigger=PropertyChanged}" Width="50" VerticalAlignment="Center"/>
-                                <TextBlock Text="m" VerticalAlignment="Center" Margin="5,0,0,0"/>
-                            </StackPanel>
-                        </StackPanel>
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="Diện tích đáy móng (F):" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Model.FoundationArea, StringFormat=F2}" FontWeight="Bold" Foreground="#16A085" VerticalAlignment="Center" Margin="0,0,0,8" HorizontalAlignment="Right"/>
+                            <TextBlock Grid.Row="0" Grid.Column="2" Text="m²" VerticalAlignment="Center" Margin="5,0,0,8"/>
+
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="Mômen kháng đáy móng Wx:" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Model.Wx, StringFormat=F2}" FontWeight="Bold" Foreground="#E67E22" VerticalAlignment="Center" Margin="0,0,0,8" HorizontalAlignment="Right"/>
+                            <TextBlock Grid.Row="1" Grid.Column="2" Text="m³" VerticalAlignment="Center" Margin="5,0,0,8"/>
+
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="Mômen kháng đáy móng Wy:" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Model.Wy, StringFormat=F2}" FontWeight="Bold" Foreground="#E67E22" VerticalAlignment="Center" Margin="0,0,0,8" HorizontalAlignment="Right"/>
+                            <TextBlock Grid.Row="2" Grid.Column="2" Text="m³" VerticalAlignment="Center" Margin="5,0,0,8"/>
+                        </Grid>
                     </Expander>
                 </StackPanel>
             </ScrollViewer>

@@ -52,18 +52,16 @@ namespace FAE.Foundation.App.Features.RibbedRaft
             // Default Initialization
             Model = new RibbedRaftModel
             {
-                BaseDimension = 5.0,
-                HoleSize = 1.3, // Math.Round(5.0 / 4, 1)
-                SpanX = 5.0,
-                ConsLX = 2.5,
-                ConsRX = 2.5,
-                SpanY = 5.0,
-                ConsTY = 1.5,
-                ConsBY = 1.5,
-                SlabThickness = 0.4,
-                RibWidth = 0.4,
-                RibHeight = 0.4,
-                ColumnWidth = 0.6,
+                Lx = 9.0,
+                Ly = 9.0,
+                TotalLength = 18.0,
+                TotalWidth = 18.0,
+                HoleSize = 2.3, // Math.Round(9.0 / 4, 1)
+                SlabThickness = 0.6,
+                RibWidth = 0.6,
+                RibHeight = 1.2,
+                B1 = 1.2,
+                B2 = 1.2,
                 Depth = 3.5,
                 HasSandCushion = true,
                 SandThickness = 0.5,

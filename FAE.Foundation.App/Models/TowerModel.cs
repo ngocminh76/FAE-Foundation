@@ -78,16 +78,15 @@ namespace FAE.Foundation.App.Models
             // Create a default foundation model
             Foundation = new RibbedRaftModel
             {
-                SpanX = 5.0,
-                ConsLX = 1.5,
-                ConsRX = 1.5,
-                SpanY = 5.0,
-                ConsTY = 1.5,
-                ConsBY = 1.5,
+                Lx = 5.0,
+                Ly = 5.0,
+                TotalLength = 8.0,
+                TotalWidth = 8.0,
                 SlabThickness = 0.4,
                 RibWidth = 0.4,
                 RibHeight = 0.4,
-                ColumnWidth = 0.6,
+                B1 = 0.6,
+                B2 = 0.6,
                 Depth = 3.5,
                 HasSandCushion = true,
                 SandThickness = 0.5,

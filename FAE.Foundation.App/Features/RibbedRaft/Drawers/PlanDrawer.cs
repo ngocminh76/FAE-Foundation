@@ -1,4 +1,5 @@
 using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
@@ -16,15 +17,17 @@ namespace FAE.Foundation.App.Features.RibbedRaft.Drawers
             double L_mong = foundation.TotalLength;
             double B_mong = foundation.TotalWidth;
             
-            double mathWidth = Math.Max(15.0, L_mong + 4.0);
-            double mathHeight = Math.Max(15.0, B_mong + 4.0);
+            // Allocate space for dimensions and axes (about 3-4m on right and bottom)
+            double mathWidth = Math.Max(15.0, L_mong + 6.0);
+            double mathHeight = Math.Max(15.0, B_mong + 6.0);
 
             double scaleX = canvas.ActualWidth / mathWidth;
             double scaleY = canvas.ActualHeight / mathHeight;
-            double scale = Math.Min(scaleX, scaleY) * 0.95;
+            double scale = Math.Min(scaleX, scaleY) * 0.9;
 
-            double offsetX = canvas.ActualWidth / 2.0;
-            double offsetY = canvas.ActualHeight / 2.0;
+            // Shift drawing up and left slightly to make room for dimensions at bottom/right
+            double offsetX = canvas.ActualWidth / 2.0 - scale * 1.5;
+            double offsetY = canvas.ActualHeight / 2.0 - scale * 1.5;
 
             double WX(double x) => offsetX + x * scale;
             double WY(double y) => offsetY - y * scale;
@@ -70,13 +73,15 @@ namespace FAE.Foundation.App.Features.RibbedRaft.Drawers
 
             // 4. Columns (4 corners)
             Action<double, double> DrawCol = (cx, cy) => {
-                Rectangle col = new Rectangle { Width = S(foundation.ColumnWidth), Height = S(foundation.ColumnWidth), Fill = colBrush, Stroke = Brushes.Black, StrokeThickness = 2 };
-                Canvas.SetLeft(col, WX(cx - foundation.ColumnWidth/2));
-                Canvas.SetTop(col, WY(cy + foundation.ColumnWidth/2));
+                double w = foundation.B1;
+                double h = foundation.B2;
+                Rectangle col = new Rectangle { Width = S(w), Height = S(h), Fill = colBrush, Stroke = Brushes.Black, StrokeThickness = 2 };
+                Canvas.SetLeft(col, WX(cx - w/2));
+                Canvas.SetTop(col, WY(cy + h/2));
                 canvas.Children.Add(col);
 
-                Line l1 = new Line { X1 = WX(cx - foundation.ColumnWidth/2), Y1 = WY(cy + foundation.ColumnWidth/2), X2 = WX(cx + foundation.ColumnWidth/2), Y2 = WY(cy - foundation.ColumnWidth/2), Stroke = Brushes.White, StrokeThickness = 1 };
-                Line l2 = new Line { X1 = WX(cx - foundation.ColumnWidth/2), Y1 = WY(cy - foundation.ColumnWidth/2), X2 = WX(cx + foundation.ColumnWidth/2), Y2 = WY(cy + foundation.ColumnWidth/2), Stroke = Brushes.White, StrokeThickness = 1 };
+                Line l1 = new Line { X1 = WX(cx - w/2), Y1 = WY(cy + h/2), X2 = WX(cx + w/2), Y2 = WY(cy - h/2), Stroke = Brushes.White, StrokeThickness = 1 };
+                Line l2 = new Line { X1 = WX(cx - w/2), Y1 = WY(cy - h/2), X2 = WX(cx + w/2), Y2 = WY(cy + h/2), Stroke = Brushes.White, StrokeThickness = 1 };
                 canvas.Children.Add(l1);
                 canvas.Children.Add(l2);
             };
@@ -100,11 +105,114 @@ namespace FAE.Foundation.App.Features.RibbedRaft.Drawers
                 canvas.Children.Add(hl2);
             }
 
-            // 5. Centerlines
-            Line clX = new Line { X1 = WX(-L_mong/2 - 1), Y1 = WY(0), X2 = WX(L_mong/2 + 1), Y2 = WY(0), Stroke = Brushes.Red, StrokeThickness = 1, StrokeDashArray = new DoubleCollection { 10, 2, 2, 2 } };
-            Line clY = new Line { X1 = WX(0), Y1 = WY(B_mong/2 + 1), X2 = WX(0), Y2 = WY(-B_mong/2 - 1), Stroke = Brushes.Red, StrokeThickness = 1, StrokeDashArray = new DoubleCollection { 10, 2, 2, 2 } };
-            canvas.Children.Add(clX);
-            canvas.Children.Add(clY);
+            // 5. Axes (Grid lines)
+            Action<double, double, double, double, string> DrawAxis = (x1, y1, x2, y2, label) => {
+                Line axis = new Line { X1 = WX(x1), Y1 = WY(y1), X2 = WX(x2), Y2 = WY(y2), Stroke = Brushes.Black, StrokeThickness = 1, StrokeDashArray = new DoubleCollection { 10, 2, 2, 2 } };
+                canvas.Children.Add(axis);
+
+                Ellipse circle = new Ellipse { Width = 20, Height = 20, Stroke = Brushes.Black, StrokeThickness = 1, Fill = Brushes.White };
+                double cx = label == "A" || label == "B" ? WX(x1) - 25 : WX(x2) + 10;
+                double cy = label == "1" || label == "2" ? WY(y1) - 25 : WY(y2) + 10;
+
+                if (label == "A" || label == "B") // Vertical axes
+                {
+                    Canvas.SetLeft(circle, WX(x1) - 10);
+                    Canvas.SetTop(circle, WY(y2) - 30);
+                }
+                else // Horizontal axes
+                {
+                    Canvas.SetLeft(circle, WX(x2) + 10);
+                    Canvas.SetTop(circle, WY(y1) - 10);
+                }
+                
+                canvas.Children.Add(circle);
+
+                TextBlock txt = new TextBlock { Text = label, FontSize = 12, FontWeight = FontWeights.Bold, Foreground = Brushes.Black };
+                if (label == "A" || label == "B")
+                {
+                    Canvas.SetLeft(txt, WX(x1) - 4);
+                    Canvas.SetTop(txt, WY(y2) - 26);
+                }
+                else
+                {
+                    Canvas.SetLeft(txt, WX(x2) + 16);
+                    Canvas.SetTop(txt, WY(y1) - 8);
+                }
+                canvas.Children.Add(txt);
+            };
+
+            DrawAxis(x_tam_trai, B_mong/2 + 0.5, x_tam_trai, -B_mong/2 - 1.5, "A");
+            DrawAxis(x_tam_phai, B_mong/2 + 0.5, x_tam_phai, -B_mong/2 - 1.5, "B");
+            DrawAxis(-L_mong/2 - 0.5, y_tam_top, L_mong/2 + 1.5, y_tam_top, "1");
+            DrawAxis(-L_mong/2 - 0.5, y_tam_bot, L_mong/2 + 1.5, y_tam_bot, "2");
+
+            // 6. Dimensions
+            Action<double, double, double, double, string, bool> DrawDim = (x1, y1, x2, y2, text, isVertical) => {
+                Line dline = new Line { X1 = WX(x1), Y1 = WY(y1), X2 = WX(x2), Y2 = WY(y2), Stroke = Brushes.Black, StrokeThickness = 1 };
+                canvas.Children.Add(dline);
+                
+                // Ticks
+                double tickSize = 4 / scale;
+                if (isVertical)
+                {
+                    canvas.Children.Add(new Line { X1 = WX(x1 - tickSize), Y1 = WY(y1 + tickSize), X2 = WX(x1 + tickSize), Y2 = WY(y1 - tickSize), Stroke = Brushes.Black, StrokeThickness = 1 });
+                    canvas.Children.Add(new Line { X1 = WX(x2 - tickSize), Y1 = WY(y2 + tickSize), X2 = WX(x2 + tickSize), Y2 = WY(y2 - tickSize), Stroke = Brushes.Black, StrokeThickness = 1 });
+                }
+                else
+                {
+                    canvas.Children.Add(new Line { X1 = WX(x1 - tickSize), Y1 = WY(y1 - tickSize), X2 = WX(x1 + tickSize), Y2 = WY(y1 + tickSize), Stroke = Brushes.Black, StrokeThickness = 1 });
+                    canvas.Children.Add(new Line { X1 = WX(x2 - tickSize), Y1 = WY(y2 - tickSize), X2 = WX(x2 + tickSize), Y2 = WY(y2 + tickSize), Stroke = Brushes.Black, StrokeThickness = 1 });
+                }
+
+                TextBlock txt = new TextBlock { Text = text, FontSize = 12, Foreground = Brushes.Black };
+                if (isVertical)
+                {
+                    txt.RenderTransform = new RotateTransform(-90);
+                    Canvas.SetLeft(txt, WX(x1) - 5);
+                    Canvas.SetTop(txt, WY((y1+y2)/2) + 10);
+                }
+                else
+                {
+                    Canvas.SetLeft(txt, WX((x1+x2)/2) - 10);
+                    Canvas.SetTop(txt, WY(y1) - 20);
+                }
+                canvas.Children.Add(txt);
+            };
+
+            // Bottom dimensions (Horizontal)
+            double dimY = -B_mong/2 - 1.0;
+            DrawDim(-L_mong/2, dimY, x_tam_trai, dimY, foundation.ConsLX.ToString("F2"), false);
+            DrawDim(x_tam_trai, dimY, x_tam_phai, dimY, foundation.SpanX.ToString("F2"), false);
+            DrawDim(x_tam_phai, dimY, L_mong/2, dimY, foundation.ConsRX.ToString("F2"), false);
+
+            double dimY2 = dimY - 1.0;
+            DrawDim(-L_mong/2, dimY2, L_mong/2, dimY2, foundation.TotalLength.ToString("F2"), false);
+
+            // Right dimensions (Vertical)
+            double dimX = L_mong/2 + 1.0;
+            DrawDim(dimX, B_mong/2, dimX, y_tam_top, foundation.ConsTY.ToString("F2"), true);
+            DrawDim(dimX, y_tam_top, dimX, y_tam_bot, foundation.SpanY.ToString("F2"), true);
+            DrawDim(dimX, y_tam_bot, dimX, -B_mong/2, foundation.ConsBY.ToString("F2"), true);
+
+            double dimX2 = dimX + 1.0;
+            DrawDim(dimX2, B_mong/2, dimX2, -B_mong/2, foundation.TotalWidth.ToString("F2"), true);
+            
+            // Extension lines for dimensions
+            Action<double, double, double, double> DrawExt = (x1, y1, x2, y2) => {
+                canvas.Children.Add(new Line { X1 = WX(x1), Y1 = WY(y1), X2 = WX(x2), Y2 = WY(y2), Stroke = Brushes.Gray, StrokeThickness = 0.5 });
+            };
+            
+            // Bottom extensions
+            DrawExt(-L_mong/2, -B_mong/2, -L_mong/2, dimY2 - 0.2);
+            DrawExt(x_tam_trai, -B_mong/2, x_tam_trai, dimY - 0.2);
+            DrawExt(x_tam_phai, -B_mong/2, x_tam_phai, dimY - 0.2);
+            DrawExt(L_mong/2, -B_mong/2, L_mong/2, dimY2 - 0.2);
+            
+            // Right extensions
+            DrawExt(L_mong/2, B_mong/2, dimX2 + 0.2, B_mong/2);
+            DrawExt(L_mong/2, y_tam_top, dimX + 0.2, y_tam_top);
+            DrawExt(L_mong/2, y_tam_bot, dimX + 0.2, y_tam_bot);
+            DrawExt(L_mong/2, -B_mong/2, dimX2 + 0.2, -B_mong/2);
         }
     }
 }

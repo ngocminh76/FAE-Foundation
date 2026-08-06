@@ -159,16 +159,14 @@ namespace FAE.Foundation.App.Features.Project
                         if (cells.Length > 0 && double.TryParse(cells[0].Replace(",", ""), out double dim))
                         {
                             currentTower.BaseDimension = dim;
-                            currentTower.Foundation.BaseDimension = dim / 1000.0;
-                            currentTower.Foundation.SpanX = dim / 1000.0;
-                            currentTower.Foundation.SpanY = dim / 1000.0;
-                            currentTower.Foundation.HoleSize = Math.Round((dim / 1000.0) / 4.0, 1);
+                            double l_val = dim / 1000.0;
+                            currentTower.Foundation.Lx = l_val;
+                            currentTower.Foundation.Ly = l_val;
+                            currentTower.Foundation.HoleSize = Math.Round(l_val / 4.0, 1);
                             
-                            // Set Cons so TotalLength - TotalWidth = 2m
-                            currentTower.Foundation.ConsTY = 1.5;
-                            currentTower.Foundation.ConsBY = 1.5;
-                            currentTower.Foundation.ConsLX = 2.5;
-                            currentTower.Foundation.ConsRX = 2.5;
+                            // Set TotalLength - TotalWidth = 2m (as requested previously)
+                            currentTower.Foundation.TotalWidth = l_val + 3.0;
+                            currentTower.Foundation.TotalLength = l_val + 5.0;
                         }
                     }
                 }

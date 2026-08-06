@@ -6,96 +6,93 @@ namespace FAE.Foundation.App.Features.RibbedRaft
     {
         public override string FoundationType => "RibbedRaft";
 
-        // X Direction
-        private double _spanX;
-        public double SpanX
+        // --- New Inputs ---
+        
+        private double _lx;
+        public double Lx
         {
-            get => _spanX;
-            set { SetProperty(ref _spanX, value); OnPropertyChanged(nameof(TotalLength)); OnPropertyChanged(nameof(FoundationName)); }
+            get => _lx;
+            set { SetProperty(ref _lx, value); OnPropertyChanged(nameof(ConsLX)); OnPropertyChanged(nameof(ConsRX)); OnPropertyChanged(nameof(SpanX)); OnPropertyChanged(nameof(FoundationName)); }
         }
 
-        private double _consLX;
-        public double ConsLX
+        private double _ly;
+        public double Ly
         {
-            get => _consLX;
-            set { SetProperty(ref _consLX, value); OnPropertyChanged(nameof(TotalLength)); OnPropertyChanged(nameof(FoundationName)); }
+            get => _ly;
+            set { SetProperty(ref _ly, value); OnPropertyChanged(nameof(ConsTY)); OnPropertyChanged(nameof(ConsBY)); OnPropertyChanged(nameof(SpanY)); OnPropertyChanged(nameof(FoundationName)); }
         }
 
-        private double _consRX;
-        public double ConsRX
+        private double _totalLength;
+        public double TotalLength
         {
-            get => _consRX;
-            set { SetProperty(ref _consRX, value); OnPropertyChanged(nameof(TotalLength)); OnPropertyChanged(nameof(FoundationName)); }
+            get => _totalLength;
+            set { SetProperty(ref _totalLength, value); OnPropertyChanged(nameof(ConsLX)); OnPropertyChanged(nameof(ConsRX)); OnPropertyChanged(nameof(FoundationName)); OnPropertyChanged(nameof(FoundationArea)); OnPropertyChanged(nameof(Wx)); OnPropertyChanged(nameof(Wy)); }
         }
 
-        // Y Direction
-        private double _spanY;
-        public double SpanY
+        private double _totalWidth;
+        public double TotalWidth
         {
-            get => _spanY;
-            set { SetProperty(ref _spanY, value); OnPropertyChanged(nameof(TotalWidth)); OnPropertyChanged(nameof(FoundationName)); }
+            get => _totalWidth;
+            set { SetProperty(ref _totalWidth, value); OnPropertyChanged(nameof(ConsTY)); OnPropertyChanged(nameof(ConsBY)); OnPropertyChanged(nameof(FoundationName)); OnPropertyChanged(nameof(FoundationArea)); OnPropertyChanged(nameof(Wx)); OnPropertyChanged(nameof(Wy)); }
         }
 
-        private double _consTY;
-        public double ConsTY
-        {
-            get => _consTY;
-            set { SetProperty(ref _consTY, value); OnPropertyChanged(nameof(TotalWidth)); OnPropertyChanged(nameof(FoundationName)); }
-        }
+        // --- Computed Properties for Drawers ---
+        public double SpanX => Lx;
+        public double SpanY => Ly;
+        public double ConsLX => (TotalLength - Lx) / 2.0;
+        public double ConsRX => (TotalLength - Lx) / 2.0;
+        public double ConsTY => (TotalWidth - Ly) / 2.0;
+        public double ConsBY => (TotalWidth - Ly) / 2.0;
 
-        private double _consBY;
-        public double ConsBY
-        {
-            get => _consBY;
-            set { SetProperty(ref _consBY, value); OnPropertyChanged(nameof(TotalWidth)); OnPropertyChanged(nameof(FoundationName)); }
-        }
-
-        // Components
-        private double _baseDimension;
-        public double BaseDimension
-        {
-            get => _baseDimension;
-            set { SetProperty(ref _baseDimension, value); OnPropertyChanged(nameof(FoundationName)); }
-        }
-
+        // --- Other Inputs ---
         private double _holeSize;
         public double HoleSize
         {
             get => _holeSize;
-            set => SetProperty(ref _holeSize, value);
+            set { SetProperty(ref _holeSize, value); OnPropertyChanged(nameof(FoundationArea)); OnPropertyChanged(nameof(Wx)); OnPropertyChanged(nameof(Wy)); }
         }
 
-        public string FoundationName => $"MB{BaseDimension}-{TotalWidth}x{TotalLength}";
+        public string FoundationName => $"MB{Lx}-{TotalWidth}x{TotalLength}";
 
-        private double _slabThickness;
+        private double _slabThickness; // h1 or c in image? Image says h1 = 0.6, c = 2.3
         public double SlabThickness
         {
             get => _slabThickness;
             set => SetProperty(ref _slabThickness, value);
         }
 
-        private double _ribWidth;
+        private double _ribWidth; // a
         public double RibWidth
         {
             get => _ribWidth;
             set => SetProperty(ref _ribWidth, value);
         }
 
-        private double _ribHeight;
+        private double _ribHeight; // h
         public double RibHeight
         {
             get => _ribHeight;
             set => SetProperty(ref _ribHeight, value);
         }
 
-        private double _columnWidth;
-        public double ColumnWidth
+        private double _b1;
+        public double B1
         {
-            get => _columnWidth;
-            set => SetProperty(ref _columnWidth, value);
+            get => _b1;
+            set => SetProperty(ref _b1, value);
         }
 
-        private double _depth;
+        private double _b2;
+        public double B2
+        {
+            get => _b2;
+            set => SetProperty(ref _b2, value);
+        }
+        
+        // Keep ColumnWidth for compatibility with drawers, defaulting to B1
+        public double ColumnWidth => B1;
+
+        private double _depth; // H
         public double Depth
         {
             get => _depth;
@@ -144,17 +141,28 @@ namespace FAE.Foundation.App.Features.RibbedRaft
             set => SetProperty(ref _groundwaterElev, value);
         }
 
-        public double TotalLength => CalculateTotalLength();
-        public double TotalWidth => CalculateTotalWidth();
-
-        protected virtual double CalculateTotalLength()
+        // --- Calculated Values ---
+        public double FoundationArea => TotalLength * TotalWidth - HoleSize * HoleSize;
+        
+        // I = B*L^3/12 - c*c^3/12. Wx = I / (L/2)
+        public double Wx
         {
-            return SpanX + ConsLX + ConsRX;
+            get
+            {
+                if (TotalLength == 0) return 0;
+                double Ix = (TotalWidth * Math.Pow(TotalLength, 3) / 12.0) - (HoleSize * Math.Pow(HoleSize, 3) / 12.0);
+                return Math.Round(Ix / (TotalLength / 2.0), 1);
+            }
         }
 
-        protected virtual double CalculateTotalWidth()
+        public double Wy
         {
-            return SpanY + ConsTY + ConsBY;
+            get
+            {
+                if (TotalWidth == 0) return 0;
+                double Iy = (TotalLength * Math.Pow(TotalWidth, 3) / 12.0) - (HoleSize * Math.Pow(HoleSize, 3) / 12.0);
+                return Math.Round(Iy / (TotalWidth / 2.0), 1);
+            }
         }
     }
 }
