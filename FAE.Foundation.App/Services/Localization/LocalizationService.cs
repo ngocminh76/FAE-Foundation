@@ -92,8 +92,8 @@ namespace FAE.Foundation.App.Services.Localization
                     
                     {"BtnDesign", "THIẾT KẾ VÀ KIỂM TOÁN"},
                     {"PlanView", "MẶT BẰNG MÓNG (PLAN VIEW)"},
-                    {"SectionX", "MẶT CẮT PHƯƠNG X (SECTION X)"},
-                    {"SectionY", "MẶT CẮT PHƯƠNG Y (SECTION Y)"},
+                    {"SectionX", "MẶT CẮT X-X"},
+                    {"SectionY", "MẶT CẮT Y-Y"},
                     {"View3D", "MÔ HÌNH 3D (Kéo chuột để xoay)"}
                 };
             }
