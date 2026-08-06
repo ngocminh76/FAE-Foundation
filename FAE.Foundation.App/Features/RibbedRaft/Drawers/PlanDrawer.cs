@@ -211,6 +211,21 @@ namespace FAE.Foundation.App.Features.RibbedRaft.Drawers
             DrawExt(L_mong/2, y_tam_top, dimX + 0.2, y_tam_top);
             DrawExt(L_mong/2, y_tam_bot, dimX + 0.2, y_tam_bot);
             DrawExt(L_mong/2, -B_mong/2, dimX2 + 0.2, -B_mong/2);
+
+            // 7. Hole Dimensions
+            if (foundation.HoleSize > 0)
+            {
+                double hs = foundation.HoleSize;
+                double hdimY = -hs/2 - 0.8;
+                DrawDim(-hs/2, hdimY, hs/2, hdimY, hs.ToString("F2"), false);
+                DrawExt(-hs/2, -hs/2, -hs/2, hdimY - 0.2);
+                DrawExt(hs/2, -hs/2, hs/2, hdimY - 0.2);
+
+                double hdimX = hs/2 + 0.8;
+                DrawDim(hdimX, hs/2, hdimX, -hs/2, hs.ToString("F2"), true);
+                DrawExt(hs/2, hs/2, hdimX + 0.2, hs/2);
+                DrawExt(hs/2, -hs/2, hdimX + 0.2, -hs/2);
+            }
         }
     }
 }
