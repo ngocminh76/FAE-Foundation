@@ -44,6 +44,7 @@
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
@@ -76,38 +77,66 @@
                             <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding Model.Depth, UpdateSourceTrigger=PropertyChanged, Delay=800}" VerticalAlignment="Center" Margin="0,0,0,8"/>
                             <TextBlock Grid.Row="4" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
 
-                            <!-- Dam mong a -->
-                            <TextBlock Grid.Row="5" Grid.Column="0" Text="Bề rộng dầm móng (a):" VerticalAlignment="Center" Margin="0,0,0,8" FontWeight="Bold"/>
-                            <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding Model.RibWidth, UpdateSourceTrigger=PropertyChanged, Delay=800}" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <!-- Chieu sau chon mong -->
+                            <TextBlock Grid.Row="5" Grid.Column="0" Text="Chiều sâu chôn móng:" VerticalAlignment="Center" Margin="0,0,0,8" FontWeight="Bold" Foreground="#D35400"/>
+                            <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding Model.EmbedmentDepth, UpdateSourceTrigger=PropertyChanged, Delay=800}" VerticalAlignment="Center" Margin="0,0,0,8"/>
                             <TextBlock Grid.Row="5" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
+
+                            <!-- Dam mong a -->
+                            <TextBlock Grid.Row="6" Grid.Column="0" Text="Bề rộng dầm móng (a):" VerticalAlignment="Center" Margin="0,0,0,8" FontWeight="Bold"/>
+                            <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding Model.RibWidth, UpdateSourceTrigger=PropertyChanged, Delay=800}" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBlock Grid.Row="6" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
                             
                             <!-- Dam mong h -->
-                            <TextBlock Grid.Row="6" Grid.Column="0" Text="Chiều cao dầm móng (h):" VerticalAlignment="Center" Margin="0,0,0,8" FontWeight="Bold"/>
-                            <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding Model.RibHeight, UpdateSourceTrigger=PropertyChanged, Delay=800}" VerticalAlignment="Center" Margin="0,0,0,8"/>
-                            <TextBlock Grid.Row="6" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
+                            <TextBlock Grid.Row="7" Grid.Column="0" Text="Chiều cao dầm móng (h):" VerticalAlignment="Center" Margin="0,0,0,8" FontWeight="Bold"/>
+                            <TextBox Grid.Row="7" Grid.Column="1" Text="{Binding Model.RibHeight, UpdateSourceTrigger=PropertyChanged, Delay=800}" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBlock Grid.Row="7" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
 
                             <!-- Ban mong h1 -->
-                            <TextBlock Grid.Row="7" Grid.Column="0" Text="Chiều dày bản móng (h1):" VerticalAlignment="Center" Margin="0,0,0,8" FontWeight="Bold"/>
-                            <TextBox Grid.Row="7" Grid.Column="1" Text="{Binding Model.SlabThickness, UpdateSourceTrigger=PropertyChanged, Delay=800}" VerticalAlignment="Center" Margin="0,0,0,8"/>
-                            <TextBlock Grid.Row="7" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
+                            <TextBlock Grid.Row="8" Grid.Column="0" Text="Chiều dày bản móng (h1):" VerticalAlignment="Center" Margin="0,0,0,8" FontWeight="Bold"/>
+                            <TextBox Grid.Row="8" Grid.Column="1" Text="{Binding Model.SlabThickness, UpdateSourceTrigger=PropertyChanged, Delay=800}" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBlock Grid.Row="8" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
                             
                             <!-- Ban mong c -->
-                            <TextBlock Grid.Row="8" Grid.Column="0" Text="Kích thước đục lỗ (c):" VerticalAlignment="Center" Margin="0,0,0,8" FontWeight="Bold"/>
-                            <TextBox Grid.Row="8" Grid.Column="1" Text="{Binding Model.HoleSize, UpdateSourceTrigger=PropertyChanged, Delay=800}" VerticalAlignment="Center" Margin="0,0,0,8"/>
-                            <TextBlock Grid.Row="8" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
+                            <TextBlock Grid.Row="9" Grid.Column="0" Text="Kích thước đục lỗ (c):" VerticalAlignment="Center" Margin="0,0,0,8" FontWeight="Bold"/>
+                            <TextBox Grid.Row="9" Grid.Column="1" Text="{Binding Model.HoleSize, UpdateSourceTrigger=PropertyChanged, Delay=800}" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBlock Grid.Row="9" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
 
                             <!-- Co mong b1 -->
-                            <TextBlock Grid.Row="9" Grid.Column="0" Text="Bề rộng cổ móng (b1):" VerticalAlignment="Center" Margin="0,0,0,8" FontWeight="Bold"/>
-                            <TextBox Grid.Row="9" Grid.Column="1" Text="{Binding Model.B1, UpdateSourceTrigger=PropertyChanged, Delay=800}" VerticalAlignment="Center" Margin="0,0,0,8"/>
-                            <TextBlock Grid.Row="9" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
+                            <TextBlock Grid.Row="10" Grid.Column="0" Text="Bề rộng cổ móng (b1):" VerticalAlignment="Center" Margin="0,0,0,8" FontWeight="Bold"/>
+                            <TextBox Grid.Row="10" Grid.Column="1" Text="{Binding Model.B1, UpdateSourceTrigger=PropertyChanged, Delay=800}" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBlock Grid.Row="10" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
                             
                             <!-- Co mong b2 -->
-                            <TextBlock Grid.Row="10" Grid.Column="0" Text="Chiều dài cổ móng (b2):" VerticalAlignment="Center" Margin="0,0,0,8" FontWeight="Bold"/>
-                            <TextBox Grid.Row="10" Grid.Column="1" Text="{Binding Model.B2, UpdateSourceTrigger=PropertyChanged, Delay=800}" VerticalAlignment="Center" Margin="0,0,0,8"/>
-                            <TextBlock Grid.Row="10" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
+                            <TextBlock Grid.Row="11" Grid.Column="0" Text="Chiều dài cổ móng (b2):" VerticalAlignment="Center" Margin="0,0,0,8" FontWeight="Bold"/>
+                            <TextBox Grid.Row="11" Grid.Column="1" Text="{Binding Model.B2, UpdateSourceTrigger=PropertyChanged, Delay=800}" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBlock Grid.Row="11" Grid.Column="2" Text="m" VerticalAlignment="Center" Margin="5,0,0,8"/>
                         </Grid>
                     </Expander>
-                    
+                    <!-- 2. NOI LUC TINH TOAN -->
+                    <Expander Header="Nội lực tính toán" IsExpanded="True" Margin="0,0,0,10">
+                        <StackPanel Margin="5,10,0,0">
+                            <!-- Base Dimension -->
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                                <TextBlock Text="Khoảng cách 2 chân trụ:" FontWeight="Bold" Foreground="#8E44AD" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                                <TextBox Text="{Binding Model.TowerBaseDimension, UpdateSourceTrigger=PropertyChanged}" Width="80" VerticalAlignment="Center" TextAlignment="Right"/>
+                                <TextBlock Text="mm" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                            </StackPanel>
+                            <!-- DataGrid for Load Cases -->
+                            <DataGrid ItemsSource="{Binding AvailableLoadCases}" AutoGenerateColumns="False" CanUserAddRows="True" CanUserDeleteRows="True" HeadersVisibility="Column" HorizontalGridLinesBrush="#E5E7EB" VerticalGridLinesBrush="#E5E7EB" BorderBrush="#BDC3C7" BorderThickness="1" MinHeight="150" Background="White">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Tên tổ hợp" Binding="{Binding Name}" Width="130" FontWeight="SemiBold"/>
+                                    <DataGridTextColumn Header="Qx" Binding="{Binding Qx}" Width="60"/>
+                                    <DataGridTextColumn Header="Qy" Binding="{Binding Qy}" Width="60"/>
+                                    <DataGridTextColumn Header="N" Binding="{Binding N}" Width="60"/>
+                                    <DataGridTextColumn Header="Mx" Binding="{Binding Mx}" Width="60"/>
+                                    <DataGridTextColumn Header="My" Binding="{Binding My}" Width="60"/>
+                                    <DataGridTextColumn Header="Mz" Binding="{Binding Mz}" Width="60"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </StackPanel>
+                    </Expander>
+
                     <!-- KET QUA TINH TOAN -->
                     <Expander Header="Kết quả tính toán" IsExpanded="True" Margin="0,0,0,10">
                         <Grid Margin="5,10,0,0">

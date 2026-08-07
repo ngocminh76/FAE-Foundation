@@ -140,10 +140,8 @@ namespace FAE.Foundation.App.Features.Project
 
 
             var hk1 = new BoreholeModel { BoreholeName = "HK01" };
-            hk1.Layers.Add(new SoilLayer { LayerId = "1", LayerName = "Lớp đất thổ cư", Thickness = 1.5, GammaW = 1.88, Delta = 2.76, E0 = 0.971, Phi = 24.93, C = 0.64, E = 1520, GammaDn = 0.893 });
-            hk1.Layers.Add(new SoilLayer { LayerId = "2", LayerName = "Bùn sét, bùn", Thickness = 3.5, GammaW = 1.77, Delta = 2.72, E0 = 1.208, Phi = 6.35, C = 0.74, E = 183.33, GammaDn = 0.779 });
-            hk1.Layers.Add(new SoilLayer { LayerId = "3", LayerName = "Sét, á sét dẻo cứng", Thickness = 5.0, GammaW = 1.95, Phi = 18.2, C = 2.1, E = 2200 });
-            hk1.Layers.Add(new SoilLayer { LayerId = "4", LayerName = "Cát thô", Thickness = 8.0, GammaW = 2.05, Phi = 32.5, C = 0.0, E = 4500 });
+            hk1.Layers.Add(new SoilLayer { LayerId = "1", LayerName = "Bùn sét", Thickness = 2.4, GammaW = 1.72, Delta = 2.72, E0 = 1.322, Phi = 6.5, C = 0.87, E = 180, GammaDn = 0.741 });
+            hk1.Layers.Add(new SoilLayer { LayerId = "2", LayerName = "Bùn sét", Thickness = 9.1, GammaW = 1.72, Delta = 2.72, E0 = 1.322, Phi = 6.5, C = 0.87, E = 180, GammaDn = 0.741 });
             
             var hk2 = new BoreholeModel { BoreholeName = "HK02" };
             hk2.Layers.Add(new SoilLayer { LayerId = "1", LayerName = "Sét, á sét", Thickness = 2.0, GammaW = 1.9, Delta = 2.7, E0 = 0.894, Phi = 24.93, C = 0.64, E = 1520, GammaDn = 0.892 });
@@ -165,7 +163,12 @@ namespace FAE.Foundation.App.Features.Project
                 SelectedBorehole = Boreholes[0];
             }
 
-            // Removed Mock Data for Towers to ensure users see only imported data.
+            // Thêm giá trị mặc định lúc khởi động app
+            Towers.Add(new TowerModel { Borehole = hk1 });
+            if (Towers.Count > 0)
+            {
+                SelectedTower = Towers[0];
+            }
         }
 
         private void UpdateDetailView()

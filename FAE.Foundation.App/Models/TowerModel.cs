@@ -67,34 +67,49 @@ namespace FAE.Foundation.App.Models
 
         public TowerModel()
         {
-            TowerName = "VT01";
+            TowerName = "VT522-55";
+            BaseDimension = 9160;
             Borehole = new BoreholeModel();
             
-            MaxTensionLeg = new LoadCase();
-            MaxCompressionLeg = new LoadCase();
-            Wind90Tower = new LoadCase();
-            Wind45Tower = new LoadCase();
+            MaxTensionLeg = new LoadCase {
+                Name = "LỰC NHỔ MAX",
+                Qx = 23.80, Qy = 25.55, N = -198.58, Mx = -54.02, My = 90.67, Mz = -3.89
+            };
+            MaxCompressionLeg = new LoadCase {
+                Name = "LỰC NÉN MAX",
+                Qx = 32.93, Qy = 29.73, N = 260.89, Mx = -179.72, My = 107.84, Mz = -8.32
+            };
+            Wind90Tower = new LoadCase {
+                Name = "90 ĐỘ BT GIO MAX",
+                Qx = 1003.91, Qy = 0.0, N = 1256.97, Mx = 0.0, My = 36131.73, Mz = 0.0
+            };
+            Wind45Tower = new LoadCase {
+                Name = "45 ĐỘ BT GIO MAX",
+                Qx = 688.19, Qy = 506.39, N = 1256.97, Mx = 159368.66, My = 231616.84, Mz = 0.0
+            };
 
             // Create a default foundation model
             Foundation = new RibbedRaftModel
             {
-                Lx = 5.0,
-                Ly = 5.0,
-                TotalLength = 8.0,
-                TotalWidth = 8.0,
-                SlabThickness = 0.4,
-                RibWidth = 0.4,
-                RibHeight = 0.4,
-                B1 = 0.6,
-                B2 = 0.6,
-                Depth = 3.5,
+                Lx = 9.16,
+                Ly = 9.16,
+                TotalLength = 19.0,
+                TotalWidth = 17.0,
+                SlabThickness = 0.6,
+                RibWidth = 0.8,
+                RibHeight = 1.8,
+                B1 = 1.2,
+                B2 = 1.2,
+                Depth = 3.9,
+                EmbedmentDepth = 2.4,
+                HoleSize = 2.3,
                 HasSandCushion = true,
                 SandThickness = 0.5,
-                HasMound = true,
-                MoundHeight = 1.5,
-                HasGroundwater = true,
-                GroundwaterElev = -1.2
+                HasMound = false,
+                MoundHeight = 0.0,
+                // Groundwater removed
             };
         }
     }
 }
+

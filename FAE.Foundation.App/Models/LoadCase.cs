@@ -4,6 +4,13 @@ namespace FAE.Foundation.App.Models
 {
     public class LoadCase : ObservableObject
     {
+        private string _name;
+        public string Name
+        {
+            get => _name;
+            set => SetProperty(ref _name, value);
+        }
+
         private double _qx;
         public double Qx
         {

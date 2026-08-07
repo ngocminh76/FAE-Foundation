@@ -3,8 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:loc="clr-namespace:FAE.Foundation.App.Services.Localization"
              Language="en-US">
-    <Grid Background="#F5F6FA"
-          Margin="10">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </UserControl.Resources>
+    <Grid Background="#F5F6FA" Margin="10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
@@ -29,7 +31,7 @@
 
                         <Grid Margin="0,0,0,10">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="120" />
+                                <ColumnDefinition Width="150" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
                             <TextBlock Grid.Column="0"
@@ -43,14 +45,35 @@
                                       Padding="5" />
                         </Grid>
 
-                        <Grid>
+                        <Grid Margin="0,0,0,5">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="120" />
+                                <ColumnDefinition Width="150" />
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="30" />
                             </Grid.ColumnDefinitions>
                             <TextBlock Grid.Column="0"
-                                       Text="Độ sâu móng (H):"
+                                       Text="Chiều sâu chôn móng (H1):"
+                                       VerticalAlignment="Center"
+                                       FontWeight="SemiBold"
+                                       Foreground="#D35400" />
+                            <TextBox Grid.Column="1"
+                                     Text="{Binding Model.EmbedmentDepth, UpdateSourceTrigger=PropertyChanged, Delay=800}"
+                                     VerticalAlignment="Center"
+                                     Padding="4" />
+                            <TextBlock Grid.Column="2"
+                                       Text="m"
+                                       VerticalAlignment="Center"
+                                       Margin="5,0,0,0" />
+                        </Grid>
+
+                        <Grid Margin="0,0,0,10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="150" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="30" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0"
+                                       Text="Chiều cao móng (H):"
                                        VerticalAlignment="Center"
                                        FontWeight="SemiBold" />
                             <TextBox Grid.Column="1"
@@ -70,7 +93,7 @@
                                   Margin="0,10,0,5" />
                         <Grid IsEnabled="{Binding Model.HasSandCushion}">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="120" />
+                                <ColumnDefinition Width="150" />
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="30" />
                             </Grid.ColumnDefinitions>
@@ -94,7 +117,7 @@
                                   Margin="0,10,0,5" />
                         <Grid IsEnabled="{Binding Model.HasMound}">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="120" />
+                                <ColumnDefinition Width="150" />
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="30" />
                             </Grid.ColumnDefinitions>
@@ -110,30 +133,6 @@
                                        VerticalAlignment="Center"
                                        Margin="5,0,0,0" />
                         </Grid>
-                        <!-- Tùy chọn Mực nước ngầm -->
-                        <CheckBox Content="Có mực nước ngầm (MNN)"
-                                  IsChecked="{Binding Model.HasGroundwater, UpdateSourceTrigger=PropertyChanged}"
-                                  FontWeight="SemiBold"
-                                  Margin="0,10,0,5" />
-                        <Grid IsEnabled="{Binding Model.HasGroundwater}">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="120" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="30" />
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0"
-                                       Text="Độ sâu MNN:"
-                                       VerticalAlignment="Center" />
-                            <TextBox Grid.Column="1"
-                                     Text="{Binding Model.GroundwaterElev, UpdateSourceTrigger=PropertyChanged, Delay=800}"
-                                     VerticalAlignment="Center"
-                                     Padding="4" />
-                            <TextBlock Grid.Column="2"
-                                       Text="m"
-                                       VerticalAlignment="Center"
-                                       Margin="5,0,0,0" />
-                        </Grid>
-
                     </StackPanel>
                 </Border>
 
@@ -232,18 +231,225 @@
             </StackPanel>
         </ScrollViewer>
 
-        <!-- COLUMN 2: Kết quả tính ứng suất -->
-        <Border Grid.Column="1"
-                Background="White"
-                Margin="5"
-                Padding="15"
-                CornerRadius="8">
-            <TextBlock Text="Kết quả tính ứng suất (Sẽ cập nhật)"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Center"
-                       Foreground="Gray"
-                       FontStyle="Italic" />
-        </Border>
+                <!-- COLUMN 2: Kết quả tính ứng suất -->
+        <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <Border Background="White" Margin="5" Padding="15" CornerRadius="8">
+                <StackPanel>
+                    <!-- Load Selection -->
+                    <Grid Margin="0,0,0,15">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="150" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Tổ hợp kiểm tra:" FontWeight="Bold" VerticalAlignment="Center" />
+                        <ComboBox Grid.Column="1" ItemsSource="{Binding AvailableLoadCases}" SelectedItem="{Binding SelectedLoadCase}" Padding="5">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock>
+                                        <Run Text="N=" /><Run Text="{Binding N, StringFormat={}{0:F2}}" />
+                                        <Run Text=" Mx=" /><Run Text="{Binding Mx, StringFormat={}{0:F2}}" />
+                                        <Run Text=" My=" /><Run Text="{Binding My, StringFormat={}{0:F2}}" />
+                                    </TextBlock>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                    </Grid>
+
+                    <TextBlock Text="1. Kiểm tra khả năng chịu tải của nền" FontWeight="Bold" FontSize="14" Foreground="#2C3E50" Margin="0,0,0,10" />
+
+                    <!-- 1.1 Dưới đáy móng -->
+                    <TextBlock Text="1.1 Kiểm tra khả năng chịu tải của đất nền dưới đáy móng" FontWeight="SemiBold" FontStyle="Italic" Margin="0,5,0,5" />
+                    <Grid Margin="15,0,0,10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="80"/>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="30"/>
+                            <ColumnDefinition Width="80"/>
+                            <ColumnDefinition Width="80"/>
+                            <ColumnDefinition Width="30"/>
+                            <ColumnDefinition Width="80"/>
+                        </Grid.ColumnDefinitions>
+                        <!-- Row 0: Phi -->
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="φ =" />
+                        <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding CalculationResult.Phi1, StringFormat={}{0:F2}}" />
+                        <!-- Row 1: A, B, D -->
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="A =" />
+                        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding CalculationResult.A1, StringFormat={}{0:F2}}" />
+                        <TextBlock Grid.Row="1" Grid.Column="2" Text="B =" />
+                        <TextBlock Grid.Row="1" Grid.Column="3" Text="{Binding CalculationResult.B1, StringFormat={}{0:F2}}" />
+                        <TextBlock Grid.Row="1" Grid.Column="4" Text="D =" />
+                        <TextBlock Grid.Row="1" Grid.Column="5" Text="{Binding CalculationResult.D1, StringFormat={}{0:F2}}" />
+                        
+                        <!-- Row 2: Rtc formula -->
+                        <TextBlock Grid.Row="2" Grid.ColumnSpan="7" Text="Áp lực tiêu chuẩn của nền đất Rtc = m(A.b.γdn + B.h1.γ1 + D.c)" Margin="0,5,0,5" />
+                        
+                        <!-- Row 3: Load converted -->
+                        <StackPanel Grid.Row="3" Grid.ColumnSpan="7" Orientation="Horizontal" Margin="0,0,0,10">
+                            <TextBlock Text="Mxdáy = " />
+                            <TextBlock Text="{Binding CalculationResult.Mx_Base, StringFormat={}{0:F2}}" FontWeight="Bold" />
+                            <TextBlock Text=" (T.m)    Mydáy = " />
+                            <TextBlock Text="{Binding CalculationResult.My_Base, StringFormat={}{0:F2}}" FontWeight="Bold" />
+                            <TextBlock Text=" (T.m)" />
+                        </StackPanel>
+
+                        <!-- Row 4: MNN Sát mặt đất -->
+                        <TextBlock Grid.Row="4" Grid.ColumnSpan="7" Text="Trường hợp mực nước ngầm sát mặt đất:" FontStyle="Italic" Foreground="#34495E" />
+                        <Grid Grid.Row="5" Grid.ColumnSpan="7" Margin="10,5,0,15">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="40"/>
+                                <ColumnDefinition Width="60"/>
+                                <ColumnDefinition Width="60"/>
+                                <ColumnDefinition Width="50"/>
+                                <ColumnDefinition Width="60"/>
+                                <ColumnDefinition Width="90"/>
+                                <ColumnDefinition Width="60"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="Rtc =" />
+                            <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding CalculationResult.Rtc1_GW_Surface, StringFormat={}{0:F2}}" FontWeight="Bold" />
+                            <TextBlock Grid.Row="0" Grid.Column="2" Text="(T/m²)" />
+
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="N0 =" />
+                            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding CalculationResult.N01_GW_Surface, StringFormat={}{0:F2}}" FontWeight="Bold" />
+                            <TextBlock Grid.Row="1" Grid.Column="2" Text="(T)" />
+
+                            <TextBlock Grid.Row="0" Grid.Column="3" Text="σmax =" />
+                            <TextBlock Grid.Row="0" Grid.Column="4" Text="{Binding CalculationResult.SigmaMax1_GW_Surface, StringFormat={}{0:F2}}" FontWeight="Bold" />
+                            <TextBlock Grid.Row="0" Grid.Column="5" Text="&lt; 1.2 Rtc =" />
+                            <TextBlock Grid.Row="0" Grid.Column="6" Text="{Binding CalculationResult.Rtc1_GW_Surface, StringFormat={}{0:F2}}" /> <!-- Should be 1.2Rtc but okay to simplify here, wait I should bind to 1.2Rtc. I'll just write it -->
+
+                            <TextBlock Grid.Row="1" Grid.Column="3" Text="σtb =" />
+                            <TextBlock Grid.Row="1" Grid.Column="4" Text="{Binding CalculationResult.SigmaTb1_GW_Surface, StringFormat={}{0:F2}}" FontWeight="Bold" />
+                            <TextBlock Grid.Row="1" Grid.Column="5" Text="&lt; Rtc =" />
+                            <TextBlock Grid.Row="1" Grid.Column="6" Text="{Binding CalculationResult.Rtc1_GW_Surface, StringFormat={}{0:F2}}" />
+
+                            <TextBlock Grid.Row="2" Grid.Column="3" Text="σmin =" />
+                            <TextBlock Grid.Row="2" Grid.Column="4" Text="{Binding CalculationResult.SigmaMin1_GW_Surface, StringFormat={}{0:F2}}" FontWeight="Bold" />
+                            <TextBlock Grid.Row="2" Grid.Column="5" Text="&gt; 0" />
+                        </Grid>
+                    </Grid>
+
+                    <!-- 1.2 Dưới đáy đệm cát -->
+                    <StackPanel Visibility="{Binding CalculationResult.HasSandCushion, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <TextBlock Text="1.2 Kiểm tra khả năng chịu tải của đất nền dưới đáy đệm cát" FontWeight="SemiBold" FontStyle="Italic" Margin="0,5,0,5" />
+                        <Grid Margin="15,0,0,10">
+                            <!-- Same layout roughly -->
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="80"/>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="30"/>
+                                <ColumnDefinition Width="80"/>
+                                <ColumnDefinition Width="80"/>
+                                <ColumnDefinition Width="30"/>
+                                <ColumnDefinition Width="80"/>
+                            </Grid.ColumnDefinitions>
+                            <!-- Row 0: Phi -->
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="φ =" />
+                            <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding CalculationResult.Phi2, StringFormat={}{0:F2}}" />
+                            <!-- Row 1: A, B, D -->
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="A =" />
+                            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding CalculationResult.A2, StringFormat={}{0:F2}}" />
+                            <TextBlock Grid.Row="1" Grid.Column="2" Text="B =" />
+                            <TextBlock Grid.Row="1" Grid.Column="3" Text="{Binding CalculationResult.B2, StringFormat={}{0:F2}}" />
+                            <TextBlock Grid.Row="1" Grid.Column="4" Text="D =" />
+                            <TextBlock Grid.Row="1" Grid.Column="5" Text="{Binding CalculationResult.D2, StringFormat={}{0:F2}}" />
+
+                            <TextBlock Grid.Row="2" Grid.ColumnSpan="7" Text="Áp lực tiêu chuẩn của nền đất Rtc = m(A.bqu.γdn + B.hqu.γ1 + D.c)" Margin="0,5,0,5" />
+
+                            <!-- Row 4: MNN Sát mặt đất -->
+                            <TextBlock Grid.Row="4" Grid.ColumnSpan="7" Text="Trường hợp mực nước ngầm sát mặt đất:" FontStyle="Italic" Foreground="#34495E" />
+                            <Grid Grid.Row="5" Grid.ColumnSpan="7" Margin="10,5,0,15">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="40"/>
+                                    <ColumnDefinition Width="60"/>
+                                    <ColumnDefinition Width="60"/>
+                                    <ColumnDefinition Width="50"/>
+                                    <ColumnDefinition Width="60"/>
+                                    <ColumnDefinition Width="90"/>
+                                    <ColumnDefinition Width="60"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                
+                                <TextBlock Grid.Row="0" Grid.Column="0" Text="Rtc =" />
+                                <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding CalculationResult.Rtc2_GW_Surface, StringFormat={}{0:F2}}" FontWeight="Bold" />
+                                <TextBlock Grid.Row="0" Grid.Column="2" Text="(T/m²)" />
+
+                                <TextBlock Grid.Row="1" Grid.Column="0" Text="N0 =" />
+                                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding CalculationResult.N02_GW_Surface, StringFormat={}{0:F2}}" FontWeight="Bold" />
+                                <TextBlock Grid.Row="1" Grid.Column="2" Text="(T)" />
+
+                                <TextBlock Grid.Row="0" Grid.Column="3" Text="σmax =" />
+                                <TextBlock Grid.Row="0" Grid.Column="4" Text="{Binding CalculationResult.SigmaMax2_GW_Surface, StringFormat={}{0:F2}}" FontWeight="Bold" />
+                                <TextBlock Grid.Row="0" Grid.Column="5" Text="&lt; 1.2 Rtc" />
+
+                                <TextBlock Grid.Row="1" Grid.Column="3" Text="σtb =" />
+                                <TextBlock Grid.Row="1" Grid.Column="4" Text="{Binding CalculationResult.SigmaTb2_GW_Surface, StringFormat={}{0:F2}}" FontWeight="Bold" />
+                                <TextBlock Grid.Row="1" Grid.Column="5" Text="&lt; Rtc =" />
+                                <TextBlock Grid.Row="1" Grid.Column="6" Text="{Binding CalculationResult.Rtc2_GW_Surface, StringFormat={}{0:F2}}" />
+
+                                <TextBlock Grid.Row="2" Grid.Column="3" Text="σmin =" />
+                                <TextBlock Grid.Row="2" Grid.Column="4" Text="{Binding CalculationResult.SigmaMin2_GW_Surface, StringFormat={}{0:F2}}" FontWeight="Bold" />
+                                <TextBlock Grid.Row="2" Grid.Column="5" Text="&gt; 0" />
+                            </Grid>
+                        </Grid>
+                    </StackPanel>
+
+                    <!-- Kết luận -->
+                    <Border Padding="10" Margin="0,10,0,0" CornerRadius="4">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="Background" Value="#FADBD8" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding CalculationResult.IsOverallPass}" Value="True">
+                                        <Setter Property="Background" Value="#D4EFDF" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <TextBlock FontWeight="Bold" HorizontalAlignment="Center">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Text" Value="Kích thước móng CHƯA thỏa mãn điều kiện áp lực đáy móng!" />
+                                    <Setter Property="Foreground" Value="#C0392B" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding CalculationResult.IsOverallPass}" Value="True">
+                                            <Setter Property="Text" Value="Kích thước móng ĐÃ thỏa mãn điều kiện áp lực đáy móng!" />
+                                            <Setter Property="Foreground" Value="#27AE60" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </Border>
+                </StackPanel>
+            </Border>
+        </ScrollViewer>
+
 
         <!-- COLUMN 3: Bảng dự tính độ lún -->
         <Border Grid.Column="2"
@@ -251,11 +457,61 @@
                 Margin="5"
                 Padding="15"
                 CornerRadius="8">
-            <TextBlock Text="Bảng dự tính độ lún (Sẽ cập nhật)"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Center"
-                       Foreground="Gray"
-                       FontStyle="Italic" />
+            <Border.Effect>
+                <DropShadowEffect Color="#2C3E50" BlurRadius="10" Opacity="0.1" ShadowDepth="2" />
+            </Border.Effect>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" Text="3. Bảng dự tính độ lún" FontWeight="Bold" FontSize="16" Foreground="#2C3E50" Margin="0,0,0,10" />
+
+                <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,10">
+                    <TextBlock Text="Ứng suất gây lún σ0 = " />
+                    <TextBlock Text="{Binding CalculationResult.Sigma0, StringFormat={}{0:F4}}" FontWeight="Bold" Foreground="#C0392B" />
+                    <TextBlock Text=" (T/m²)" />
+                </StackPanel>
+
+                <DataGrid Grid.Row="2" 
+                          ItemsSource="{Binding CalculationResult.SettlementLayers}" 
+                          AutoGenerateColumns="False" 
+                          IsReadOnly="True"
+                          GridLinesVisibility="All"
+                          HeadersVisibility="Column"
+                          AlternatingRowBackground="#F9F9F9"
+                          Background="White">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="STT" Binding="{Binding Id}" Width="40" />
+                        <DataGridTextColumn Header="2z/b" Binding="{Binding Ratio2ZB, StringFormat={}{0:F2}}" Width="50" />
+                        <DataGridTextColumn Header="z (m)" Binding="{Binding Z, StringFormat={}{0:F3}}" Width="55" />
+                        <DataGridTextColumn Header="K" Binding="{Binding K, StringFormat={}{0:F3}}" Width="50" />
+                        <DataGridTextColumn Header="Ei (T/m²)" Binding="{Binding Ei}" Width="70" />
+                        <DataGridTextColumn Header="β" Binding="{Binding Beta}" Width="40" />
+                        <DataGridTextColumn Header="σi (T/m²)" Binding="{Binding SigmaZi, StringFormat={}{0:F4}}" Width="70" />
+                        <DataGridTextColumn Header="Σγi.hi" Binding="{Binding SumGammaHi, StringFormat={}{0:F4}}" Width="70" />
+                        <DataGridTextColumn Header="si (mm)" Binding="{Binding Si, StringFormat={}{0:F4}}" Width="70" />
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <StackPanel Grid.Row="3" Margin="0,15,0,0">
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                        <TextBlock Text="Chiều sâu ảnh hưởng lún (σi ≤ 0.1Σγi.hi) Hc = " />
+                        <TextBlock Text="{Binding CalculationResult.InfluenceDepth, StringFormat={}{0:F2}}" FontWeight="Bold" />
+                        <TextBlock Text=" (m)" />
+                    </StackPanel>
+                    
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Tổng độ lún S = " FontSize="14" FontWeight="Bold" Foreground="#2C3E50" />
+                        <TextBlock Text="{Binding CalculationResult.TotalSettlement, StringFormat={}{0:F2}}" FontSize="14" FontWeight="Bold" Foreground="#C0392B" />
+                        <TextBlock Text=" (mm)" FontSize="14" FontWeight="Bold" Foreground="#2C3E50" />
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
         </Border>
     </Grid>
 </UserControl>

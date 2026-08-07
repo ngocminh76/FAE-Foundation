@@ -8,6 +8,13 @@ namespace FAE.Foundation.App.Features.RibbedRaft
 
         // --- New Inputs ---
         
+        private double _towerBaseDimension = 9160;
+        public double TowerBaseDimension
+        {
+            get => _towerBaseDimension;
+            set => SetProperty(ref _towerBaseDimension, value);
+        }
+
         private double _lx;
         public double Lx
         {
@@ -45,7 +52,7 @@ namespace FAE.Foundation.App.Features.RibbedRaft
         public double ConsBY => (TotalWidth - Ly) / 2.0;
 
         // --- Other Inputs ---
-        private double _holeSize;
+        private double _holeSize = 2.3;
         public double HoleSize
         {
             get => _holeSize;
@@ -92,11 +99,18 @@ namespace FAE.Foundation.App.Features.RibbedRaft
         // Keep ColumnWidth for compatibility with drawers, defaulting to B1
         public double ColumnWidth => B1;
 
-        private double _depth; // H
+        private double _depth; // H (total height)
         public double Depth
         {
             get => _depth;
             set => SetProperty(ref _depth, value);
+        }
+
+        private double _embedmentDepth; // Chiều sâu chôn móng
+        public double EmbedmentDepth
+        {
+            get => _embedmentDepth;
+            set => SetProperty(ref _embedmentDepth, value);
         }
 
         private bool _hasMound;
@@ -127,41 +141,31 @@ namespace FAE.Foundation.App.Features.RibbedRaft
             set => SetProperty(ref _sandThickness, value);
         }
 
-        private bool _hasGroundwater;
-        public bool HasGroundwater
-        {
-            get => _hasGroundwater;
-            set => SetProperty(ref _hasGroundwater, value);
-        }
-
-        private double _groundwaterElev;
-        public double GroundwaterElev
-        {
-            get => _groundwaterElev;
-            set => SetProperty(ref _groundwaterElev, value);
-        }
+        // Removed MNN properties as requested
 
         // --- Calculated Values ---
+        // Area = B*L - c^2 (Trừ đi diện tích đục lỗ c x c)
         public double FoundationArea => TotalLength * TotalWidth - HoleSize * HoleSize;
         
-        // I = B*L^3/12 - c*c^3/12. Wx = I / (L/2)
+        // Wx = (L*B^3 - c^4) / (6*B)
         public double Wx
         {
             get
             {
-                if (TotalLength == 0) return 0;
-                double Ix = (TotalWidth * Math.Pow(TotalLength, 3) / 12.0) - (HoleSize * Math.Pow(HoleSize, 3) / 12.0);
-                return Math.Round(Ix / (TotalLength / 2.0), 1);
+                if (TotalWidth == 0) return 0;
+                double Ix = (TotalLength * Math.Pow(TotalWidth, 3) - Math.Pow(HoleSize, 4)) / 12.0;
+                return Math.Round(Ix / (TotalWidth / 2.0), 2);
             }
         }
 
+        // Wy = (B*L^3 - c^4) / (6*L)
         public double Wy
         {
             get
             {
-                if (TotalWidth == 0) return 0;
-                double Iy = (TotalLength * Math.Pow(TotalWidth, 3) / 12.0) - (HoleSize * Math.Pow(HoleSize, 3) / 12.0);
-                return Math.Round(Iy / (TotalWidth / 2.0), 1);
+                if (TotalLength == 0) return 0;
+                double Iy = (TotalWidth * Math.Pow(TotalLength, 3) - Math.Pow(HoleSize, 4)) / 12.0;
+                return Math.Round(Iy / (TotalLength / 2.0), 2);
             }
         }
     }

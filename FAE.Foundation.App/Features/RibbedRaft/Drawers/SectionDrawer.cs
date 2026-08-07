@@ -21,10 +21,10 @@ namespace FAE.Foundation.App.Features.RibbedRaft.Drawers
             double h_ban = foundation.SlabThickness;
             double h_dam = foundation.RibHeight;
             double b_col = foundation.ColumnWidth;
-            double D_f = foundation.Depth;
+            double D_f = foundation.EmbedmentDepth; // Chiều sâu chôn móng (2.4m)
+            double H_total = foundation.Depth; // Chiều cao móng (3.9m)
             double h_doi_trong = foundation.HasMound ? foundation.MoundHeight : 0.0;
             double h_cat = foundation.HasSandCushion ? foundation.SandThickness : 0.0;
-            double y_gwt = foundation.HasGroundwater ? -Math.Abs(foundation.GroundwaterElev) : -10.0;
 
             double L_mong = L_cons_L + L_span + L_cons_R;
             double h_lot = 0.1;
@@ -44,14 +44,14 @@ namespace FAE.Foundation.App.Features.RibbedRaft.Drawers
             double x_tam_trai = x_left_edge + L_cons_L;
             double x_tam_phai = x_tam_trai + L_span;
 
-            double H_col = D_f - (h_ban + h_dam) + h_doi_trong + 0.5;
+            double H_col = H_total - h_dam; // Chiều cao cổ móng = 3.9 - 1.8 = 2.1m
             double y_mat_dat = 0.0;
-            double y_day_mong = -D_f;
+            double y_day_mong = -D_f; // -2.40m
             double y_day_lot = y_day_mong - h_lot;
             double y_day_cat = foundation.HasSandCushion ? y_day_lot - h_cat : y_day_lot;
-            double y_mat_ban = y_day_mong + h_ban;
-            double y_mat_dam = y_mat_ban + h_dam;
-            double y_dinh_cot = y_mat_dam + H_col;
+            double y_mat_ban = y_day_mong + h_ban; // -1.80m
+            double y_mat_dam = y_day_mong + h_dam; // -0.60m
+            double y_dinh_cot = y_mat_dam + H_col; // +1.50m
             double y_dinh_mound = y_mat_dat + h_doi_trong;
 
             double L_day_ho = L_mong + 2 * loe_cat;
@@ -185,29 +185,31 @@ namespace FAE.Foundation.App.Features.RibbedRaft.Drawers
             Canvas.SetTop(lot, WY(y_day_mong));
             canvas.Children.Add(lot);
 
-            // 5. CONCRETE FOUNDATION
+            // 5. CONCRETE FOUNDATION (Bê tông móng khối liền)
             double lw = 1.5;
             
+            // Bản móng h1 (0.6m)
             Rectangle ban = new Rectangle { Width = S(L_mong), Height = S(h_ban), Fill = concreteBrush, Stroke = Brushes.Black, StrokeThickness = lw };
             Canvas.SetLeft(ban, WX(-L_mong / 2));
             Canvas.SetTop(ban, WY(y_mat_ban));
             canvas.Children.Add(ban);
 
-            Rectangle dam = new Rectangle { Width = S(L_mong), Height = S(h_dam), Fill = concreteBrush, Stroke = Brushes.Black, StrokeThickness = lw };
+            // Dầm móng sườn (Rib) chạy dọc theo mặt cắt (từ mép này sang mép kia)
+            Rectangle dam = new Rectangle { Width = S(L_mong), Height = S(h_dam - h_ban), Fill = concreteBrush, Stroke = Brushes.Black, StrokeThickness = lw };
             Canvas.SetLeft(dam, WX(-L_mong / 2));
             Canvas.SetTop(dam, WY(y_mat_dam));
             canvas.Children.Add(dam);
 
+            // 2 Cổ móng (Pedestals) vươn từ dầm móng (-0.60m) lên đến đỉnh cổ móng (+1.50m)
             Action<double> DrawCol = (xCenter) => {
                 Rectangle col = new Rectangle { Width = S(b_col), Height = S(H_col), Fill = concreteBrush, Stroke = Brushes.Black, StrokeThickness = lw };
                 Canvas.SetLeft(col, WX(xCenter - b_col / 2));
                 Canvas.SetTop(col, WY(y_dinh_cot));
                 canvas.Children.Add(col);
 
-                Line leftCut = new Line { X1 = WX(xCenter - b_col / 2), Y1 = WY(y_mat_ban), X2 = WX(xCenter - b_col / 2), Y2 = WY(y_mat_dam), Stroke = Brushes.Black, StrokeThickness = lw };
-                Line rightCut = new Line { X1 = WX(xCenter + b_col / 2), Y1 = WY(y_mat_ban), X2 = WX(xCenter + b_col / 2), Y2 = WY(y_mat_dam), Stroke = Brushes.Black, StrokeThickness = lw };
-                canvas.Children.Add(leftCut);
-                canvas.Children.Add(rightCut);
+                // Đường phân cách trang trí ở chân cột giao với dầm
+                Line botLine = new Line { X1 = WX(xCenter - b_col / 2), Y1 = WY(y_mat_dam), X2 = WX(xCenter + b_col / 2), Y2 = WY(y_mat_dam), Stroke = Brushes.Gray, StrokeThickness = 0.5, StrokeDashArray = new DoubleCollection { 2, 2 } };
+                canvas.Children.Add(botLine);
             };
 
             DrawCol(x_tam_trai);
@@ -230,11 +232,7 @@ namespace FAE.Foundation.App.Features.RibbedRaft.Drawers
 
             DrawElev(x_mieng_ho + 1.0, y_mat_dat, "MĐTN:", "0.00", false);
             DrawElev(x_mieng_ho + 1.0, y_day_mong, "Đáy móng:", $"-{D_f:F2}", false);
-            if (foundation.HasGroundwater) {
-                Line gwtLine = new Line { X1 = WX(-max_L/2), Y1 = WY(y_gwt), X2 = WX(max_L/2), Y2 = WY(y_gwt), Stroke = waterBrush, StrokeThickness = 2, StrokeDashArray = new DoubleCollection { 10, 2, 2, 2 } };
-                canvas.Children.Add(gwtLine);
-                DrawElev(x_mieng_ho + 1.0, y_gwt, "MNN:", $"-{-y_gwt:F2}", true);
-            }
+
 
             // 7. DIMENSIONS
             Action<double, double, double, string, bool> DrawDim = (x1, x2, y, text, isBottom) => {
@@ -263,3 +261,4 @@ namespace FAE.Foundation.App.Features.RibbedRaft.Drawers
         }
 }
 }
+
