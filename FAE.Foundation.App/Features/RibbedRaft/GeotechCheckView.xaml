@@ -246,9 +246,12 @@
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock>
-                                        <Run Text="N=" /><Run Text="{Binding N, StringFormat={}{0:F2}}" />
-                                        <Run Text=" Mx=" /><Run Text="{Binding Mx, StringFormat={}{0:F2}}" />
-                                        <Run Text=" My=" /><Run Text="{Binding My, StringFormat={}{0:F2}}" />
+                                        <Run Text="{Binding Name}" FontWeight="Bold" Foreground="#2980B9"/>
+                                        <Run Text="  (N=" /><Run Text="{Binding N, StringFormat={}{0:F2}}" />
+                                        <Run Text=", Qx=" /><Run Text="{Binding Qx, StringFormat={}{0:F2}}" />
+                                        <Run Text=", Qy=" /><Run Text="{Binding Qy, StringFormat={}{0:F2}}" />
+                                        <Run Text=", Mx=" /><Run Text="{Binding Mx, StringFormat={}{0:F2}}" />
+                                        <Run Text=", My=" /><Run Text="{Binding My, StringFormat={}{0:F2}}" /><Run Text=")" />
                                     </TextBlock>
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
@@ -258,165 +261,182 @@
                     <TextBlock Text="1. Kiểm tra khả năng chịu tải của nền" FontWeight="Bold" FontSize="14" Foreground="#2C3E50" Margin="0,0,0,10" />
 
                     <!-- 1.1 Dưới đáy móng -->
-                    <TextBlock Text="1.1 Kiểm tra khả năng chịu tải của đất nền dưới đáy móng" FontWeight="SemiBold" FontStyle="Italic" Margin="0,5,0,5" />
-                    <Grid Margin="15,0,0,10">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="80"/>
-                            <ColumnDefinition Width="100"/>
-                            <ColumnDefinition Width="30"/>
-                            <ColumnDefinition Width="80"/>
-                            <ColumnDefinition Width="80"/>
-                            <ColumnDefinition Width="30"/>
-                            <ColumnDefinition Width="80"/>
-                        </Grid.ColumnDefinitions>
-                        <!-- Row 0: Phi -->
-                        <TextBlock Grid.Row="0" Grid.Column="0" Text="φ =" />
-                        <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding CalculationResult.Phi1, StringFormat={}{0:F2}}" />
-                        <!-- Row 1: A, B, D -->
-                        <TextBlock Grid.Row="1" Grid.Column="0" Text="A =" />
-                        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding CalculationResult.A1, StringFormat={}{0:F2}}" />
-                        <TextBlock Grid.Row="1" Grid.Column="2" Text="B =" />
-                        <TextBlock Grid.Row="1" Grid.Column="3" Text="{Binding CalculationResult.B1, StringFormat={}{0:F2}}" />
-                        <TextBlock Grid.Row="1" Grid.Column="4" Text="D =" />
-                        <TextBlock Grid.Row="1" Grid.Column="5" Text="{Binding CalculationResult.D1, StringFormat={}{0:F2}}" />
+                    <StackPanel Margin="10,0,0,15">
+                        <TextBlock Text="1.1 Kiểm tra khả năng chịu tải của đất nền dưới đáy móng" FontWeight="SemiBold" FontStyle="Italic" Margin="0,5,0,5" />
                         
-                        <!-- Row 2: Rtc formula -->
-                        <TextBlock Grid.Row="2" Grid.ColumnSpan="7" Text="Áp lực tiêu chuẩn của nền đất Rtc = m(A.b.γdn + B.h1.γ1 + D.c)" Margin="0,5,0,5" />
-                        
-                        <!-- Row 3: Load converted -->
-                        <StackPanel Grid.Row="3" Grid.ColumnSpan="7" Orientation="Horizontal" Margin="0,0,0,10">
-                            <TextBlock Text="Mxdáy = " />
-                            <TextBlock Text="{Binding CalculationResult.Mx_Base, StringFormat={}{0:F2}}" FontWeight="Bold" />
-                            <TextBlock Text=" (T.m)    Mydáy = " />
-                            <TextBlock Text="{Binding CalculationResult.My_Base, StringFormat={}{0:F2}}" FontWeight="Bold" />
-                            <TextBlock Text=" (T.m)" />
+                        <!-- Row Phi, A, B, D -->
+                        <WrapPanel Margin="10,2,0,5">
+                            <TextBlock Text="φ = " /><TextBlock Text="{Binding CalculationResult.Phi1, StringFormat={}{0:F2}}" FontWeight="Bold" Margin="0,0,25,0"/>
+                            <TextBlock Text="A = " /><TextBlock Text="{Binding CalculationResult.A1, StringFormat={}{0:F2}}" FontWeight="Bold" Margin="0,0,25,0"/>
+                            <TextBlock Text="B = " /><TextBlock Text="{Binding CalculationResult.B1, StringFormat={}{0:F2}}" FontWeight="Bold" Margin="0,0,25,0"/>
+                            <TextBlock Text="D = " /><TextBlock Text="{Binding CalculationResult.D1, StringFormat={}{0:F2}}" FontWeight="Bold"/>
+                        </WrapPanel>
+
+                        <TextBlock Text="Áp lực tiêu chuẩn của nền đất Rtc = m(A.b.γdn + B.h1.γ1 + D.c)" Margin="10,2,0,5" Foreground="#7F8C8D"/>
+
+                        <StackPanel Orientation="Horizontal" Margin="10,2,0,10">
+                            <TextBlock Text="Mxdáy = " /><TextBlock Text="{Binding CalculationResult.Mx_Base, StringFormat={}{0:F2}}" FontWeight="Bold" Foreground="#2980B9"/>
+                            <TextBlock Text=" (T.m)    Mydáy = " /><TextBlock Text="{Binding CalculationResult.My_Base, StringFormat={}{0:F2}}" FontWeight="Bold" Foreground="#2980B9"/>
+                            <TextBlock Text=" (T.m)"/>
                         </StackPanel>
 
-                        <!-- Row 4: MNN Sát mặt đất -->
-                        <TextBlock Grid.Row="4" Grid.ColumnSpan="7" Text="Trường hợp mực nước ngầm sát mặt đất:" FontStyle="Italic" Foreground="#34495E" />
-                        <Grid Grid.Row="5" Grid.ColumnSpan="7" Margin="10,5,0,15">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="40"/>
-                                <ColumnDefinition Width="60"/>
-                                <ColumnDefinition Width="60"/>
-                                <ColumnDefinition Width="50"/>
-                                <ColumnDefinition Width="60"/>
-                                <ColumnDefinition Width="90"/>
-                                <ColumnDefinition Width="60"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-                            
-                            <TextBlock Grid.Row="0" Grid.Column="0" Text="Rtc =" />
-                            <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding CalculationResult.Rtc1_GW_Surface, StringFormat={}{0:F2}}" FontWeight="Bold" />
-                            <TextBlock Grid.Row="0" Grid.Column="2" Text="(T/m²)" />
+                        <!-- Case 1: MNN Sát mặt đất -->
+                        <Border Background="#F8FAFC" BorderBrush="#E2E8F0" BorderThickness="1" CornerRadius="6" Padding="10" Margin="10,5,0,8">
+                            <StackPanel>
+                                <TextBlock Text="a. Trường hợp mực nước ngầm sát mặt đất:" FontWeight="Bold" Foreground="#2C3E50" Margin="0,0,0,6"/>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="180"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    
+                                    <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" Margin="0,3,0,3">
+                                        <TextBlock Text="Rtc = " /><TextBlock Text="{Binding CalculationResult.Rtc1_GW_Surface, StringFormat={}{0:F2}}" FontWeight="Bold"/><TextBlock Text=" (T/m²)"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Margin="0,3,0,3">
+                                        <TextBlock Text="σmax = " /><TextBlock Text="{Binding CalculationResult.SigmaMax1_GW_Surface, StringFormat={}{0:F2}}" FontWeight="Bold"/><TextBlock Text=" (T/m²)  &lt;  1.2 Rtc = " /><TextBlock Text="{Binding CalculationResult.Rtc1_GW_Surface_12, StringFormat={}{0:F2}}" FontWeight="Bold" Foreground="#27AE60"/>
+                                    </StackPanel>
 
-                            <TextBlock Grid.Row="1" Grid.Column="0" Text="N0 =" />
-                            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding CalculationResult.N01_GW_Surface, StringFormat={}{0:F2}}" FontWeight="Bold" />
-                            <TextBlock Grid.Row="1" Grid.Column="2" Text="(T)" />
+                                    <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal" Margin="0,3,0,3">
+                                        <TextBlock Text="N0 = " /><TextBlock Text="{Binding CalculationResult.N01_GW_Surface, StringFormat={}{0:F2}}" FontWeight="Bold"/><TextBlock Text=" (T)"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" Margin="0,3,0,3">
+                                        <TextBlock Text="σtb = " /><TextBlock Text="{Binding CalculationResult.SigmaTb1_GW_Surface, StringFormat={}{0:F2}}" FontWeight="Bold"/><TextBlock Text=" (T/m²)  &lt;  Rtc = " /><TextBlock Text="{Binding CalculationResult.Rtc1_GW_Surface, StringFormat={}{0:F2}}" FontWeight="Bold" Foreground="#27AE60"/>
+                                    </StackPanel>
 
-                            <TextBlock Grid.Row="0" Grid.Column="3" Text="σmax =" />
-                            <TextBlock Grid.Row="0" Grid.Column="4" Text="{Binding CalculationResult.SigmaMax1_GW_Surface, StringFormat={}{0:F2}}" FontWeight="Bold" />
-                            <TextBlock Grid.Row="0" Grid.Column="5" Text="&lt; 1.2 Rtc =" />
-                            <TextBlock Grid.Row="0" Grid.Column="6" Text="{Binding CalculationResult.Rtc1_GW_Surface, StringFormat={}{0:F2}}" /> <!-- Should be 1.2Rtc but okay to simplify here, wait I should bind to 1.2Rtc. I'll just write it -->
+                                    <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" Margin="0,3,0,3">
+                                        <TextBlock Text="σmin = " /><TextBlock Text="{Binding CalculationResult.SigmaMin1_GW_Surface, StringFormat={}{0:F2}}" FontWeight="Bold"/><TextBlock Text=" (T/m²) "/><TextBlock Text="{Binding CalculationResult.SigmaMin1_GW_Surface_Text}" FontWeight="Bold" Foreground="{Binding CalculationResult.SigmaMin1_GW_Surface_Color}"/>
+                                    </StackPanel>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
 
-                            <TextBlock Grid.Row="1" Grid.Column="3" Text="σtb =" />
-                            <TextBlock Grid.Row="1" Grid.Column="4" Text="{Binding CalculationResult.SigmaTb1_GW_Surface, StringFormat={}{0:F2}}" FontWeight="Bold" />
-                            <TextBlock Grid.Row="1" Grid.Column="5" Text="&lt; Rtc =" />
-                            <TextBlock Grid.Row="1" Grid.Column="6" Text="{Binding CalculationResult.Rtc1_GW_Surface, StringFormat={}{0:F2}}" />
+                        <!-- Case 2: MNN Sát đáy móng -->
+                        <Border Background="#F8FAFC" BorderBrush="#E2E8F0" BorderThickness="1" CornerRadius="6" Padding="10" Margin="10,0,0,8">
+                            <StackPanel>
+                                <TextBlock Text="b. Trường hợp mực nước ngầm sát mặt đáy móng:" FontWeight="Bold" Foreground="#2C3E50" Margin="0,0,0,6"/>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="180"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    
+                                    <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" Margin="0,3,0,3">
+                                        <TextBlock Text="Rtc = " /><TextBlock Text="{Binding CalculationResult.Rtc1_GW_Base, StringFormat={}{0:F2}}" FontWeight="Bold"/><TextBlock Text=" (T/m²)"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Margin="0,3,0,3">
+                                        <TextBlock Text="σmax = " /><TextBlock Text="{Binding CalculationResult.SigmaMax1_GW_Base, StringFormat={}{0:F2}}" FontWeight="Bold"/><TextBlock Text=" (T/m²)  &lt;  1.2 Rtc = " /><TextBlock Text="{Binding CalculationResult.Rtc1_GW_Base_12, StringFormat={}{0:F2}}" FontWeight="Bold" Foreground="#27AE60"/>
+                                    </StackPanel>
 
-                            <TextBlock Grid.Row="2" Grid.Column="3" Text="σmin =" />
-                            <TextBlock Grid.Row="2" Grid.Column="4" Text="{Binding CalculationResult.SigmaMin1_GW_Surface, StringFormat={}{0:F2}}" FontWeight="Bold" />
-                            <TextBlock Grid.Row="2" Grid.Column="5" Text="&gt; 0" />
-                        </Grid>
-                    </Grid>
+                                    <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal" Margin="0,3,0,3">
+                                        <TextBlock Text="N0 = " /><TextBlock Text="{Binding CalculationResult.N01_GW_Base, StringFormat={}{0:F2}}" FontWeight="Bold"/><TextBlock Text=" (T)"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" Margin="0,3,0,3">
+                                        <TextBlock Text="σtb = " /><TextBlock Text="{Binding CalculationResult.SigmaTb1_GW_Base, StringFormat={}{0:F2}}" FontWeight="Bold"/><TextBlock Text=" (T/m²)  &lt;  Rtc = " /><TextBlock Text="{Binding CalculationResult.Rtc1_GW_Base, StringFormat={}{0:F2}}" FontWeight="Bold" Foreground="#27AE60"/>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" Margin="0,3,0,3">
+                                        <TextBlock Text="σmin = " /><TextBlock Text="{Binding CalculationResult.SigmaMin1_GW_Base, StringFormat={}{0:F2}}" FontWeight="Bold"/><TextBlock Text=" (T/m²) "/><TextBlock Text="{Binding CalculationResult.SigmaMin1_GW_Base_Text}" FontWeight="Bold" Foreground="{Binding CalculationResult.SigmaMin1_GW_Base_Color}"/>
+                                    </StackPanel>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
 
                     <!-- 1.2 Dưới đáy đệm cát -->
-                    <StackPanel Visibility="{Binding CalculationResult.HasSandCushion, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <StackPanel Visibility="{Binding CalculationResult.HasSandCushion, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="10,0,0,15">
                         <TextBlock Text="1.2 Kiểm tra khả năng chịu tải của đất nền dưới đáy đệm cát" FontWeight="SemiBold" FontStyle="Italic" Margin="0,5,0,5" />
-                        <Grid Margin="15,0,0,10">
-                            <!-- Same layout roughly -->
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="80"/>
-                                <ColumnDefinition Width="100"/>
-                                <ColumnDefinition Width="30"/>
-                                <ColumnDefinition Width="80"/>
-                                <ColumnDefinition Width="80"/>
-                                <ColumnDefinition Width="30"/>
-                                <ColumnDefinition Width="80"/>
-                            </Grid.ColumnDefinitions>
-                            <!-- Row 0: Phi -->
-                            <TextBlock Grid.Row="0" Grid.Column="0" Text="φ =" />
-                            <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding CalculationResult.Phi2, StringFormat={}{0:F2}}" />
-                            <!-- Row 1: A, B, D -->
-                            <TextBlock Grid.Row="1" Grid.Column="0" Text="A =" />
-                            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding CalculationResult.A2, StringFormat={}{0:F2}}" />
-                            <TextBlock Grid.Row="1" Grid.Column="2" Text="B =" />
-                            <TextBlock Grid.Row="1" Grid.Column="3" Text="{Binding CalculationResult.B2, StringFormat={}{0:F2}}" />
-                            <TextBlock Grid.Row="1" Grid.Column="4" Text="D =" />
-                            <TextBlock Grid.Row="1" Grid.Column="5" Text="{Binding CalculationResult.D2, StringFormat={}{0:F2}}" />
+                        
+                        <WrapPanel Margin="10,2,0,5">
+                            <TextBlock Text="φ = " /><TextBlock Text="{Binding CalculationResult.Phi2, StringFormat={}{0:F2}}" FontWeight="Bold" Margin="0,0,25,0"/>
+                            <TextBlock Text="A = " /><TextBlock Text="{Binding CalculationResult.A2, StringFormat={}{0:F2}}" FontWeight="Bold" Margin="0,0,25,0"/>
+                            <TextBlock Text="B = " /><TextBlock Text="{Binding CalculationResult.B2, StringFormat={}{0:F2}}" FontWeight="Bold" Margin="0,0,25,0"/>
+                            <TextBlock Text="D = " /><TextBlock Text="{Binding CalculationResult.D2, StringFormat={}{0:F2}}" FontWeight="Bold"/>
+                        </WrapPanel>
 
-                            <TextBlock Grid.Row="2" Grid.ColumnSpan="7" Text="Áp lực tiêu chuẩn của nền đất Rtc = m(A.bqu.γdn + B.hqu.γ1 + D.c)" Margin="0,5,0,5" />
+                        <TextBlock Text="Áp lực tiêu chuẩn của nền đất Rtc = m(A.bqu.γdn + B.hqu.γ1 + D.c)" Margin="10,2,0,5" Foreground="#7F8C8D"/>
 
-                            <!-- Row 4: MNN Sát mặt đất -->
-                            <TextBlock Grid.Row="4" Grid.ColumnSpan="7" Text="Trường hợp mực nước ngầm sát mặt đất:" FontStyle="Italic" Foreground="#34495E" />
-                            <Grid Grid.Row="5" Grid.ColumnSpan="7" Margin="10,5,0,15">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="40"/>
-                                    <ColumnDefinition Width="60"/>
-                                    <ColumnDefinition Width="60"/>
-                                    <ColumnDefinition Width="50"/>
-                                    <ColumnDefinition Width="60"/>
-                                    <ColumnDefinition Width="90"/>
-                                    <ColumnDefinition Width="60"/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
-                                
-                                <TextBlock Grid.Row="0" Grid.Column="0" Text="Rtc =" />
-                                <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding CalculationResult.Rtc2_GW_Surface, StringFormat={}{0:F2}}" FontWeight="Bold" />
-                                <TextBlock Grid.Row="0" Grid.Column="2" Text="(T/m²)" />
+                        <!-- Case 1: MNN Sát mặt đất -->
+                        <Border Background="#F8FAFC" BorderBrush="#E2E8F0" BorderThickness="1" CornerRadius="6" Padding="10" Margin="10,5,0,8">
+                            <StackPanel>
+                                <TextBlock Text="a. Trường hợp mực nước ngầm sát mặt đất:" FontWeight="Bold" Foreground="#2C3E50" Margin="0,0,0,6"/>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="180"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    
+                                    <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" Margin="0,3,0,3">
+                                        <TextBlock Text="Rtc = " /><TextBlock Text="{Binding CalculationResult.Rtc2_GW_Surface, StringFormat={}{0:F2}}" FontWeight="Bold"/><TextBlock Text=" (T/m²)"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Margin="0,3,0,3">
+                                        <TextBlock Text="σmax = " /><TextBlock Text="{Binding CalculationResult.SigmaMax2_GW_Surface, StringFormat={}{0:F2}}" FontWeight="Bold"/><TextBlock Text=" (T/m²)  &lt;  1.2 Rtc = " /><TextBlock Text="{Binding CalculationResult.Rtc2_GW_Surface_12, StringFormat={}{0:F2}}" FontWeight="Bold" Foreground="#27AE60"/>
+                                    </StackPanel>
 
-                                <TextBlock Grid.Row="1" Grid.Column="0" Text="N0 =" />
-                                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding CalculationResult.N02_GW_Surface, StringFormat={}{0:F2}}" FontWeight="Bold" />
-                                <TextBlock Grid.Row="1" Grid.Column="2" Text="(T)" />
+                                    <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal" Margin="0,3,0,3">
+                                        <TextBlock Text="N0 = " /><TextBlock Text="{Binding CalculationResult.N02_GW_Surface, StringFormat={}{0:F2}}" FontWeight="Bold"/><TextBlock Text=" (T)"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" Margin="0,3,0,3">
+                                        <TextBlock Text="σtb = " /><TextBlock Text="{Binding CalculationResult.SigmaTb2_GW_Surface, StringFormat={}{0:F2}}" FontWeight="Bold"/><TextBlock Text=" (T/m²)  &lt;  Rtc = " /><TextBlock Text="{Binding CalculationResult.Rtc2_GW_Surface, StringFormat={}{0:F2}}" FontWeight="Bold" Foreground="#27AE60"/>
+                                    </StackPanel>
 
-                                <TextBlock Grid.Row="0" Grid.Column="3" Text="σmax =" />
-                                <TextBlock Grid.Row="0" Grid.Column="4" Text="{Binding CalculationResult.SigmaMax2_GW_Surface, StringFormat={}{0:F2}}" FontWeight="Bold" />
-                                <TextBlock Grid.Row="0" Grid.Column="5" Text="&lt; 1.2 Rtc" />
+                                    <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" Margin="0,3,0,3">
+                                        <TextBlock Text="σmin = " /><TextBlock Text="{Binding CalculationResult.SigmaMin2_GW_Surface, StringFormat={}{0:F2}}" FontWeight="Bold"/><TextBlock Text=" (T/m²) "/><TextBlock Text="{Binding CalculationResult.SigmaMin2_GW_Surface_Text}" FontWeight="Bold" Foreground="{Binding CalculationResult.SigmaMin2_GW_Surface_Color}"/>
+                                    </StackPanel>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
 
-                                <TextBlock Grid.Row="1" Grid.Column="3" Text="σtb =" />
-                                <TextBlock Grid.Row="1" Grid.Column="4" Text="{Binding CalculationResult.SigmaTb2_GW_Surface, StringFormat={}{0:F2}}" FontWeight="Bold" />
-                                <TextBlock Grid.Row="1" Grid.Column="5" Text="&lt; Rtc =" />
-                                <TextBlock Grid.Row="1" Grid.Column="6" Text="{Binding CalculationResult.Rtc2_GW_Surface, StringFormat={}{0:F2}}" />
+                        <!-- Case 2: MNN Sát đáy móng -->
+                        <Border Background="#F8FAFC" BorderBrush="#E2E8F0" BorderThickness="1" CornerRadius="6" Padding="10" Margin="10,0,0,8">
+                            <StackPanel>
+                                <TextBlock Text="b. Trường hợp mực nước ngầm sát mặt đáy móng:" FontWeight="Bold" Foreground="#2C3E50" Margin="0,0,0,6"/>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="180"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    
+                                    <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" Margin="0,3,0,3">
+                                        <TextBlock Text="Rtc = " /><TextBlock Text="{Binding CalculationResult.Rtc2_GW_Base, StringFormat={}{0:F2}}" FontWeight="Bold"/><TextBlock Text=" (T/m²)"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Margin="0,3,0,3">
+                                        <TextBlock Text="σmax = " /><TextBlock Text="{Binding CalculationResult.SigmaMax2_GW_Base, StringFormat={}{0:F2}}" FontWeight="Bold"/><TextBlock Text=" (T/m²)  &lt;  1.2 Rtc = " /><TextBlock Text="{Binding CalculationResult.Rtc2_GW_Base_12, StringFormat={}{0:F2}}" FontWeight="Bold" Foreground="#27AE60"/>
+                                    </StackPanel>
 
-                                <TextBlock Grid.Row="2" Grid.Column="3" Text="σmin =" />
-                                <TextBlock Grid.Row="2" Grid.Column="4" Text="{Binding CalculationResult.SigmaMin2_GW_Surface, StringFormat={}{0:F2}}" FontWeight="Bold" />
-                                <TextBlock Grid.Row="2" Grid.Column="5" Text="&gt; 0" />
-                            </Grid>
-                        </Grid>
+                                    <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal" Margin="0,3,0,3">
+                                        <TextBlock Text="N0 = " /><TextBlock Text="{Binding CalculationResult.N02_GW_Base, StringFormat={}{0:F2}}" FontWeight="Bold"/><TextBlock Text=" (T)"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" Margin="0,3,0,3">
+                                        <TextBlock Text="σtb = " /><TextBlock Text="{Binding CalculationResult.SigmaTb2_GW_Base, StringFormat={}{0:F2}}" FontWeight="Bold"/><TextBlock Text=" (T/m²)  &lt;  Rtc = " /><TextBlock Text="{Binding CalculationResult.Rtc2_GW_Base, StringFormat={}{0:F2}}" FontWeight="Bold" Foreground="#27AE60"/>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" Margin="0,3,0,3">
+                                        <TextBlock Text="σmin = " /><TextBlock Text="{Binding CalculationResult.SigmaMin2_GW_Base, StringFormat={}{0:F2}}" FontWeight="Bold"/><TextBlock Text=" (T/m²) "/><TextBlock Text="{Binding CalculationResult.SigmaMin2_GW_Base_Text}" FontWeight="Bold" Foreground="{Binding CalculationResult.SigmaMin2_GW_Base_Color}"/>
+                                    </StackPanel>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
                     </StackPanel>
 
                     <!-- Kết luận -->

@@ -28,7 +28,9 @@ namespace FAE.Foundation.App.Features.RibbedRaft.Calculations
         public double My_Base { get; set; }
 
         // Trường hợp MNN sát mặt đất
+        public double Rtc1_GW_Surface_Raw { get; set; }
         public double Rtc1_GW_Surface { get; set; }
+        public double Rtc1_GW_Surface_12 => Math.Round(Rtc1_GW_Surface_Raw * 1.2, 2);
         public double N01_GW_Surface { get; set; }
         public double SigmaMax1_GW_Surface { get; set; }
         public double SigmaTb1_GW_Surface { get; set; }
@@ -36,7 +38,9 @@ namespace FAE.Foundation.App.Features.RibbedRaft.Calculations
         public bool IsPass1_GW_Surface { get; set; }
 
         // Trường hợp MNN sát đáy móng
+        public double Rtc1_GW_Base_Raw { get; set; }
         public double Rtc1_GW_Base { get; set; }
+        public double Rtc1_GW_Base_12 => Math.Round(Rtc1_GW_Base_Raw * 1.2, 2);
         public double N01_GW_Base { get; set; }
         public double SigmaMax1_GW_Base { get; set; }
         public double SigmaTb1_GW_Base { get; set; }
@@ -60,7 +64,9 @@ namespace FAE.Foundation.App.Features.RibbedRaft.Calculations
         public double My_SandBase { get; set; }
 
         // Trường hợp MNN sát mặt đất
+        public double Rtc2_GW_Surface_Raw { get; set; }
         public double Rtc2_GW_Surface { get; set; }
+        public double Rtc2_GW_Surface_12 => Math.Round(Rtc2_GW_Surface_Raw * 1.2, 2);
         public double N02_GW_Surface { get; set; }
         public double SigmaMax2_GW_Surface { get; set; }
         public double SigmaTb2_GW_Surface { get; set; }
@@ -68,7 +74,9 @@ namespace FAE.Foundation.App.Features.RibbedRaft.Calculations
         public bool IsPass2_GW_Surface { get; set; }
 
         // Trường hợp MNN sát đáy móng
+        public double Rtc2_GW_Base_Raw { get; set; }
         public double Rtc2_GW_Base { get; set; }
+        public double Rtc2_GW_Base_12 => Math.Round(Rtc2_GW_Base_Raw * 1.2, 2);
         public double N02_GW_Base { get; set; }
         public double SigmaMax2_GW_Base { get; set; }
         public double SigmaTb2_GW_Base { get; set; }
@@ -77,6 +85,16 @@ namespace FAE.Foundation.App.Features.RibbedRaft.Calculations
 
         public bool IsOverallPass => IsPass1_GW_Surface && IsPass1_GW_Base && 
                                      (!HasSandCushion || (IsPass2_GW_Surface && IsPass2_GW_Base));
+
+        public string SigmaMin1_GW_Surface_Text => SigmaMin1_GW_Surface >= 0 ? " > 0 (Thỏa mãn)" : " < 0 (Không thỏa mãn!)";
+        public string SigmaMin1_GW_Base_Text => SigmaMin1_GW_Base >= 0 ? " > 0 (Thỏa mãn)" : " < 0 (Không thỏa mãn!)";
+        public string SigmaMin2_GW_Surface_Text => SigmaMin2_GW_Surface >= 0 ? " > 0 (Thỏa mãn)" : " < 0 (Không thỏa mãn!)";
+        public string SigmaMin2_GW_Base_Text => SigmaMin2_GW_Base >= 0 ? " > 0 (Thỏa mãn)" : " < 0 (Không thỏa mãn!)";
+
+        public string SigmaMin1_GW_Surface_Color => SigmaMin1_GW_Surface >= 0 ? "#16A34A" : "#DC2626";
+        public string SigmaMin1_GW_Base_Color => SigmaMin1_GW_Base >= 0 ? "#16A34A" : "#DC2626";
+        public string SigmaMin2_GW_Surface_Color => SigmaMin2_GW_Surface >= 0 ? "#16A34A" : "#DC2626";
+        public string SigmaMin2_GW_Base_Color => SigmaMin2_GW_Base >= 0 ? "#16A34A" : "#DC2626";
 
         // 3. Bảng dự tính độ lún
         public List<SettlementSublayer> SettlementLayers { get; set; } = new List<SettlementSublayer>();

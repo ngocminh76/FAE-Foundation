@@ -113,10 +113,8 @@ namespace FAE.Foundation.App.Features.RibbedRaft
 
             AvailableLoadCases = new ObservableCollection<LoadCase>
             {
-                new LoadCase { Name = "LỰC NHỔ MAX", Qx = 23.80, Qy = 25.55, N = -198.58, Mx = -54.02, My = 90.67, Mz = -3.89 },
-                new LoadCase { Name = "LỰC NÉN MAX", Qx = 32.93, Qy = 29.73, N = 260.89, Mx = -179.72, My = 107.84, Mz = -8.32 },
-                new LoadCase { Name = "90 ĐỘ BT GIO MAX", Qx = 1003.91, Qy = 0.0, N = 1256.97, Mx = 0.0, My = 36131.73, Mz = 0.0 },
-                new LoadCase { Name = "45 ĐỘ BT GIO MAX", Qx = 688.19, Qy = 506.39, N = 1256.97, Mx = 159368.66, My = 231616.84, Mz = 0.0 }
+                new LoadCase { Name = "GIÓ 45 ĐỘ MAX (Tổ hợp kiểm tra chính)", N = 125.70, Qx = 59.84, Qy = 44.03, Mx = 1385.81, My = 2014.06, Mz = 0.0 },
+                new LoadCase { Name = "GIÓ 90 ĐỘ MAX", N = 125.70, Qx = 87.30, Qy = 0.0, Mx = 0.0, My = 3141.89, Mz = 0.0 }
             };
             SelectedLoadCase = AvailableLoadCases.First();
         }
