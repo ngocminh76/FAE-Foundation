@@ -132,9 +132,41 @@ $$\mathbf{N_i = \frac{N_{tổng}}{4} + \frac{M_{y, tổng} \cdot x_i}{2 \cdot x_
   - $\sigma_{min2,B} = 5.33 - 1.56 - 2.06 = \mathbf{1.72 \text{ T/m}^2} > 0 \implies \mathbf{THỎA \ MÃN}$.
 
 #### 📌 BƯỚC 5: KIỂM TRA ỔN ĐỊNH CHỐNG LẬT & CHỐNG TRƯỢT MÓNG (MỤC 2)
-- **Tổ hợp `90 ĐỘ BT GIÓ MAX` chi phối bài toán Chống Lật & Trượt**:
-  - System chống lật: $K_{cl} = \frac{1557.75 \times 8.50}{4004.69} = \mathbf{3.80} \ge 1.50 \implies \mathbf{THỎA \ MÃN}$.
-  - System chống trượt: $K_{tr} = \frac{1557.75 \times \tan 28^\circ}{87.30} = \frac{828.25}{87.30} = \mathbf{9.49} \ge 1.30 \implies \mathbf{THỎA \ MÃN}$.
+
+![Sơ Đồ Minh Họa Cơ Học Chống Lật và Chống Trượt Móng](/C:/Users/qnbk1/.gemini/antigravity/brain/532fcab8-feeb-4929-b8e3-e0fffa788c40/overturning_sliding_mechanics_1786200496702.jpg)
+
+##### 5.1. Bài toán Chống Lật Móng (Stability Against Overturning $K_{cl}$):
+1. **Bản chất cơ học & Công thức**:
+   - Mô men lật gây lật xoay móng quanh cạnh mép nén $O_y$: $M_{\text{lật}} = M_{y\text{đáy}} = M_{ytc} + Q_{xtc} \cdot H$.
+   - Mô men giữ chống lật (do tổng trọng lượng đứng đáy móng $N_{o1,B}$ với cánh tay đòn $\frac{B}{2}$):
+     $$M_{\text{giữ}} = N_{o1,B} \cdot \left(\frac{B}{2}\right) = 1557.75 \times \frac{17.0}{2} = 1557.75 \times 8.50 = \mathbf{13240.88 \text{ T.m}}$$
+   - Công thức Hệ số An toàn Chống Lật:
+     $$K_{cl} = \frac{M_{\text{giữ}}}{M_{\text{lật}}} = \frac{N_{o1,B} \cdot (B/2)}{M_{ytc} + Q_{xtc} \cdot H} \ge K_{cp} = 1.50$$
+2. **Tính toán chi tiết cho các tổ hợp**:
+   - **Tổ hợp `90 ĐỘ BT GIÓ MAX` (Tổ hợp Chi phối Chống Lật)**:
+     $$M_{\text{lật}} = 3141.89 + 87.30 \times 3.90 = \mathbf{3482.36 \text{ T.m}} \quad (\text{Mô men lật Max tuyệt đối})$$
+     $$K_{cl,90} = \frac{13240.88}{3482.36} = \mathbf{3.80} \ \ge K_{cp} \ (1.50) \implies \mathbf{THỎA \ MÃN}$$
+   - **Tổ hợp `45 ĐỘ BT GIÓ MAX`**:
+     $$M_{\text{lật}} = 2014.06 + 59.84 \times 3.90 = \mathbf{2247.44 \text{ T.m}}$$
+     $$K_{cl,45} = \frac{13240.88}{2247.44} = \mathbf{5.89} \ \ge K_{cp} \ (1.50) \implies \mathbf{THỎA \ MÃN}$$
+
+##### 5.2. Bài toán Chống Trượt Phẳng Móng (Stability Against Sliding $K_{tr}$):
+1. **Bản chất cơ học & Công thức**:
+   - Lực ma sát kháng trượt giữa mặt đáy móng bê tông và đất nền ($\phi_1 = 28^\circ$):
+     $$F_{\text{ms}} = N_{o1,B} \cdot \tan\phi_1 = 1557.75 \times \tan 28^\circ = 1557.75 \times 0.5317 = \mathbf{828.25 \text{ T}}$$
+   - Lực ngang gây trượt móng: $Q_{\text{trượt}} = \sqrt{Q_{xtc}^2 + Q_{ytc}^2}$.
+   - Công thức Hệ số An toàn Chống Trượt:
+     $$K_{tr} = \frac{F_{\text{ms}}}{Q_{\text{trượt}}} = \frac{N_{o1,B} \cdot \tan\phi_1}{\sqrt{Q_{xtc}^2 + Q_{ytc}^2}} \ge K_{cp} = 1.30$$
+2. **Tính toán chi tiết cho các tổ hợp**:
+   - **Tổ hợp `90 ĐỘ BT GIÓ MAX` (Tổ hợp Chi phối Chống Trượt)**:
+     $$Q_{\text{trượt}} = Q_{xtc} = \mathbf{87.30 \text{ T}} \quad (\text{Lực ngang đẩy 1 trục Max})$$
+     $$K_{tr,90} = \frac{828.25}{87.30} = \mathbf{9.49} \ \ge K_{cp} \ (1.30) \implies \mathbf{THỎA \ MÃN}$$
+   - **Tổ hợp `45 ĐỘ BT GIÓ MAX`**:
+     $$Q_{\text{trượt}} = \sqrt{59.84^2 + 44.03^2} = \mathbf{74.29 \text{ T}}$$
+     $$K_{tr,45} = \frac{828.25}{74.29} = \mathbf{11.15} \ \ge K_{cp} \ (1.30) \implies \mathbf{THỎA \ MÃN}$$
+
+> **💡 KẾT LUẬN MỤC 2**:
+> Tổ hợp **`90 ĐỘ BT GIÓ MAX`** chính là Tổ hợp Chi phối quyết định kiểm tra Chống Lật ($K_{cl} = 3.80 < 5.89$) và Chống Trượt ($K_{tr} = 9.49 < 11.15$) vì cho hệ số an toàn nhỏ nhất. Móng đảm bảo an toàn tuyệt đối về ổn định lật và trượt.
 
 #### 📌 BƯỚC 6: BẢNG TỔNG HỢP KẾT LUẬN AN TOÀN VÀ ĐỐI CHIẾU 100% VỚI EXCEL
 
