@@ -83,15 +83,23 @@ namespace FAE.Foundation.App.Features.RibbedRaft.Calculations
         public double SigmaMin2_GW_Base { get; set; }
         public bool IsPass2_GW_Base { get; set; }
 
-        public bool IsOverallPass => IsPass1_GW_Surface && IsPass1_GW_Base && 
-                                     (!HasSandCushion || (IsPass2_GW_Surface && IsPass2_GW_Base));
+        public bool IsPass1_Nen_Surface => SigmaMax1_GW_Surface <= Rtc1_GW_Surface_12 && SigmaTb1_GW_Surface <= Rtc1_GW_Surface;
+        public bool IsPass1_Nen_Base => SigmaMax1_GW_Base <= Rtc1_GW_Base_12 && SigmaTb1_GW_Base <= Rtc1_GW_Base;
 
-        public string SigmaMin1_GW_Surface_Text => SigmaMin1_GW_Surface >= 0 ? " > 0 (Thỏa mãn)" : " < 0 (Không thỏa mãn!)";
+        public bool IsOverallPass => HasSandCushion 
+            ? (IsPass1_Nen_Surface && IsPass1_Nen_Base && IsPass2_GW_Surface && IsPass2_GW_Base && IsPass_Kcl && IsPass_Ktr)
+            : (IsPass1_GW_Surface && IsPass1_GW_Base && IsPass_Kcl && IsPass_Ktr);
+
+        public string SigmaMin1_GW_Surface_Text => HasSandCushion
+            ? (SigmaMin1_GW_Surface >= 0 ? " > 0 (Thỏa mãn)" : " < 0 (Không thỏa mãn đất tự nhiên -> Đã dùng Đệm cát gia cố)")
+            : (SigmaMin1_GW_Surface >= 0 ? " > 0 (Thỏa mãn)" : " < 0 (Không thỏa mãn!)");
         public string SigmaMin1_GW_Base_Text => SigmaMin1_GW_Base >= 0 ? " > 0 (Thỏa mãn)" : " < 0 (Không thỏa mãn!)";
         public string SigmaMin2_GW_Surface_Text => SigmaMin2_GW_Surface >= 0 ? " > 0 (Thỏa mãn)" : " < 0 (Không thỏa mãn!)";
         public string SigmaMin2_GW_Base_Text => SigmaMin2_GW_Base >= 0 ? " > 0 (Thỏa mãn)" : " < 0 (Không thỏa mãn!)";
 
-        public string SigmaMin1_GW_Surface_Color => SigmaMin1_GW_Surface >= 0 ? "#16A34A" : "#DC2626";
+        public string SigmaMin1_GW_Surface_Color => HasSandCushion
+            ? (SigmaMin1_GW_Surface >= 0 ? "#16A34A" : "#D97706")
+            : (SigmaMin1_GW_Surface >= 0 ? "#16A34A" : "#DC2626");
         public string SigmaMin1_GW_Base_Color => SigmaMin1_GW_Base >= 0 ? "#16A34A" : "#DC2626";
         public string SigmaMin2_GW_Surface_Color => SigmaMin2_GW_Surface >= 0 ? "#16A34A" : "#DC2626";
         public string SigmaMin2_GW_Base_Color => SigmaMin2_GW_Base >= 0 ? "#16A34A" : "#DC2626";
