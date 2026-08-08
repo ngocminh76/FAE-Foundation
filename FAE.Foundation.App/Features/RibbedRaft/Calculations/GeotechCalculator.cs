@@ -177,6 +177,24 @@ namespace FAE.Foundation.App.Features.RibbedRaft.Calculations
                 result.IsPass2_GW_Base = (sigmaMax2_B <= 1.2 * rtc2_B_raw) && (sigmaTb2_B <= rtc2_B_raw) && (sigmaMin2_B > 0);
             }
 
+            // 2. KIỂM TRA ỔN ĐỊNH CHỐNG LẬT (Kcl) & CHỐNG TRƯỢT (Ktr) MÓNG
+            double mGiu = N0_GW_Base * (B / 2.0); // 1557.75 * 8.5 = 13240.88 T.m
+            double mLat = Math.Max(0.001, result.My_Base); // M_lật = Mytc + Qxtc * H
+            double kcl = mGiu / mLat;
+
+            result.M_Giu = Math.Round(mGiu, 2);
+            result.M_Lat = Math.Round(mLat, 2);
+            result.K_cl = Math.Round(kcl, 2);
+
+            double tanPhi1 = Math.Tan(phi1 * Math.PI / 180.0); // tan(28 deg) = 0.5317
+            double fms = N0_GW_Base * tanPhi1; // 1557.75 * 0.5317 = 828.25 T
+            double qTruot = Math.Max(0.001, Math.Sqrt(Math.Pow(loadCase.Qx, 2) + Math.Pow(loadCase.Qy, 2)));
+            double ktr = fms / qTruot;
+
+            result.F_ms = Math.Round(fms, 2);
+            result.Q_Truot = Math.Round(qTruot, 2);
+            result.K_tr = Math.Round(ktr, 2);
+
             // 3. TÍNH LÚN (Settlement Calculation)
             double z0_depth = foundation.HasSandCushion ? result.H_qu : effectiveDepth;
             double B_l = foundation.HasSandCushion ? result.B_qu : B;

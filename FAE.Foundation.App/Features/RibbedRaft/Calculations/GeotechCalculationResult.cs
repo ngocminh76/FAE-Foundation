@@ -96,6 +96,17 @@ namespace FAE.Foundation.App.Features.RibbedRaft.Calculations
         public string SigmaMin2_GW_Surface_Color => SigmaMin2_GW_Surface >= 0 ? "#16A34A" : "#DC2626";
         public string SigmaMin2_GW_Base_Color => SigmaMin2_GW_Base >= 0 ? "#16A34A" : "#DC2626";
 
+        // 2. Kiểm tra ổn định Chống Lật (Kcl) & Chống Trượt (Ktr) móng
+        public double M_Giu { get; set; }
+        public double M_Lat { get; set; }
+        public double K_cl { get; set; }
+        public bool IsPass_Kcl => K_cl >= 1.50;
+
+        public double F_ms { get; set; }
+        public double Q_Truot { get; set; }
+        public double K_tr { get; set; }
+        public bool IsPass_Ktr => K_tr >= 1.30;
+
         // 3. Bảng dự tính độ lún
         public List<SettlementSublayer> SettlementLayers { get; set; } = new List<SettlementSublayer>();
         public double Sigma0 { get; set; }

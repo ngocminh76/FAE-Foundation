@@ -439,6 +439,55 @@
                         </Border>
                     </StackPanel>
 
+                    <!-- 2. Kiểm tra ổn định Chống lật & Chống trượt -->
+                    <StackPanel Margin="0,10,0,15">
+                        <TextBlock Text="2. Kiểm tra ổn định chống lật và chống trượt móng" FontWeight="Bold" FontSize="14" Foreground="#2C3E50" Margin="0,0,0,10" />
+
+                        <!-- Chống lật Kcl -->
+                        <Border Background="#F8FAFC" BorderBrush="#E2E8F0" BorderThickness="1" CornerRadius="6" Padding="10" Margin="10,0,0,8">
+                            <StackPanel>
+                                <TextBlock Text="a. Kiểm tra ổn định chống lật móng (Kcl):" FontWeight="Bold" Foreground="#2C3E50" Margin="0,0,0,6"/>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="220"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="0,3,0,3">
+                                        <TextBlock Text="Mgiữ = " /><TextBlock Text="{Binding CalculationResult.M_Giu, StringFormat={}{0:F2}}" FontWeight="Bold"/><TextBlock Text=" (T.m)"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,3,0,3">
+                                        <TextBlock Text="Kcl = Mgiữ / Mlật = " />
+                                        <TextBlock Text="{Binding CalculationResult.K_cl, StringFormat={}{0:F2}}" FontWeight="Bold"/>
+                                        <TextBlock Text="  ≥  Kcp = 1.50  " />
+                                        <TextBlock Visibility="{Binding CalculationResult.IsPass_Kcl, Converter={StaticResource BooleanToVisibilityConverter}}" Text=" (Thỏa mãn)" FontWeight="Bold" Foreground="#27AE60"/>
+                                    </StackPanel>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Chống trượt Ktr -->
+                        <Border Background="#F8FAFC" BorderBrush="#E2E8F0" BorderThickness="1" CornerRadius="6" Padding="10" Margin="10,0,0,8">
+                            <StackPanel>
+                                <TextBlock Text="b. Kiểm tra ổn định chống trượt móng (Ktr):" FontWeight="Bold" Foreground="#2C3E50" Margin="0,0,0,6"/>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="220"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="0,3,0,3">
+                                        <TextBlock Text="Fms = N0.tan(φ1) = " /><TextBlock Text="{Binding CalculationResult.F_ms, StringFormat={}{0:F2}}" FontWeight="Bold"/><TextBlock Text=" (T)"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,3,0,3">
+                                        <TextBlock Text="Ktr = Fms / Qtruốt = " />
+                                        <TextBlock Text="{Binding CalculationResult.K_tr, StringFormat={}{0:F2}}" FontWeight="Bold"/>
+                                        <TextBlock Text="  ≥  Kcp = 1.30  " />
+                                        <TextBlock Visibility="{Binding CalculationResult.IsPass_Ktr, Converter={StaticResource BooleanToVisibilityConverter}}" Text=" (Thỏa mãn)" FontWeight="Bold" Foreground="#27AE60"/>
+                                    </StackPanel>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+
                     <!-- Kết luận -->
                     <Border Padding="10" Margin="0,10,0,0" CornerRadius="4">
                         <Border.Style>
