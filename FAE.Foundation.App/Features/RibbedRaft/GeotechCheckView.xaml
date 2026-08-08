@@ -295,13 +295,13 @@
                             <!-- BIỆN LUẬN ĐỘNG -->
                             <TextBlock Text="→ BIỆN LUẬN CHỌN TỔ HỢP CHI PHỐI:" FontWeight="Bold" Foreground="#1E293B" Margin="0,0,0,5" FontSize="12"/>
                             <Border Background="#FFFBEB" CornerRadius="4" Padding="8,6" Margin="0,0,0,3" BorderBrush="#FCD34D" BorderThickness="1">
-                                <TextBlock Text="{Binding CalculationResult.StressGoverns_Text}" FontStyle="Italic" Foreground="#92400E" FontSize="12"/>
+                                <TextBlock Text="{Binding CalculationResult.StressGoverns_Text, Mode=OneWay}" FontStyle="Italic" Foreground="#92400E" FontSize="12"/>
                             </Border>
                             <Border Background="#EFF6FF" CornerRadius="4" Padding="8,6" Margin="0,0,0,3" BorderBrush="#93C5FD" BorderThickness="1">
-                                <TextBlock Text="{Binding CalculationResult.OvtGoverns_Text}" FontStyle="Italic" Foreground="#1E40AF" FontSize="12"/>
+                                <TextBlock Text="{Binding CalculationResult.OvtGoverns_Text, Mode=OneWay}" FontStyle="Italic" Foreground="#1E40AF" FontSize="12"/>
                             </Border>
                             <Border Background="#EFF6FF" CornerRadius="4" Padding="8,6" Margin="0,0,0,0" BorderBrush="#93C5FD" BorderThickness="1">
-                                <TextBlock Text="{Binding CalculationResult.SlideGoverns_Text}" FontStyle="Italic" Foreground="#1E40AF" FontSize="12"/>
+                                <TextBlock Text="{Binding CalculationResult.SlideGoverns_Text, Mode=OneWay}" FontStyle="Italic" Foreground="#1E40AF" FontSize="12"/>
                             </Border>
                         </StackPanel>
                     </Border>
@@ -312,7 +312,7 @@
                     <StackPanel Margin="10,0,0,15">
                         <TextBlock FontWeight="SemiBold" FontStyle="Italic" Margin="0,5,0,5">
                             <Run Text="1.1 Kiểm tra khả năng chịu tải của đất nền dưới đáy móng  (Tổ hợp chi phối: "/>
-                            <Run Text="{Binding CalculationResult.StressGoverns_Name}" FontWeight="Bold"/>
+                            <Run Text="{Binding CalculationResult.StressGoverns_Name, Mode=OneWay}" FontWeight="Bold"/>
                             <Run Text=")"/>
                         </TextBlock>
 
