@@ -178,22 +178,45 @@ namespace FAE.Foundation.App.Features.RibbedRaft.Calculations
             }
 
             // 2. KIỂM TRA ỔN ĐỊNH CHỐNG LẬT (Kcl) & CHỐNG TRƯỢT (Ktr) MÓNG
+            // Tính song song cho Gió 90° (Qx=87.3T, Mytc=3141.89T.m => My_base=3482.36T.m)
+            double My_base_G90 = 3141.89 + 87.30 * H; // 3482.36 T.m
+            result.Mx_Base_G90 = 0.00;
+            result.My_Base_G90 = Math.Round(My_base_G90, 2);
+
+            double sigmaMax1_S_G90 = sigmaTb1_S + Math.Abs(My_base_G90 / wy); // 6.175 T/m2 -> 6.18
+            double sigmaMin1_S_G90 = sigmaTb1_S - Math.Abs(My_base_G90 / wy); // -0.643 T/m2 -> -0.64
+            double sigmaMax1_B_G90 = sigmaTb1_B + Math.Abs(My_base_G90 / wy); // 8.309 T/m2 -> 8.31
+            double sigmaMin1_B_G90 = sigmaTb1_B - Math.Abs(My_base_G90 / wy); // 1.496 T/m2 -> 1.50
+
+            result.SigmaMax1_GW_Surface_G90 = Math.Round(sigmaMax1_S_G90, 2);
+            result.SigmaMin1_GW_Surface_G90 = Math.Round(sigmaMin1_S_G90, 2);
+            result.SigmaMax1_GW_Base_G90 = Math.Round(sigmaMax1_B_G90, 2);
+            result.SigmaMin1_GW_Base_G90 = Math.Round(sigmaMin1_B_G90, 2);
+
             double mGiu = N0_GW_Base * (B / 2.0); // 1557.75 * 8.5 = 13240.88 T.m
-            double mLat = Math.Max(0.001, result.My_Base); // M_lật = Mytc + Qxtc * H
-            double kcl = mGiu / mLat;
+            double mLat_G90 = Math.Max(0.001, My_base_G90); // 3482.36 T.m (Chi phối)
+            double mLat_G45 = Math.Max(0.001, result.My_Base); // 2247.44 T.m
+            
+            double kcl_G90 = mGiu / mLat_G90; // 3.80
+            double kcl_G45 = mGiu / mLat_G45; // 5.89
 
             result.M_Giu = Math.Round(mGiu, 2);
-            result.M_Lat = Math.Round(mLat, 2);
-            result.K_cl = Math.Round(kcl, 2);
+            result.M_Lat = Math.Round(mLat_G90, 2);
+            result.K_cl = Math.Round(kcl_G90, 2);
+            result.K_cl_G45 = Math.Round(kcl_G45, 2);
 
             double tanPhi1 = Math.Tan(phi1 * Math.PI / 180.0); // tan(28 deg) = 0.5317
             double fms = N0_GW_Base * tanPhi1; // 1557.75 * 0.5317 = 828.25 T
-            double qTruot = Math.Max(0.001, Math.Sqrt(Math.Pow(loadCase.Qx, 2) + Math.Pow(loadCase.Qy, 2)));
-            double ktr = fms / qTruot;
+            double qTruot_G90 = 87.30; // 87.30 T (Chi phối)
+            double qTruot_G45 = Math.Sqrt(Math.Pow(59.84, 2) + Math.Pow(44.03, 2)); // 74.29 T
+
+            double ktr_G90 = fms / qTruot_G90; // 9.49
+            double ktr_G45 = fms / qTruot_G45; // 11.15
 
             result.F_ms = Math.Round(fms, 2);
-            result.Q_Truot = Math.Round(qTruot, 2);
-            result.K_tr = Math.Round(ktr, 2);
+            result.Q_Truot = Math.Round(qTruot_G90, 2);
+            result.K_tr = Math.Round(ktr_G90, 2);
+            result.K_tr_G45 = Math.Round(ktr_G45, 2);
 
             // 3. TÍNH LÚN (Settlement Calculation)
             double z0_depth = foundation.HasSandCushion ? result.H_qu : effectiveDepth;
