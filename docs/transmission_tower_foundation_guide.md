@@ -152,9 +152,12 @@ $$\mathbf{N_i = \frac{N_{tổng}}{4} + \frac{M_{y, tổng} \cdot x_i}{2 \cdot x_
 
 ##### 5.2. Bài toán Chống Trượt Phẳng Móng (Stability Against Sliding $K_{tr}$):
 1. **Bản chất cơ học & Công thức**:
-   - Lực ma sát kháng trượt giữa mặt đáy móng bê tông và đất nền ($\phi_1 = 28^\circ$):
-     $$F_{\text{ms}} = N_{o1,B} \cdot \tan\phi_1 = 1557.75 \times \tan 28^\circ = 1557.75 \times 0.5317 = \mathbf{828.25 \text{ T}}$$
-   - Lực ngang gây trượt móng: $Q_{\text{trượt}} = \sqrt{Q_{xtc}^2 + Q_{ytc}^2}$.
+   - **Lực gây trượt ($Q_{\text{trượt}}$)**: Do lực đẩy ngang của gió bão $Q_x, Q_y$ tác dụng lên tháp đẩy trượt lê móng theo phương ngang.
+   - **Lực giữ chống trượt ($F_{\text{ms}}$)**: Do tổng lực nén đè xuống $N_{o1,B}$ ép chặt đáy móng bê tông xuống nền đất sinh ra lực ma sát kháng trượt:
+     $$F_{\text{ms}} = N_{o1,B} \cdot \tan\phi_1$$
+   - **Bản chất của $\tan\phi_1 = \tan(28^\circ) = 0.5317$**: Đây **không phải con số cố định pháp luật**, mà chính là **Hệ số Ma sát ($\mu = \tan\phi$)** giữa đáy móng và lớp đất nền/đệm cát (với góc ma sát trong $\phi_1 = 28^\circ$ từ khảo sát địa chất). Ý nghĩa: Cứ $100\text{ T}$ đè xuống sinh ra $53.17\text{ T}$ ma sát giữ móng lại.
+   - Lực ma sát kháng trượt thực tế:
+     $$F_{\text{ms}} = 1557.75 \times \tan 28^\circ = 1557.75 \times 0.5317 = \mathbf{828.25 \text{ T}}$$
    - Công thức Hệ số An toàn Chống Trượt:
      $$K_{tr} = \frac{F_{\text{ms}}}{Q_{\text{trượt}}} = \frac{N_{o1,B} \cdot \tan\phi_1}{\sqrt{Q_{xtc}^2 + Q_{ytc}^2}} \ge K_{cp} = 1.30$$
 2. **Tính toán chi tiết cho các tổ hợp**:
