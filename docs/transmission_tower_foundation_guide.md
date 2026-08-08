@@ -70,3 +70,39 @@ $$\mathbf{N_i = \frac{N_{tổng}}{4} + \frac{M_{y, tổng} \cdot x_i}{2 \cdot x_
 - Ứng suất phản lực đất nền bên dưới bản móng bè phân bố theo **Biểu đồ hình chêm nghiêng 3D (3D Inclined Wedge)**.
 - **Tại góc móng $Leg_4$ (Chân nén dồn):** Ứng suất đất đạt **Giá trị cực đại $P_{max} = 43.46\text{ kPa}$** (tương ứng vùng màu đỏ thẫm trên Heatmap 3D).
 - **Tại 3 góc móng $Leg_1, Leg_2, Leg_3$ (Các chân bị kéo nhổ):** Áp lực đất nền giảm về **0.0 kPa** (tương ứng vùng màu xanh dương thẫm trên Heatmap 3D).
+
+---
+
+## 🌪️ 9. Bản Chất Cơ Học & Phân Tích Bao Tổ Hợp Tải Trọng Gió (Gió 45° vs Gió 90°)
+
+![Sơ Đồ Minh Họa 3D Phân Bố Ứng Suất Đất Nền Đáy Móng Giữa Gió 90° và Gió 45°](/C:/Users/qnbk1/.gemini/antigravity/brain/532fcab8-feeb-4929-b8e3-e0fffa788c40/wind_45_vs_90_mechanics_1786197348139.jpg)
+
+### A. Phân Tích Vật Lý & Sự Phân Phối Mô Men Lật:
+
+Trong thiết kế móng tháp truyền tải điện 500kV, tải trọng gió tác dụng lên thân tháp và dây dẫn tạo ra 2 kịch bản chịu lực cơ bản:
+
+1. **Tổ hợp GIÓ $90^\circ$ MAX (Gió Vuông Góc Tuyến Dây):**
+   - Lực ngang tập trung đẩy theo trục X: $Q_x = 87.30\text{ T}, Q_y \approx 0$.
+   - Mô men uốn chỉ xuất hiện ở 1 phương chính: $M_y = 3141.89\text{ T.m}, M_x = 0$.
+   - **Tác động:** Móng bị **Uốn Lệch Tâm Đơn (Uniaxial Eccentricity)**. Ứng suất uốn phân bố đều theo một cạnh móng.
+
+2. **Tổ hợp GIÓ $45^\circ$ MAX (Gió Thổi Xiên Góc $45^\circ$):**
+   - Lực ngang chia đều trên cả 2 phương: $Q_x = 59.84\text{ T}, Q_y = 44.03\text{ T}$.
+   - Mô men uốn xuất hiện đồng thời trên 2 phương: $M_x = 1385.81\text{ T.m}, M_y = 2014.06\text{ T.m}$.
+   - **Tác động:** Móng bị **Uốn Lệch Tâm Xiên (Biaxial Eccentricity)**. Mô men $M_x$ và $M_y$ **cùng cộng hưởng nén cực đại dồn vào 1 góc móng duy nhất**.
+
+### B. Bảng So Sánh Chỉ Tiêu Khống Chế Thiết Kế Đáy Móng:
+
+| Chỉ tiêu kiểm tra | Tổ hợp GIÓ $45^\circ$ | Tổ hợp GIÓ $90^\circ$ | Tổ hợp Bao Nguy Hiểm Nhất (Envelope) | Tổ Hợp Chi Phối Kết Quả |
+| :--- | :---: | :---: | :---: | :--- |
+| **Mô men đáy móng $M_{x\text{đáy}}$** | $1557.55 \text{ T.m}$ | $0.00 \text{ T.m}$ | **$1557.55 \text{ T.m}$** | Gió $45^\circ$ |
+| **Mô men đáy móng $M_{y\text{đáy}}$** | $2247.44 \text{ T.m}$ | $3141.89 \text{ T.m}$ | **$3141.89 \text{ T.m}$** | Gió $90^\circ$ |
+| **Ứng suất nén max ($\sigma_{max1}$)** | **$6.67 \text{ T/m}^2$** | **$5.83 \text{ T/m}^2$** | **$\mathbf{6.67 \text{ T/m}^2}$** |  **GIÓ $45^\circ$ quyết định** |
+| **Ứng suất kéo min ($\sigma_{min1}$)** | **$-1.13 \text{ T/m}^2$** | **$-0.30 \text{ T/m}^2$** | **$\mathbf{-1.13 \text{ T/m}^2}$** |  **GIÓ $45^\circ$ quyết định (Bật móng)** |
+| **Ứng suất đệm cát $\sigma_{max2}$** | **$6.82 \text{ T/m}^2$** | **$6.01 \text{ T/m}^2$** | **$\mathbf{6.82 \text{ T/m}^2}$** |  **GIÓ $45^\circ$ quyết định** |
+| **Hệ số chống lật móng $K_{cl}$** | $2.35$ | **$1.80$** | **$\mathbf{1.80}$** |  **GIÓ $90^\circ$ quyết định** |
+
+### C. Nguyên Lý Đường Bao Tải Trọng (Load Envelope Principle):
+
+- **Kiểm tra Ứng suất Đáy Móng ($\sigma_{max}, \sigma_{min}, R_{tc}$):** Tổ hợp **GIÓ $45^\circ$** cho $\sigma_{max}$ lớn nhất ($6.67\text{ T/m}^2 > 5.83\text{ T/m}^2$) và $\sigma_{min}$ nhỏ nhất (bị âm nhiều nhất $-1.13\text{ T/m}^2$). Do đó, **Gió $45^\circ$ chính là Envelope quyết định kiểm tra nền đất**.
+- **Kiểm tra Chống Lật Móng ($K_{cl}$):** Tổ hợp **GIÓ $90^\circ$** cho mô men lật $M_y$ lớn nhất làm cho $K_{cl}$ giảm xuống nhỏ nhất ($1.80 < 2.35$). Do đó, **Gió $90^\circ$ chính là Envelope quyết định bài toán chống lật**.
