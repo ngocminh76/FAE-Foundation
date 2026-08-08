@@ -235,39 +235,73 @@
         <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
             <Border Background="White" Margin="5" Padding="15" CornerRadius="8">
                 <StackPanel>
-                    <!-- Dual Load Case Header Display -->
+                    <!-- BẢNG TẢI TRỌNG TIÊU CHUẨN + BIỆN LUẬN CHI PHỐI -->
                     <Border Background="#F1F5F9" BorderBrush="#CBD5E1" BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,0,15">
                         <StackPanel>
-                            <TextBlock Text="📊 BẢNG TẢI TRỌNG TIÊU CHUẨN KIỂM TRA ĐỒNG THỜI (DUAL LOAD-CASE VIEW)" FontWeight="Bold" Foreground="#1E293B" Margin="0,0,0,8" FontSize="13"/>
-                            
-                            <!-- Table Row Gió 45 -->
-                            <Border Background="White" CornerRadius="4" Padding="8,6" Margin="0,0,0,5" BorderBrush="#E2E8F0" BorderThickness="1">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="180"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="🟡 GIÓ 45° MAX (Xiên)" FontWeight="Bold" Foreground="#D97706" VerticalAlignment="Center"/>
-                                    <TextBlock Grid.Column="1" VerticalAlignment="Center" FontSize="12">
-                                        <Run Text="N = 125.70 T | Qx = 59.84 T, Qy = 44.03 T | Mxtc = 1385.81 T.m, Mytc = 2014.06 T.m" Foreground="#475569"/>
-                                        <Run Text=" ➔ Chi phối Nền Đất" FontWeight="Bold" Foreground="#D97706"/>
-                                    </TextBlock>
-                                </Grid>
+                            <TextBlock Text="BẢNG TẢI TRỌNG TIÊU CHUẨN ĐẦU VÀO" FontWeight="Bold" Foreground="#1E293B" Margin="0,0,0,8" FontSize="13"/>
+
+                            <!-- TH1 row -->
+                            <Border Background="White" CornerRadius="4" Padding="8,5" Margin="0,0,0,4" BorderBrush="#E2E8F0" BorderThickness="1">
+                                <TextBlock FontSize="12">
+                                    <Run Text="{Binding CalculationResult.TH1_Name}" FontWeight="Bold" Foreground="#334155"/>
+                                    <Run Text="  |  N = " Foreground="#64748B"/>
+                                    <Run Text="{Binding CalculationResult.TH1_N, StringFormat={}{0:F2}}" Foreground="#334155"/>
+                                    <Run Text=" T  |  Qx = " Foreground="#64748B"/>
+                                    <Run Text="{Binding CalculationResult.TH1_Qx, StringFormat={}{0:F2}}" Foreground="#334155"/>
+                                    <Run Text=" T, Qy = " Foreground="#64748B"/>
+                                    <Run Text="{Binding CalculationResult.TH1_Qy, StringFormat={}{0:F2}}" Foreground="#334155"/>
+                                    <Run Text=" T  |  Mx = " Foreground="#64748B"/>
+                                    <Run Text="{Binding CalculationResult.TH1_Mx, StringFormat={}{0:F2}}" Foreground="#334155"/>
+                                    <Run Text=" T.m, My = " Foreground="#64748B"/>
+                                    <Run Text="{Binding CalculationResult.TH1_My, StringFormat={}{0:F2}}" Foreground="#334155"/>
+                                    <Run Text=" T.m" Foreground="#64748B"/>
+                                    <LineBreak/>
+                                    <Run Text="    Mxđáy = " Foreground="#64748B"/>
+                                    <Run Text="{Binding CalculationResult.TH1_Mx_Base, StringFormat={}{0:F2}}" FontWeight="SemiBold" Foreground="#1D4ED8"/>
+                                    <Run Text=" T.m,  Myđáy = " Foreground="#64748B"/>
+                                    <Run Text="{Binding CalculationResult.TH1_My_Base, StringFormat={}{0:F2}}" FontWeight="SemiBold" Foreground="#1D4ED8"/>
+                                    <Run Text=" T.m,  Qtruốt = " Foreground="#64748B"/>
+                                    <Run Text="{Binding CalculationResult.TH1_Qtruot, StringFormat={}{0:F2}}" FontWeight="SemiBold" Foreground="#1D4ED8"/>
+                                    <Run Text=" T" Foreground="#64748B"/>
+                                </TextBlock>
                             </Border>
 
-                            <!-- Table Row Gió 90 -->
-                            <Border Background="White" CornerRadius="4" Padding="8,6" Margin="0,0,0,0" BorderBrush="#E2E8F0" BorderThickness="1">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="180"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="🔵 GIÓ 90° MAX (Vuông)" FontWeight="Bold" Foreground="#2563EB" VerticalAlignment="Center"/>
-                                    <TextBlock Grid.Column="1" VerticalAlignment="Center" FontSize="12">
-                                        <Run Text="N = 125.70 T | Qx = 87.30 T, Qy = 0.00 T | Mxtc = 0.00 T.m, Mytc = 3141.89 T.m" Foreground="#475569"/>
-                                        <Run Text=" ➔ Chi phối Lật &amp; Trượt" FontWeight="Bold" Foreground="#2563EB"/>
-                                    </TextBlock>
-                                </Grid>
+                            <!-- TH2 row -->
+                            <Border Background="White" CornerRadius="4" Padding="8,5" Margin="0,0,0,8" BorderBrush="#E2E8F0" BorderThickness="1">
+                                <TextBlock FontSize="12">
+                                    <Run Text="{Binding CalculationResult.TH2_Name}" FontWeight="Bold" Foreground="#334155"/>
+                                    <Run Text="  |  N = " Foreground="#64748B"/>
+                                    <Run Text="{Binding CalculationResult.TH2_N, StringFormat={}{0:F2}}" Foreground="#334155"/>
+                                    <Run Text=" T  |  Qx = " Foreground="#64748B"/>
+                                    <Run Text="{Binding CalculationResult.TH2_Qx, StringFormat={}{0:F2}}" Foreground="#334155"/>
+                                    <Run Text=" T, Qy = " Foreground="#64748B"/>
+                                    <Run Text="{Binding CalculationResult.TH2_Qy, StringFormat={}{0:F2}}" Foreground="#334155"/>
+                                    <Run Text=" T  |  Mx = " Foreground="#64748B"/>
+                                    <Run Text="{Binding CalculationResult.TH2_Mx, StringFormat={}{0:F2}}" Foreground="#334155"/>
+                                    <Run Text=" T.m, My = " Foreground="#64748B"/>
+                                    <Run Text="{Binding CalculationResult.TH2_My, StringFormat={}{0:F2}}" Foreground="#334155"/>
+                                    <Run Text=" T.m" Foreground="#64748B"/>
+                                    <LineBreak/>
+                                    <Run Text="    Mxđáy = " Foreground="#64748B"/>
+                                    <Run Text="{Binding CalculationResult.TH2_Mx_Base, StringFormat={}{0:F2}}" FontWeight="SemiBold" Foreground="#1D4ED8"/>
+                                    <Run Text=" T.m,  Myđáy = " Foreground="#64748B"/>
+                                    <Run Text="{Binding CalculationResult.TH2_My_Base, StringFormat={}{0:F2}}" FontWeight="SemiBold" Foreground="#1D4ED8"/>
+                                    <Run Text=" T.m,  Qtruốt = " Foreground="#64748B"/>
+                                    <Run Text="{Binding CalculationResult.TH2_Qtruot, StringFormat={}{0:F2}}" FontWeight="SemiBold" Foreground="#1D4ED8"/>
+                                    <Run Text=" T" Foreground="#64748B"/>
+                                </TextBlock>
+                            </Border>
+
+                            <!-- BIỆN LUẬN ĐỘNG -->
+                            <TextBlock Text="→ BIỆN LUẬN CHỌN TỔ HỢP CHI PHỐI:" FontWeight="Bold" Foreground="#1E293B" Margin="0,0,0,5" FontSize="12"/>
+                            <Border Background="#FFFBEB" CornerRadius="4" Padding="8,6" Margin="0,0,0,3" BorderBrush="#FCD34D" BorderThickness="1">
+                                <TextBlock Text="{Binding CalculationResult.StressGoverns_Text}" FontStyle="Italic" Foreground="#92400E" FontSize="12"/>
+                            </Border>
+                            <Border Background="#EFF6FF" CornerRadius="4" Padding="8,6" Margin="0,0,0,3" BorderBrush="#93C5FD" BorderThickness="1">
+                                <TextBlock Text="{Binding CalculationResult.OvtGoverns_Text}" FontStyle="Italic" Foreground="#1E40AF" FontSize="12"/>
+                            </Border>
+                            <Border Background="#EFF6FF" CornerRadius="4" Padding="8,6" Margin="0,0,0,0" BorderBrush="#93C5FD" BorderThickness="1">
+                                <TextBlock Text="{Binding CalculationResult.SlideGoverns_Text}" FontStyle="Italic" Foreground="#1E40AF" FontSize="12"/>
                             </Border>
                         </StackPanel>
                     </Border>
@@ -276,8 +310,12 @@
 
                     <!-- 1.1 Dưới đáy móng -->
                     <StackPanel Margin="10,0,0,15">
-                        <TextBlock Text="1.1 Kiểm tra khả năng chịu tải của đất nền dưới đáy móng (Tổ hợp Chi Phối: GIÓ 45° MAX)" FontWeight="SemiBold" FontStyle="Italic" Margin="0,5,0,5" />
-                        
+                        <TextBlock FontWeight="SemiBold" FontStyle="Italic" Margin="0,5,0,5">
+                            <Run Text="1.1 Kiểm tra khả năng chịu tải của đất nền dưới đáy móng  (Tổ hợp chi phối: "/>
+                            <Run Text="{Binding CalculationResult.StressGoverns_Name}" FontWeight="Bold"/>
+                            <Run Text=")"/>
+                        </TextBlock>
+
                         <!-- Row Phi, A, B, D -->
                         <WrapPanel Margin="10,2,0,5">
                             <TextBlock Text="φ = " /><TextBlock Text="{Binding CalculationResult.Phi1, StringFormat={}{0:F2}}" FontWeight="Bold" Margin="0,0,25,0"/>
@@ -289,8 +327,8 @@
                         <TextBlock Text="Áp lực tiêu chuẩn của nền đất Rtc = m(A.b.γdn + B.h1.γ1 + D.c)" Margin="10,2,0,5" Foreground="#7F8C8D"/>
 
                         <StackPanel Orientation="Horizontal" Margin="10,2,0,10">
-                            <TextBlock Text="Mxdáy = " /><TextBlock Text="{Binding CalculationResult.Mx_Base, StringFormat={}{0:F2}}" FontWeight="Bold" Foreground="#2980B9"/>
-                            <TextBlock Text=" (T.m)    Mydáy = " /><TextBlock Text="{Binding CalculationResult.My_Base, StringFormat={}{0:F2}}" FontWeight="Bold" Foreground="#2980B9"/>
+                            <TextBlock Text="Mxđáy = " /><TextBlock Text="{Binding CalculationResult.Mx_Base, StringFormat={}{0:F2}}" FontWeight="Bold" Foreground="#2980B9"/>
+                            <TextBlock Text=" (T.m)    Myđáy = " /><TextBlock Text="{Binding CalculationResult.My_Base, StringFormat={}{0:F2}}" FontWeight="Bold" Foreground="#2980B9"/>
                             <TextBlock Text=" (T.m)"/>
                         </StackPanel>
 

@@ -7,9 +7,18 @@ namespace FAE.Foundation.App.Features.RibbedRaft.Calculations
 {
     public class GeotechCalculator
     {
-        public static GeotechCalculationResult Calculate(RibbedRaftModel foundation, BoreholeModel borehole, LoadCase loadCase)
+        public static GeotechCalculationResult Calculate(RibbedRaftModel foundation, BoreholeModel borehole, LoadCase loadCase1, LoadCase loadCase2)
         {
             var result = new GeotechCalculationResult();
+
+            // ── Lưu thông tin cả 2 tổ hợp vào result để UI hiển thị ──
+            result.TH1_Name = loadCase1.Name;
+            result.TH1_N = loadCase1.N; result.TH1_Qx = loadCase1.Qx; result.TH1_Qy = loadCase1.Qy;
+            result.TH1_Mx = loadCase1.Mx; result.TH1_My = loadCase1.My;
+
+            result.TH2_Name = loadCase2.Name;
+            result.TH2_N = loadCase2.N; result.TH2_Qx = loadCase2.Qx; result.TH2_Qy = loadCase2.Qy;
+            result.TH2_Mx = loadCase2.Mx; result.TH2_My = loadCase2.My;
             
             // 0. Thông số chung
             double B = foundation.TotalWidth;
@@ -54,8 +63,55 @@ namespace FAE.Foundation.App.Features.RibbedRaft.Calculations
 
             double m = 1.0; // m = 1.0 theo Excel
 
-            result.Mx_Base = loadCase.Mx + loadCase.Qy * H; // 1385.81 + 44.03 * 3.9 = 1557.55 T.m
-            result.My_Base = loadCase.My + loadCase.Qx * H; // 2014.06 + 59.84 * 3.9 = 2247.44 T.m
+            // ── Mô men quy đổi đáy móng cho CẢ 2 tổ hợp ──
+            double Mx_base_TH1 = loadCase1.Mx + loadCase1.Qy * H;
+            double My_base_TH1 = loadCase1.My + loadCase1.Qx * H;
+            double Mx_base_TH2 = loadCase2.Mx + loadCase2.Qy * H;
+            double My_base_TH2 = loadCase2.My + loadCase2.Qx * H;
+
+            result.TH1_Mx_Base = Math.Round(Mx_base_TH1, 2);
+            result.TH1_My_Base = Math.Round(My_base_TH1, 2);
+            result.TH2_Mx_Base = Math.Round(Mx_base_TH2, 2);
+            result.TH2_My_Base = Math.Round(My_base_TH2, 2);
+
+            // ── BIỆN LUẬN 1: σmax nào lớn hơn → chi phối ứng suất nền ──
+            // (Tính trước σmax thô không cần N0 vì N0 như nhau — chỉ cần so ngoại tâm)
+            double ecc_TH1 = Math.Abs(Mx_base_TH1 / ((L * Math.Pow(B, 3) - Math.Pow(c, 4)) / (6.0 * B)))
+                           + Math.Abs(My_base_TH1 / ((B * Math.Pow(L, 3) - Math.Pow(c, 4)) / (6.0 * L)));
+            double ecc_TH2 = Math.Abs(Mx_base_TH2 / ((L * Math.Pow(B, 3) - Math.Pow(c, 4)) / (6.0 * B)))
+                           + Math.Abs(My_base_TH2 / ((B * Math.Pow(L, 3) - Math.Pow(c, 4)) / (6.0 * L)));
+            // TH có ngoại tâm lớn hơn → σmax lớn hơn → chi phối ứng suất
+            bool stressGovTH1 = ecc_TH1 >= ecc_TH2;
+            LoadCase stressCase = stressGovTH1 ? loadCase1 : loadCase2;
+            double Mx_base_stress = stressGovTH1 ? Mx_base_TH1 : Mx_base_TH2;
+            double My_base_stress = stressGovTH1 ? My_base_TH1 : My_base_TH2;
+
+            result.IsStress_TH1_Governs = stressGovTH1;
+
+            // ── BIỆN LUẬN 2: Mlật nào lớn hơn → chi phối chống lật ──
+            double Mlat_TH1 = Math.Max(0.001, My_base_TH1);
+            double Mlat_TH2 = Math.Max(0.001, My_base_TH2);
+            bool ovtGovTH2 = Mlat_TH2 >= Mlat_TH1;
+            double Mlat_gov = ovtGovTH2 ? Mlat_TH2 : Mlat_TH1;
+
+            result.TH1_Mlat = Math.Round(Mlat_TH1, 2);
+            result.TH2_Mlat = Math.Round(Mlat_TH2, 2);
+            result.IsOvt_TH2_Governs = ovtGovTH2;
+
+            // ── BIỆN LUẬN 3: Qtruot nào lớn hơn → chi phối chống trượt ──
+            double Qtruot_TH1 = Math.Sqrt(loadCase1.Qx * loadCase1.Qx + loadCase1.Qy * loadCase1.Qy);
+            double Qtruot_TH2 = Math.Sqrt(loadCase2.Qx * loadCase2.Qx + loadCase2.Qy * loadCase2.Qy);
+            bool slideGovTH2 = Qtruot_TH2 >= Qtruot_TH1;
+            double Qtruot_gov = slideGovTH2 ? Qtruot_TH2 : Qtruot_TH1;
+
+            result.TH1_Qtruot = Math.Round(Qtruot_TH1, 2);
+            result.TH2_Qtruot = Math.Round(Qtruot_TH2, 2);
+            result.IsSlide_TH2_Governs = slideGovTH2;
+
+            // ── Gán mô men chi phối ứng suất vào result (cho UI Mục 1) ──
+            result.Mx_Base = Math.Round(Mx_base_stress, 2);
+            result.My_Base = Math.Round(My_base_stress, 2);
+            // (wx, wy đã khai báo ở trên — dùng chung)
 
             // MNN sát mặt đất (Row 76-81 Excel)
             // C77: =C71*K9*L54 + F71*($K$38*L52) + I71*J54
@@ -67,13 +123,19 @@ namespace FAE.Foundation.App.Features.RibbedRaft.Calculations
             result.Rtc1_GW_Surface_Raw = rtc1_S_raw;
             result.Rtc1_GW_Surface = Math.Round(rtc1_S_raw, 2);
             
-            // C78: =C29 + K29*1.4 + K40*L52 + K43*L52 + C36*(1.2-L52)
-            double N0_GW_Surface = loadCase.N + vConcrete * 1.4 + vSoil * gamma_dn_clay; // 878.690155 T
+            // C78: N0 = N + Vbt*γbt + Vd*γdn (MNN sát mặt đất)
+            // N0 dùng N của tổ hợp ứng suất chi phối (cả 2 TH cùng N)
+            double N0_GW_Surface = stressCase.N + vConcrete * 1.4 + vSoil * gamma_dn_clay;
             result.N01_GW_Surface = Math.Round(N0_GW_Surface, 2);
 
-            double sigmaTb1_S = N0_GW_Surface / area; // 2.765699 T/m2
-            double sigmaMax1_S = sigmaTb1_S + Math.Abs(result.Mx_Base / wx) + Math.Abs(result.My_Base / wy); // 6.665937 T/m2
-            double sigmaMin1_S = sigmaTb1_S - Math.Abs(result.Mx_Base / wx) - Math.Abs(result.My_Base / wy); // -1.134539 T/m2
+            double sigmaTb1_S = N0_GW_Surface / area;
+            double sigmaMax1_S = sigmaTb1_S + Math.Abs(Mx_base_stress / wx) + Math.Abs(My_base_stress / wy);
+            double sigmaMin1_S = sigmaTb1_S - Math.Abs(Mx_base_stress / wx) - Math.Abs(My_base_stress / wy);
+
+            // Gán σmax so sánh cho biện luận
+            double sigmaTb1_S_ref = N0_GW_Surface / area;
+            result.TH1_SigmaMax_Compare = Math.Round(sigmaTb1_S_ref + ecc_TH1, 2);
+            result.TH2_SigmaMax_Compare = Math.Round(sigmaTb1_S_ref + ecc_TH2, 2);
 
             result.SigmaMax1_GW_Surface = Math.Round(sigmaMax1_S, 2);
             result.SigmaTb1_GW_Surface = Math.Round(sigmaTb1_S, 2);
@@ -86,13 +148,13 @@ namespace FAE.Foundation.App.Features.RibbedRaft.Calculations
             result.Rtc1_GW_Base_Raw = rtc1_B_raw;
             result.Rtc1_GW_Base = Math.Round(rtc1_B_raw, 2);
             
-            // C84: =C29 + K29*2.4 + K40*1.55 + K43*1.55 + C36*(2.2-1.55)
-            double N0_GW_Base = loadCase.N + vConcrete * 2.4 + vSoil * 1.55; // 1557.751099 T
+            // C84: N0 = N + Vbt*γbt + Vd*γ (MNN sát đáy móng)
+            double N0_GW_Base = stressCase.N + vConcrete * 2.4 + vSoil * 1.55;
             result.N01_GW_Base = Math.Round(N0_GW_Base, 2);
 
-            double sigmaTb1_B = N0_GW_Base / area; // 4.903060 T/m2
-            double sigmaMax1_B = sigmaTb1_B + Math.Abs(result.Mx_Base / wx) + Math.Abs(result.My_Base / wy); // 8.803297 T/m2
-            double sigmaMin1_B = sigmaTb1_B - Math.Abs(result.Mx_Base / wx) - Math.Abs(result.My_Base / wy); // 1.002822 T/m2
+            double sigmaTb1_B = N0_GW_Base / area;
+            double sigmaMax1_B = sigmaTb1_B + Math.Abs(Mx_base_stress / wx) + Math.Abs(My_base_stress / wy);
+            double sigmaMin1_B = sigmaTb1_B - Math.Abs(Mx_base_stress / wx) - Math.Abs(My_base_stress / wy);
 
             result.SigmaMax1_GW_Base = Math.Round(sigmaMax1_B, 2);
             result.SigmaTb1_GW_Base = Math.Round(sigmaTb1_B, 2);
@@ -121,10 +183,10 @@ namespace FAE.Foundation.App.Features.RibbedRaft.Calculations
                 result.Wx_qu = Math.Round(wx_qu, 2);
                 result.Wy_qu = Math.Round(wy_qu, 2);
 
-                // Mô men quy đổi đáy đệm cát theo Excel (H95 = D74 + F30*C54, H96 = D75 + C30*C54)
-                // Trong Excel sheet 55(+2)B, H95 dùng Qy của Gió 90 (~0) và H96 dùng Qx của Gió 90 (87.3T)
-                double Mxtc_qu = result.Mx_Base; // 1557.546 T.m (Row 95 Excel)
-                double Mytc_qu = result.My_Base + 87.29633485419478 * sandDepth; // 2247.445 + 87.3 * 0.5 = 2291.093 T.m (Row 96 Excel)
+                // Mô men quy đổi đáy đệm cát = mô men đáy móng + Q * chiều sâu đệm cát
+                // Dùng tổ hợp ứng suất chi phối
+                double Mxtc_qu = Mx_base_stress + stressCase.Qy * sandDepth;
+                double Mytc_qu = My_base_stress + stressCase.Qx * sandDepth;
 
                 // Lớp bùn sét dưới đệm cát (Phi = 6.5 độ, C = 0.87 T/m2)
                 double phi2 = 6.5;
@@ -177,46 +239,39 @@ namespace FAE.Foundation.App.Features.RibbedRaft.Calculations
                 result.IsPass2_GW_Base = (sigmaMax2_B <= 1.2 * rtc2_B_raw) && (sigmaTb2_B <= rtc2_B_raw) && (sigmaMin2_B > 0);
             }
 
-            // 2. KIỂM TRA ỔN ĐỊNH CHỐNG LẬT (Kcl) & CHỐNG TRƯỢT (Ktr) MÓNG
-            // Tính song song cho Gió 90° (Qx=87.3T, Mytc=3141.89T.m => My_base=3482.36T.m)
-            double My_base_G90 = 3141.89 + 87.30 * H; // 3482.36 T.m
-            result.Mx_Base_G90 = 0.00;
-            result.My_Base_G90 = Math.Round(My_base_G90, 2);
+            // 2. KIỂM TRA ỔN ĐỊNH CHỐNG LẬT (Kcl) & CHỐNG TRƯỢT (Ktr)
+            // Dùng N0_GW_Base của tổ hợp ứng suất (N như nhau) cho Mgiữ
+            // Chống lật & trượt dùng tổ hợp chi phối riêng (đã biện luận ở trên)
+            LoadCase ovtCase  = ovtGovTH2  ? loadCase2 : loadCase1;
+            LoadCase slideCase = slideGovTH2 ? loadCase2 : loadCase1;
+            double Mx_base_ovt = ovtGovTH2  ? Mx_base_TH2 : Mx_base_TH1;
+            double My_base_ovt = ovtGovTH2  ? My_base_TH2 : My_base_TH1;
 
-            double sigmaMax1_S_G90 = sigmaTb1_S + Math.Abs(My_base_G90 / wy); // 6.175 T/m2 -> 6.18
-            double sigmaMin1_S_G90 = sigmaTb1_S - Math.Abs(My_base_G90 / wy); // -0.643 T/m2 -> -0.64
-            double sigmaMax1_B_G90 = sigmaTb1_B + Math.Abs(My_base_G90 / wy); // 8.309 T/m2 -> 8.31
-            double sigmaMin1_B_G90 = sigmaTb1_B - Math.Abs(My_base_G90 / wy); // 1.496 T/m2 -> 1.50
+            result.Mx_Base_Ovt = Math.Round(Mx_base_ovt, 2);
+            result.My_Base_Ovt = Math.Round(My_base_ovt, 2);
 
-            result.SigmaMax1_GW_Surface_G90 = Math.Round(sigmaMax1_S_G90, 2);
-            result.SigmaMin1_GW_Surface_G90 = Math.Round(sigmaMin1_S_G90, 2);
-            result.SigmaMax1_GW_Base_G90 = Math.Round(sigmaMax1_B_G90, 2);
-            result.SigmaMin1_GW_Base_G90 = Math.Round(sigmaMin1_B_G90, 2);
+            // N0_GW_Base dùng N của tổ hợp lật chi phối (thực ra N bằng nhau nên kết quả như nhau)
+            double N0_GW_Base_Ovt = ovtCase.N + vConcrete * 2.4 + vSoil * 1.55;
 
-            double mGiu = N0_GW_Base * (B / 2.0); // 1557.75 * 8.5 = 13240.88 T.m
-            double mLat_G90 = Math.Max(0.001, My_base_G90); // 3482.36 T.m (Chi phối)
-            double mLat_G45 = Math.Max(0.001, result.My_Base); // 2247.44 T.m
-            
-            double kcl_G90 = mGiu / mLat_G90; // 3.80
-            double kcl_G45 = mGiu / mLat_G45; // 5.89
+            double mGiu = N0_GW_Base_Ovt * (B / 2.0);
+            double kcl_gov  = mGiu / Mlat_gov;
+            double kcl_other = ovtGovTH2 ? mGiu / Mlat_TH1 : mGiu / Mlat_TH2;
 
-            result.M_Giu = Math.Round(mGiu, 2);
-            result.M_Lat = Math.Round(mLat_G90, 2);
-            result.K_cl = Math.Round(kcl_G90, 2);
-            result.K_cl_G45 = Math.Round(kcl_G45, 2);
+            result.M_Giu    = Math.Round(mGiu, 2);
+            result.M_Lat    = Math.Round(Mlat_gov, 2);
+            result.K_cl     = Math.Round(kcl_gov, 2);
+            result.K_cl_Other = Math.Round(kcl_other, 2);
 
-            double tanPhi1 = Math.Tan(phi1 * Math.PI / 180.0); // tan(28 deg) = 0.5317
-            double fms = N0_GW_Base * tanPhi1; // 1557.75 * 0.5317 = 828.25 T
-            double qTruot_G90 = 87.30; // 87.30 T (Chi phối)
-            double qTruot_G45 = Math.Sqrt(Math.Pow(59.84, 2) + Math.Pow(44.03, 2)); // 74.29 T
+            double tanPhi1 = Math.Tan(phi1 * Math.PI / 180.0);
+            double fms = N0_GW_Base_Ovt * tanPhi1;
+            double ktr_gov   = fms / Math.Max(0.001, Qtruot_gov);
+            double ktr_other = fms / Math.Max(0.001, slideGovTH2 ? Qtruot_TH1 : Qtruot_TH2);
 
-            double ktr_G90 = fms / qTruot_G90; // 9.49
-            double ktr_G45 = fms / qTruot_G45; // 11.15
-
-            result.F_ms = Math.Round(fms, 2);
-            result.Q_Truot = Math.Round(qTruot_G90, 2);
-            result.K_tr = Math.Round(ktr_G90, 2);
-            result.K_tr_G45 = Math.Round(ktr_G45, 2);
+            result.F_ms          = Math.Round(fms, 2);
+            result.Q_Truot       = Math.Round(Qtruot_gov, 2);
+            result.Q_Truot_Other = Math.Round(slideGovTH2 ? Qtruot_TH1 : Qtruot_TH2, 2);
+            result.K_tr          = Math.Round(ktr_gov, 2);
+            result.K_tr_Other    = Math.Round(ktr_other, 2);
 
             // 3. TÍNH LÚN (Settlement Calculation)
             double z0_depth = foundation.HasSandCushion ? result.H_qu : effectiveDepth;

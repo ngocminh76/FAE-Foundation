@@ -121,9 +121,10 @@ namespace FAE.Foundation.App.Features.RibbedRaft
 
         public void RequestDraw()
         {
-            if (Model != null && SelectedLoadCase != null)
+            if (Model != null && AvailableLoadCases != null && AvailableLoadCases.Count >= 2)
             {
-                CalculationResult = GeotechCalculator.Calculate(Model, CurrentBorehole, SelectedLoadCase);
+                // Luôn truyền cả 2 tổ hợp — Calculator tự biện luận chi phối động
+                CalculationResult = GeotechCalculator.Calculate(Model, CurrentBorehole, AvailableLoadCases[0], AvailableLoadCases[1]);
             }
             DrawRequested?.Invoke();
         }
