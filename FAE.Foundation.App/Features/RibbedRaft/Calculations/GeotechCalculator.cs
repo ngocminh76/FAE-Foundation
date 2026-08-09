@@ -413,22 +413,25 @@ namespace FAE.Foundation.App.Features.RibbedRaft.Calculations
 
         private static double GetSettlementAlpha(double lb, double zb2)
         {
-            // Simplified table lookup for L/B = 1.0 to 1.2
-            // Excel values for L/B ~ 1.12
             if (zb2 <= 0) return 1.0;
-            if (zb2 <= 0.05) return 0.996;
-            if (zb2 <= 0.1) return 0.992;
-            if (zb2 <= 0.15) return 0.988;
-            if (zb2 <= 0.2) return 0.984;
-            if (zb2 <= 0.3) return 0.972;
-            if (zb2 <= 0.4) return 0.960;
-            if (zb2 <= 0.6) return 0.924;
-            if (zb2 <= 0.8) return 0.875;
-            if (zb2 <= 1.0) return 0.816;
-            if (zb2 <= 1.2) return 0.751;
-            if (zb2 <= 1.6) return 0.613;
-            if (zb2 <= 2.0) return 0.490;
-            return 0.490 * (2.0 / zb2); // rough falloff
+
+            // Bảng tra hệ số K (alpha) theo TCVN 9362:2012 Bảng 1 & Sheet Tra Excel cho L/B ~ 1.12
+            var r_keys = new[] { 0.00, 0.05, 0.10, 0.15, 0.20, 0.25, 0.30, 0.35, 0.40, 0.45, 0.50, 0.55, 0.60, 0.65, 0.70, 0.75, 0.80, 0.85, 0.90, 0.95, 1.00, 1.05, 1.10, 1.15, 1.20, 1.25, 1.30, 1.40, 1.50, 1.60 };
+            var k_vals = new[] { 1.00000, 0.99600, 0.99200, 0.98800, 0.98400, 0.98000, 0.97600, 0.97200, 0.96800, 0.95075, 0.93350, 0.91625, 0.89900, 0.88175, 0.86450, 0.84725, 0.83000, 0.80775, 0.78550, 0.76325, 0.74100, 0.71875, 0.69650, 0.67425, 0.65200, 0.63250, 0.61300, 0.57500, 0.53700, 0.50000 };
+
+            for (int i = 0; i < r_keys.Length - 1; i++)
+            {
+                if (zb2 >= r_keys[i] && zb2 <= r_keys[i + 1])
+                {
+                    double t = (zb2 - r_keys[i]) / (r_keys[i + 1] - r_keys[i]);
+                    return k_vals[i] + t * (k_vals[i + 1] - k_vals[i]);
+                }
+            }
+            if (zb2 > 1.60)
+            {
+                return 0.50 * (1.60 / zb2);
+            }
+            return 1.0;
         }
 
         private static (double A, double B, double D) GetBearingCoefficients(double phi)
