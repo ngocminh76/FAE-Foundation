@@ -650,11 +650,62 @@
                         <TextBlock Text=" (m)" />
                     </StackPanel>
                     
-                    <StackPanel Orientation="Horizontal">
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
                         <TextBlock Text="Tổng độ lún S = " FontSize="14" FontWeight="Bold" Foreground="#2C3E50" />
                         <TextBlock Text="{Binding CalculationResult.TotalSettlement, StringFormat={}{0:F2}}" FontSize="14" FontWeight="Bold" Foreground="#C0392B" />
                         <TextBlock Text=" (mm)" FontSize="14" FontWeight="Bold" Foreground="#2C3E50" />
                     </StackPanel>
+
+                    <!-- 4. KIỂM TRA ĐỘ NGHIÊNG MÓNG (TAN THETA) -->
+                    <Border Background="#F8FAFC" BorderBrush="#CBD5E1" BorderThickness="1" CornerRadius="6" Padding="10" Margin="0,10,0,0">
+                        <StackPanel>
+                            <TextBlock Text="4. Kiểm tra độ nghiêng của móng (tgθ)" FontWeight="Bold" Foreground="#1E293B" Margin="0,0,0,6"/>
+                            <TextBlock FontSize="12" Foreground="#475569" Margin="0,0,0,3">
+                                <Run Text="Môdun biến dạng TB Etb = "/>
+                                <Run Text="{Binding CalculationResult.Etb, StringFormat={}{0:F1}, Mode=OneWay}" FontWeight="Bold" Foreground="#0F172A"/>
+                                <Run Text=" T/m²"/>
+                            </TextBlock>
+                            <TextBlock FontSize="12" Foreground="#475569" Margin="0,0,0,3">
+                                <Run Text="Mômen TB hàng năm Mytb = "/>
+                                <Run Text="{Binding CalculationResult.M_tb_y, StringFormat={}{0:F2}, Mode=OneWay}" FontWeight="Bold" Foreground="#1D4ED8"/>
+                                <Run Text=" T.m (ktb = "/>
+                                <Run Text="{Binding CalculationResult.K_tb_Factor, StringFormat={}{0:F2}, Mode=OneWay}"/>
+                                <Run Text=")"/>
+                            </TextBlock>
+                            <StackPanel Orientation="Horizontal" Margin="0,3,0,4">
+                                <TextBlock Text="Độ nghiêng tgθ = " FontWeight="Bold" Foreground="#1E293B" FontSize="12"/>
+                                <TextBlock Text="{Binding CalculationResult.TanTheta, StringFormat={}{0:F5}, Mode=OneWay}" FontWeight="Bold" Foreground="#2563EB" FontSize="12"/>
+                                <TextBlock Text="  &lt; [tgθ] = " FontSize="12"/>
+                                <TextBlock Text="{Binding CalculationResult.AllowableTanTheta, StringFormat={}{0:F4}, Mode=OneWay}" FontWeight="Bold" Foreground="#1E293B" FontSize="12"/>
+                            </StackPanel>
+                            <Border CornerRadius="4" Padding="6,4" Margin="0,2,0,0">
+                                <Border.Style>
+                                    <Style TargetType="Border">
+                                        <Setter Property="Background" Value="#DCFCE7"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding CalculationResult.IsPass_Tilt, Mode=OneWay}" Value="False">
+                                                <Setter Property="Background" Value="#FEE2E2"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+                                <TextBlock FontWeight="Bold" HorizontalAlignment="Center" FontSize="11">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Text" Value="✓ THỎA MÃN ĐỘ NGHIÊNG CỦA MÓNG"/>
+                                            <Setter Property="Foreground" Value="#15803D"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding CalculationResult.IsPass_Tilt, Mode=OneWay}" Value="False">
+                                                    <Setter Property="Text" Value="✕ KHÔNG THỎA MÃN ĐỘ NGHIÊNG CỦA MÓNG!"/>
+                                                    <Setter Property="Foreground" Value="#B91C1C"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </Border>
+                        </StackPanel>
+                    </Border>
                 </StackPanel>
             </Grid>
         </Border>

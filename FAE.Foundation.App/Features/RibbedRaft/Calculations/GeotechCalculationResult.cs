@@ -183,11 +183,24 @@ namespace FAE.Foundation.App.Features.RibbedRaft.Calculations
         public bool IsPass_Ktr => K_tr >= 1.30;
 
         // =========================================================
-        // 3. BẢNG DỰ TÍNH ĐỘ LÚN
+        // 3. BẢNG DỰ TÍNH ĐỘ LÚN & ĐỘ NGHIÊNG MÓNG
         // =========================================================
         public List<SettlementSublayer> SettlementLayers { get; set; } = new List<SettlementSublayer>();
         public double Sigma0 { get; set; }
         public double TotalSettlement { get; set; } // in mm
         public double InfluenceDepth { get; set; }  // Hc in m
+
+        // =========================================================
+        // 4. KIỂM TRA ĐỘ NGHIÊNG CỦA MÓNG (TAN THETA)
+        // =========================================================
+        public double Etb { get; set; }              // Mô đun biến dạng trung bình T/m2
+        public double M_tb_x { get; set; }           // Mô men trung bình hàng năm Mx (T.m)
+        public double M_tb_y { get; set; }           // Mô men trung bình hàng năm My (T.m)
+        public double K_tb_Factor { get; set; }       // 0.65 (Néo) hoặc 0.10 (Đỡ)
+        public double TanTheta_X { get; set; }        // Độ nghiêng theo phương X
+        public double TanTheta_Y { get; set; }        // Độ nghiêng theo phương Y
+        public double TanTheta { get; set; }          // Độ nghiêng tổng hợp
+        public double AllowableTanTheta { get; set; } // [tan] = 0.0025 hoặc 0.0030
+        public bool IsPass_Tilt => TanTheta <= AllowableTanTheta;
     }
 }

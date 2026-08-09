@@ -377,6 +377,46 @@ namespace FAE.Foundation.App.Features.RibbedRaft.Calculations
             }
 
             result.TotalSettlement = Math.Round(sumSettlement, 2);
+
+            // 4. KIỂM TRA ĐỘ NGHIÊNG CỦA MÓNG (TAN THETA) Theo TCVN 9362:2012 & Excel Sheet 55(+2)B (Rows 152-157)
+            double Hc = result.InfluenceDepth > 0 ? result.InfluenceDepth : 1.0;
+            // Mô đun biến dạng trung bình Etb = sum(Ei * hi) / Hc trong vùng ảnh hưởng lún
+            double sumEiHi = result.SettlementLayers.Skip(1).Sum(l => l.Ei * hi);
+            double Etb = Hc > 0 ? (sumEiHi / Hc) : (result.SettlementLayers.FirstOrDefault()?.Ei ?? 180.0);
+            if (double.IsNaN(Etb) || Etb <= 0) Etb = 180.0;
+            result.Etb = Math.Round(Etb, 1);
+
+            // Hệ số chế độ tải trọng trung bình hàng năm ktb:
+            // 0.65 cho cột Néo góc, 0.10 cho cột Đỡ/Thường (Excel J152: IF(L2="néo", 0.65, 0.1))
+            bool isTowerNeo = foundation.TowerType?.ToLower().Contains("néo") == true || foundation.TowerType?.ToLower().Contains("neo") == true;
+            double ktb = isTowerNeo ? 0.65 : 0.10;
+            double allowableTan = isTowerNeo ? 0.0025 : 0.0030;
+
+            result.K_tb_Factor = ktb;
+            result.AllowableTanTheta = allowableTan;
+
+            // Mô men tiêu chuẩn chế độ trung bình hàng năm Mtb từ tổ hợp chống lật chi phối
+            double M_tb_x = ktb * result.Mx_Base_Ovt;
+            double M_tb_y = ktb * result.My_Base_Ovt;
+
+            result.M_tb_x = Math.Round(M_tb_x, 2);
+            result.M_tb_y = Math.Round(M_tb_y, 2);
+
+            // Công thức TCVN 9362:2012: tan_theta = Km * (1 - nu^2) * Mtb / (Etb * (Canh/2)^3)
+            // Km = 0.5, nu_tb = 0.42 => (1 - nu_tb^2) = 0.8236
+            double Km = 0.5;
+            double factor_nu = 1.0 - Math.Pow(0.42, 2); // 0.8236
+
+            double tan_x = (Km * factor_nu * M_tb_x) / (Etb * Math.Pow(L / 2.0, 3));
+            double tan_y = (Km * factor_nu * M_tb_y) / (Etb * Math.Pow(B / 2.0, 3));
+
+            result.TanTheta_X = Math.Round(tan_x, 6);
+            result.TanTheta_Y = Math.Round(tan_y, 6);
+
+            // Độ nghiêng tổng hợp
+            double tan_total = Math.Sqrt(tan_x * tan_x + tan_y * tan_y);
+            result.TanTheta = Math.Round(tan_total, 6);
+
             return result;
         }
 

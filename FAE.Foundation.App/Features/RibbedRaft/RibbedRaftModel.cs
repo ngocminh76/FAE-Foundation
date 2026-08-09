@@ -6,8 +6,13 @@ namespace FAE.Foundation.App.Features.RibbedRaft
     {
         public override string FoundationType => "RibbedRaft";
 
-        // --- New Inputs ---
-        
+        private string _towerType = "Cột Néo góc (NG)";
+        public string TowerType
+        {
+            get => _towerType;
+            set => SetProperty(ref _towerType, value);
+        }
+
         private double _towerBaseDimension = 9160;
         public double TowerBaseDimension
         {
