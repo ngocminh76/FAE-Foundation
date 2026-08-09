@@ -45,6 +45,9 @@ namespace FAE.Foundation.App.Features.RibbedRaft
             
             if (SectionYCanvas != null)
                 SectionDrawer.DrawFoundation(SectionYCanvas, model, _viewModel.CurrentBorehole, isSectionY: true);
+
+            if (SettlementCanvas != null)
+                SettlementDrawer.DrawSettlementDiagram(SettlementCanvas, _viewModel.CalculationResult, _viewModel.CurrentBorehole);
         }
     }
 }

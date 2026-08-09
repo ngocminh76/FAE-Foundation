@@ -622,26 +622,37 @@
                     <TextBlock Text=" (T/m²)" />
                 </StackPanel>
 
-                <DataGrid Grid.Row="2" 
-                          ItemsSource="{Binding CalculationResult.SettlementLayers}" 
-                          AutoGenerateColumns="False" 
-                          IsReadOnly="True"
-                          GridLinesVisibility="All"
-                          HeadersVisibility="Column"
-                          AlternatingRowBackground="#F9F9F9"
-                          Background="White">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="STT" Binding="{Binding Id}" Width="40" />
-                        <DataGridTextColumn Header="2z/b" Binding="{Binding Ratio2ZB, StringFormat={}{0:F2}}" Width="50" />
-                        <DataGridTextColumn Header="z (m)" Binding="{Binding Z, StringFormat={}{0:F3}}" Width="55" />
-                        <DataGridTextColumn Header="K" Binding="{Binding K, StringFormat={}{0:F3}}" Width="50" />
-                        <DataGridTextColumn Header="Ei (T/m²)" Binding="{Binding Ei}" Width="70" />
-                        <DataGridTextColumn Header="β" Binding="{Binding Beta}" Width="40" />
-                        <DataGridTextColumn Header="σi (T/m²)" Binding="{Binding SigmaZi, StringFormat={}{0:F4}}" Width="70" />
-                        <DataGridTextColumn Header="Σγi.hi" Binding="{Binding SumGammaHi, StringFormat={}{0:F4}}" Width="70" />
-                        <DataGridTextColumn Header="si (mm)" Binding="{Binding Si, StringFormat={}{0:F4}}" Width="70" />
-                    </DataGrid.Columns>
-                </DataGrid>
+                <TabControl Grid.Row="2" Background="Transparent" BorderThickness="0" Margin="0,5,0,0">
+                    <!-- TAB 1: BẢNG CHI TIẾT TÍNH LÚN -->
+                    <TabItem Header="Bảng Tính Lún (Phân Lớp)">
+                        <DataGrid ItemsSource="{Binding CalculationResult.SettlementLayers}" 
+                                  AutoGenerateColumns="False" 
+                                  IsReadOnly="True"
+                                  GridLinesVisibility="All"
+                                  HeadersVisibility="Column"
+                                  AlternatingRowBackground="#F8FAFC"
+                                  Background="White">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="STT" Binding="{Binding Id}" Width="38" />
+                                <DataGridTextColumn Header="2z/b" Binding="{Binding Ratio2ZB, StringFormat={}{0:F2}}" Width="45" />
+                                <DataGridTextColumn Header="z (m)" Binding="{Binding Z, StringFormat={}{0:F3}}" Width="52" />
+                                <DataGridTextColumn Header="K" Binding="{Binding K, StringFormat={}{0:F3}}" Width="45" />
+                                <DataGridTextColumn Header="Ei (T/m²)" Binding="{Binding Ei}" Width="65" />
+                                <DataGridTextColumn Header="β" Binding="{Binding Beta}" Width="38" />
+                                <DataGridTextColumn Header="σi (T/m²)" Binding="{Binding SigmaZi, StringFormat={}{0:F4}}" Width="68" />
+                                <DataGridTextColumn Header="Σγi.hi" Binding="{Binding SumGammaHi, StringFormat={}{0:F4}}" Width="68" />
+                                <DataGridTextColumn Header="si (mm)" Binding="{Binding Si, StringFormat={}{0:F4}}" Width="65" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </TabItem>
+
+                    <!-- TAB 2: BIỂU ĐỒ LÚN & ỨNG SUẤT -->
+                    <TabItem Header="Biểu Đồ Lún &amp; Ứng Suất">
+                        <Border Background="#F8FAFC" BorderBrush="#CBD5E1" BorderThickness="1" CornerRadius="4">
+                            <Canvas x:Name="SettlementCanvas" SizeChanged="DrawingCanvas_SizeChanged" Background="White"/>
+                        </Border>
+                    </TabItem>
+                </TabControl>
 
                 <StackPanel Grid.Row="3" Margin="0,15,0,0">
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
