@@ -111,6 +111,13 @@ namespace FAE.Foundation.App.Features.RibbedRaft
             // Subscribe to model property changes to trigger redraw
             Model.PropertyChanged += Model_PropertyChanged;
 
+            var hk1 = new BoreholeModel { BoreholeName = "HK01" };
+            hk1.Layers.Add(new SoilLayer { LayerId = "1", LayerName = "Bùn sét", Thickness = 2.4, GammaW = 1.72, Delta = 2.72, E0 = 1.322, Phi = 6.5, C = 0.87, E = 180, GammaDn = 0.741 });
+            hk1.Layers.Add(new SoilLayer { LayerId = "2", LayerName = "Bùn sét", Thickness = 9.1, GammaW = 1.72, Delta = 2.72, E0 = 1.322, Phi = 6.5, C = 0.87, E = 180, GammaDn = 0.741 });
+
+            AvailableBoreholes = new ObservableCollection<BoreholeModel> { hk1 };
+            CurrentBorehole = hk1;
+
             AvailableLoadCases = new ObservableCollection<LoadCase>
             {
                 new LoadCase { Name = "GIÓ 45 ĐỘ MAX (Tổ hợp kiểm tra chính)", N = 125.70, Qx = 59.84, Qy = 44.03, Mx = 1385.81, My = 2014.06, Mz = 0.0 },

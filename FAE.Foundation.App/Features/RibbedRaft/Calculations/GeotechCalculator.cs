@@ -274,27 +274,25 @@ namespace FAE.Foundation.App.Features.RibbedRaft.Calculations
             result.K_tr_Other    = Math.Round(ktr_other, 2);
 
             // 3. TÍNH LÚN (Settlement Calculation according to TCVN 9362:2012 & Excel Sheet 55(+2)B)
-            double z0_depth = foundation.HasSandCushion ? result.H_qu : effectiveDepth;
             double B_l = foundation.HasSandCushion ? result.B_qu : B;
             double L_l = foundation.HasSandCushion ? result.L_qu : L;
 
-            double sigmaTb_z0_S = foundation.HasSandCushion ? result.SigmaTb2_GW_Surface : result.SigmaTb1_GW_Surface;
-            double sigmaTb_z0_B = foundation.HasSandCushion ? result.SigmaTb2_GW_Base : result.SigmaTb1_GW_Base;
+            // Excel H116, H117: sigma0 = sigmaTb1 - gamma * h1 (Dùng sigmaTb1 đáy móng trừ ứng suất bản thân h1)
+            double sumGamma_embed_S = GetOverburdenStress(borehole, effectiveDepth, true);
+            double sumGamma_embed_B = GetOverburdenStress(borehole, effectiveDepth, false);
 
-            double sumGammaHi_S = GetOverburdenStress(borehole, z0_depth, true);
-            double sumGammaHi_B = GetOverburdenStress(borehole, z0_depth, false);
-
-            double sigma0_S = Math.Max(0, sigmaTb_z0_S - sumGammaHi_S);
-            double sigma0_B = Math.Max(0, sigmaTb_z0_B - sumGammaHi_B);
+            double sigma0_S = Math.Max(0, result.SigmaTb1_GW_Surface - sumGamma_embed_S);
+            double sigma0_B = Math.Max(0, result.SigmaTb1_GW_Base - sumGamma_embed_B);
 
             // Chọn trường hợp tính lún bất lợi nhất (Excel chọn MNN sát mặt đất)
             bool isGWBase = sigma0_B > sigma0_S;
             double sigma0 = Math.Max(sigma0_S, sigma0_B);
             result.Sigma0 = Math.Round(sigma0, 4);
 
-            double currentSumGamma = isGWBase ? sumGammaHi_B : sumGammaHi_S;
+            double z0_depth = foundation.HasSandCushion ? result.H_qu : effectiveDepth;
+            double currentSumGamma = isGWBase ? sumGamma_embed_B : sumGamma_embed_S;
 
-            // Chia lớp tính lún hi = 0.025 * B_l (Khớp với Excel hi = 0.425m)
+            // Chia lớp tính lún hi = 0.025 * B_l (Khớp với Excel hi = 0.425m khi B=17m)
             double hi = 0.025 * B_l;
             double currentZ = 0;
             double sumSettlement = 0;
