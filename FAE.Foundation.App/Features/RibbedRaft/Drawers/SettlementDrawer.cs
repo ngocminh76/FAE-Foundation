@@ -10,6 +10,13 @@ using FAE.Foundation.App.Models;
 
 namespace FAE.Foundation.App.Features.RibbedRaft.Drawers
 {
+    /// <summary>
+    /// Vẽ Sơ đồ tính lún chuẩn theo TCVN 9362:2012 (Hình C.1 - Trang 72-73)
+    /// - Trục tim móng ở giữa (Central Axis).
+    /// - Bên TRÁI: Đường THẲNG TUYẾN TÍNH thể hiện Ứng suất bản thân pdz.
+    /// - Bên PHẢI: Đường CONG PHI TUYẾN thể hiện Ứng suất gây lún poz = alpha * p0.
+    /// - Đáy vùng lún Hc: Cao trình mà poz' <= 0.1 * pdz' (hoặc 0.2 * pdz').
+    /// </summary>
     public static class SettlementDrawer
     {
         public static void DrawSettlementDiagram(Canvas canvas, GeotechCalculationResult result, BoreholeModel borehole)
@@ -25,228 +32,301 @@ namespace FAE.Foundation.App.Features.RibbedRaft.Drawers
             double embedmentDepth = 2.4; // h1 (m)
             double Hc = result.InfluenceDepth > 0 ? result.InfluenceDepth : layers[layers.Count - 1].Z;
 
-            // Depth range: from Ground (-h1) to Hc * 1.15
+            // Target Z range: from Ground (-h1) down to Hc * 1.15
             double minZ = -embedmentDepth;
             double maxZ = Hc * 1.15;
             if (maxZ <= 0) maxZ = 10.0;
             double totalZRange = maxZ - minZ;
 
             // Margins
-            double marginTop = 40;
+            double marginTop = 45;
             double marginBottom = 30;
-            double marginLeft = 70;
+            double marginLeft = 40;
             double marginRight = 40;
             double chartWidth = width - marginLeft - marginRight;
             double chartHeight = height - marginTop - marginBottom;
 
-            // Max Stress calculation for X-scaling
-            double maxStress = result.Sigma0;
-            foreach (var l in layers)
-            {
-                if (l.SigmaZi > maxStress) maxStress = l.SigmaZi;
-                if (l.SumGammaHi > maxStress) maxStress = l.SumGammaHi;
-            }
-            if (maxStress <= 0) maxStress = 10.0;
-            maxStress *= 1.15; // 15% headroom
+            // Central Vertical Axis (Trục tim móng)
+            double xCenter = marginLeft + chartWidth * 0.45; // slightly left of visual center to give room for labels
 
-            // Scale functions:
-            // Y: Top is Ground (-h1), 0 is Base, bottom is maxZ
+            // Scale for stress (pixels per T/m2)
+            double maxPdz = layers[layers.Count - 1].SumGammaHi;
+            double maxPoz = result.Sigma0;
+            double maxStressVal = Math.Max(maxPdz, maxPoz);
+            if (maxStressVal <= 0) maxStressVal = 10.0;
+
+            // Available width for left (pdz) and right (poz)
+            double availableWidthRight = (width - marginRight) - xCenter - 20;
+            double availableWidthLeft = xCenter - (marginLeft + 20);
+
+            double scaleLeft = availableWidthLeft / maxPdz; // px per T/m2 to the left
+            double scaleRight = availableWidthRight / maxPoz; // px per T/m2 to the right
+
+            // Depth Y scale
             double ScaleY(double z) => marginTop + ((z - minZ) / totalZRange) * chartHeight;
-            double ScaleX(double sigma) => marginLeft + (sigma / maxStress) * chartWidth;
 
             double yGround = ScaleY(-embedmentDepth);
             double yBase = ScaleY(0);
+            double yHc = ScaleY(Hc);
 
             // -------------------------------------------------------------
-            // 1. BACKDROP & SOIL LAYERS
+            // 1. BACKDROP & ACTIVE SETTLEMENT ZONE
             // -------------------------------------------------------------
-            // Soil layer background shading below base
-            var soilBg = new Rectangle
-            {
-                Width = chartWidth,
-                Height = ScaleY(maxZ) - yBase,
-                Fill = new SolidColorBrush(Color.FromRgb(248, 250, 252))
-            };
-            Canvas.SetLeft(soilBg, marginLeft);
-            Canvas.SetTop(soilBg, yBase);
-            canvas.Children.Add(soilBg);
-
-            // Active settlement region shaded fill (between Z=0 and Z=Hc)
+            // Active zone shading between Base (z=0) and Hc (z=Hc)
             var activeZone = new Rectangle
             {
-                Width = chartWidth,
-                Height = ScaleY(Hc) - yBase,
-                Fill = new SolidColorBrush(Color.FromArgb(25, 239, 68, 68)) // Subtle red tint
+                Width = availableWidthLeft + availableWidthRight,
+                Height = yHc - yBase,
+                Fill = new SolidColorBrush(Color.FromArgb(18, 59, 130, 246)) // Light blue tint
             };
-            Canvas.SetLeft(activeZone, marginLeft);
+            Canvas.SetLeft(activeZone, xCenter - availableWidthLeft);
             Canvas.SetTop(activeZone, yBase);
             canvas.Children.Add(activeZone);
 
             // -------------------------------------------------------------
-            // 2. GRIDLINES & DEPTH LABELS
+            // 2. CENTRAL VERTICAL AXIS (TRỤC TIM MÓNG)
             // -------------------------------------------------------------
-            // Horizontal gridlines every 1.0m
-            for (double z = Math.Floor(minZ); z <= maxZ; z += 1.0)
+            var centerAxis = new Line
             {
-                if (z < minZ) continue;
-                double y = ScaleY(z);
+                X1 = xCenter, Y1 = marginTop - 15, X2 = xCenter, Y2 = marginTop + chartHeight,
+                Stroke = new SolidColorBrush(Color.FromRgb(71, 85, 105)),
+                StrokeThickness = 1.5,
+                StrokeDashArray = new DoubleCollection { 6, 3, 2, 3 } // Center axis dash dot
+            };
+            canvas.Children.Add(centerAxis);
 
-                var gridLine = new Line
-                {
-                    X1 = marginLeft, Y1 = y, X2 = marginLeft + chartWidth, Y2 = y,
-                    Stroke = new SolidColorBrush(Color.FromRgb(241, 245, 249)),
-                    StrokeThickness = 1
-                };
-                canvas.Children.Add(gridLine);
-
-                string label = z < 0 ? $"z={z:F1}m (MĐ)" : (z == 0 ? "z=0.0m (Đáy)" : $"z={z:F1}m");
-                var txtZ = new TextBlock
-                {
-                    Text = label,
-                    FontSize = 9,
-                    Foreground = new SolidColorBrush(Color.FromRgb(100, 116, 139))
-                };
-                Canvas.SetLeft(txtZ, 5);
-                Canvas.SetTop(txtZ, y - 6);
-                canvas.Children.Add(txtZ);
-            }
+            var txtCenter = new TextBlock
+            {
+                Text = "Trục tim móng",
+                FontSize = 9,
+                FontStyle = FontStyles.Italic,
+                Foreground = new SolidColorBrush(Color.FromRgb(100, 116, 139))
+            };
+            Canvas.SetLeft(txtCenter, xCenter - 30);
+            Canvas.SetTop(txtCenter, marginTop - 28);
+            canvas.Children.Add(txtCenter);
 
             // -------------------------------------------------------------
-            // 3. KEY ELEVATION LINES (Ground, Base, Hc)
+            // 3. ELEVATION LINES (Ground, Base, Hc)
             // -------------------------------------------------------------
             // Ground Line (-h1)
             var lineGround = new Line
             {
-                X1 = marginLeft, Y1 = yGround, X2 = marginLeft + chartWidth, Y2 = yGround,
-                Stroke = new SolidColorBrush(Color.FromRgb(120, 53, 15)), // Brown
-                StrokeThickness = 2
+                X1 = marginLeft, Y1 = yGround, X2 = width - marginRight, Y2 = yGround,
+                Stroke = new SolidColorBrush(Color.FromRgb(120, 53, 15)),
+                StrokeThickness = 1.5
             };
             canvas.Children.Add(lineGround);
 
             var txtGround = new TextBlock
             {
-                Text = $"▼ MẶT ĐẤT TỰ NHIÊN (h1 = {embedmentDepth:F1}m)",
+                Text = "Cao trình thiên nhiên",
                 FontWeight = FontWeights.Bold,
                 FontSize = 10,
                 Foreground = new SolidColorBrush(Color.FromRgb(120, 53, 15))
             };
-            Canvas.SetLeft(txtGround, marginLeft + 10);
-            Canvas.SetTop(txtGround, yGround - 16);
+            Canvas.SetLeft(txtGround, marginLeft);
+            Canvas.SetTop(txtGround, yGround - 15);
             canvas.Children.Add(txtGround);
 
-            // Base Line (z = 0)
+            // Base Line (z=0)
             var lineBase = new Line
             {
-                X1 = marginLeft, Y1 = yBase, X2 = marginLeft + chartWidth, Y2 = yBase,
+                X1 = marginLeft, Y1 = yBase, X2 = width - marginRight, Y2 = yBase,
                 Stroke = Brushes.Black,
-                StrokeThickness = 2.5
+                StrokeThickness = 2.0
             };
             canvas.Children.Add(lineBase);
 
             var txtBase = new TextBlock
             {
-                Text = $"▼ ĐÁY MÓNG (σ0 = {result.Sigma0:F4} T/m²)",
+                Text = "Cao trình đáy móng",
                 FontWeight = FontWeights.Bold,
                 FontSize = 10,
                 Foreground = Brushes.Black
             };
-            Canvas.SetLeft(txtBase, marginLeft + 10);
-            Canvas.SetTop(txtBase, yBase + 4);
+            Canvas.SetLeft(txtBase, marginLeft);
+            Canvas.SetTop(txtBase, yBase - 15);
             canvas.Children.Add(txtBase);
 
-            // -------------------------------------------------------------
-            // 4. DRAW STRESS CURVES (TCVN 9362:2012 HÌNH C.1)
-            // -------------------------------------------------------------
-            // A. Curve 1: Ứng suất bản thân sigma_zg (Starts at 0 at Ground Level)
-            var polylineZg = new Polyline
+            // Hc Line (Giới hạn dưới chiều dày chịu nén)
+            var lineHc = new Line
             {
-                Stroke = new SolidColorBrush(Color.FromRgb(22, 163, 74)), // Green
+                X1 = marginLeft, Y1 = yHc, X2 = width - marginRight, Y2 = yHc,
+                Stroke = new SolidColorBrush(Color.FromRgb(220, 38, 38)), // Red
                 StrokeThickness = 2.0
             };
-            // Point at Ground (-h1): sigma_zg = 0
-            polylineZg.Points.Add(new Point(ScaleX(0), yGround));
+            canvas.Children.Add(lineHc);
 
-            // Point at Base (z=0): sigma_zg_0 = SumGammaHi of layer 1 (approx gamma * h1)
-            double sigma_zg_base = layers.Count > 0 ? layers[0].SumGammaHi : (1.7778);
-            polylineZg.Points.Add(new Point(ScaleX(sigma_zg_base), yBase));
+            var txtHc = new TextBlock
+            {
+                Text = $"Giới hạn dưới chiều dày chịu nén (Hc = {Hc:F2}m)",
+                FontWeight = FontWeights.Bold,
+                FontSize = 10,
+                Foreground = new SolidColorBrush(Color.FromRgb(220, 38, 38))
+            };
+            Canvas.SetLeft(txtHc, marginLeft);
+            Canvas.SetTop(txtHc, yHc + 3);
+            canvas.Children.Add(txtHc);
 
-            // B. Curve 2: Ứng suất giới hạn 0.1 * sigma_zg (Blue Dashed)
-            var polylineLimit = new Polyline
+            // -------------------------------------------------------------
+            // 4. FOOTING SYMBOL AT TOP (z <= 0)
+            // -------------------------------------------------------------
+            double footingWidthPx = 80;
+            var footingRect = new Rectangle
+            {
+                Width = footingWidthPx,
+                Height = yBase - yGround,
+                Fill = new SolidColorBrush(Color.FromArgb(40, 148, 163, 184)),
+                Stroke = Brushes.DimGray,
+                StrokeThickness = 1.5
+            };
+            Canvas.SetLeft(footingRect, xCenter - footingWidthPx / 2.0);
+            Canvas.SetTop(footingRect, yGround);
+            canvas.Children.Add(footingRect);
+
+            // Column stub on footing
+            var colRect = new Rectangle
+            {
+                Width = 24,
+                Height = yBase - yGround + 10,
+                Fill = new SolidColorBrush(Color.FromRgb(203, 213, 225)),
+                Stroke = Brushes.SlateGray,
+                StrokeThickness = 1
+            };
+            Canvas.SetLeft(colRect, xCenter - 12);
+            Canvas.SetTop(colRect, yGround - 10);
+            canvas.Children.Add(colRect);
+
+            // -------------------------------------------------------------
+            // 5. STRESS DIAGRAMS (TCVN 9362:2012 HÌNH C.1)
+            // -------------------------------------------------------------
+            // A. LEFT SIDE: pdz (LINEAR SLOPED LINE FOR OVERBURDEN STRESS)
+            var polylinePdz = new Polyline
+            {
+                Stroke = new SolidColorBrush(Color.FromRgb(22, 163, 74)), // Green
+                StrokeThickness = 2.5
+            };
+            // pd at ground level (z = -h1) is 0
+            polylinePdz.Points.Add(new Point(xCenter, yGround));
+
+            // pd at base level (z = 0)
+            double pd_base = layers.Count > 0 ? layers[0].SumGammaHi : 1.7778;
+            double xPdBase = xCenter - (pd_base * scaleLeft);
+            polylinePdz.Points.Add(new Point(xPdBase, yBase));
+
+            // B. LEFT DASHED LINE: 0.1 * pdz (LIMIT LINE ON LEFT)
+            var polyline01Pdz = new Polyline
             {
                 Stroke = new SolidColorBrush(Color.FromRgb(37, 99, 235)), // Royal Blue
-                StrokeThickness = 2.0,
+                StrokeThickness = 1.8,
                 StrokeDashArray = new DoubleCollection { 4, 3 }
             };
-            polylineLimit.Points.Add(new Point(ScaleX(0), yGround));
-            polylineLimit.Points.Add(new Point(ScaleX(0.10 * sigma_zg_base), yBase));
+            polyline01Pdz.Points.Add(new Point(xCenter, yGround));
+            polyline01Pdz.Points.Add(new Point(xCenter - (0.10 * pd_base * scaleLeft), yBase));
 
-            // C. Curve 3: Ứng suất gây lún sigma_zp (Starts at sigma0 at Base Level z=0)
-            var polylineZp = new Polyline
+            // C. RIGHT SIDE: poz (NON-LINEAR CURVE FOR ADDITIONAL STRESS)
+            var polylinePoz = new Polyline
             {
                 Stroke = new SolidColorBrush(Color.FromRgb(225, 29, 72)), // Crimson Red
                 StrokeThickness = 2.5
             };
+            // p0 at base level (z = 0)
+            double xP0Base = xCenter + (result.Sigma0 * scaleRight);
+            polylinePoz.Points.Add(new Point(xP0Base, yBase));
 
+            // Add Points along depth z
             foreach (var l in layers)
             {
                 double y = ScaleY(l.Z);
 
-                // sigma_zg below base
-                double xZg = ScaleX(l.SumGammaHi);
-                polylineZg.Points.Add(new Point(xZg, y));
+                // pdz to the left (Linear piecewise)
+                double xPdz = xCenter - (l.SumGammaHi * scaleLeft);
+                polylinePdz.Points.Add(new Point(xPdz, y));
 
-                // 0.1 * sigma_zg below base
+                // 0.1 * pdz to the left
                 double limitFactor = (l.Ei < 500.0 ? 0.10 : 0.20);
-                double xLimit = ScaleX(limitFactor * l.SumGammaHi);
-                polylineLimit.Points.Add(new Point(xLimit, y));
+                double x01Pdz = xCenter - (limitFactor * l.SumGammaHi * scaleLeft);
+                polyline01Pdz.Points.Add(new Point(x01Pdz, y));
 
-                // sigma_zp below base
-                double xZp = ScaleX(l.SigmaZi);
-                polylineZp.Points.Add(new Point(xZp, y));
+                // poz to the right (Non-linear curve)
+                double xPoz = xCenter + (l.SigmaZi * scaleRight);
+                polylinePoz.Points.Add(new Point(xPoz, y));
 
-                // Dot on sigma_zp curve
-                var dot = new Ellipse
+                // Small dot on poz curve
+                var dotPoz = new Ellipse
                 {
                     Width = 4, Height = 4,
                     Fill = new SolidColorBrush(Color.FromRgb(225, 29, 72)),
-                    Margin = new Thickness(xZp - 2, y - 2, 0, 0)
+                    Margin = new Thickness(xPoz - 2, y - 2, 0, 0)
                 };
-                canvas.Children.Add(dot);
+                canvas.Children.Add(dotPoz);
             }
 
-            canvas.Children.Add(polylineZg);
-            canvas.Children.Add(polylineLimit);
-            canvas.Children.Add(polylineZp);
+            canvas.Children.Add(polylinePdz);
+            canvas.Children.Add(polyline01Pdz);
+            canvas.Children.Add(polylinePoz);
 
             // -------------------------------------------------------------
-            // 5. INFLUENCE DEPTH HC LINE & ANNOTATION
+            // 6. STRESS ANNOTATIONS & ARROWS (pd, p0, pdz, poz)
             // -------------------------------------------------------------
-            if (result.InfluenceDepth > 0)
+            // Label pd at base
+            var txtPd = new TextBlock
             {
-                double yHc = ScaleY(result.InfluenceDepth);
-                var lineHc = new Line
-                {
-                    X1 = marginLeft, Y1 = yHc, X2 = marginLeft + chartWidth, Y2 = yHc,
-                    Stroke = new SolidColorBrush(Color.FromRgb(217, 119, 6)), // Amber
-                    StrokeThickness = 2,
-                    StrokeDashArray = new DoubleCollection { 3, 2 }
-                };
-                canvas.Children.Add(lineHc);
+                Text = $"pd = {pd_base:F2}",
+                FontSize = 9,
+                FontWeight = FontWeights.Bold,
+                Foreground = new SolidColorBrush(Color.FromRgb(22, 163, 74))
+            };
+            Canvas.SetLeft(txtPd, xPdBase - 35);
+            Canvas.SetTop(txtPd, yBase + 4);
+            canvas.Children.Add(txtPd);
 
-                var txtHc = new TextBlock
+            // Label p0 at base
+            var txtP0 = new TextBlock
+            {
+                Text = $"p0 = {result.Sigma0:F4}",
+                FontSize = 9,
+                FontWeight = FontWeights.Bold,
+                Foreground = new SolidColorBrush(Color.FromRgb(225, 29, 72))
+            };
+            Canvas.SetLeft(txtP0, xP0Base + 5);
+            Canvas.SetTop(txtP0, yBase + 4);
+            canvas.Children.Add(txtP0);
+
+            // Sublayer hatching band indicator for sample sublayer
+            if (layers.Count >= 5)
+            {
+                var sampleLayer = layers[4]; // around layer 5
+                double ySample = ScaleY(sampleLayer.Z);
+
+                var hatchBand = new Rectangle
                 {
-                    Text = $"---> ĐÁY VÙNG LÚN Hc = {result.InfluenceDepth:F2} m (σzp ≤ 0.1Σγh)",
-                    FontWeight = FontWeights.Bold,
-                    FontSize = 10,
-                    Foreground = new SolidColorBrush(Color.FromRgb(217, 119, 6))
+                    Width = availableWidthLeft + availableWidthRight,
+                    Height = 12,
+                    Fill = new SolidColorBrush(Color.FromArgb(30, 234, 179, 8)), // Yellow hatch band
+                    Stroke = new SolidColorBrush(Color.FromRgb(234, 179, 8)),
+                    StrokeThickness = 1,
+                    StrokeDashArray = new DoubleCollection { 2, 2 }
                 };
-                Canvas.SetLeft(txtHc, marginLeft + 15);
-                Canvas.SetTop(txtHc, yHc - 15);
-                canvas.Children.Add(txtHc);
+                Canvas.SetLeft(hatchBand, xCenter - availableWidthLeft);
+                Canvas.SetTop(hatchBand, ySample - 6);
+                canvas.Children.Add(hatchBand);
+
+                var txtPi = new TextBlock
+                {
+                    Text = $"Giới hạn lớp {sampleLayer.Id} (pi = {sampleLayer.Si:F2}mm)",
+                    FontSize = 9,
+                    FontWeight = FontWeights.Bold,
+                    Foreground = new SolidColorBrush(Color.FromRgb(161, 98, 7))
+                };
+                Canvas.SetLeft(txtPi, xCenter + (sampleLayer.SigmaZi * scaleRight) + 8);
+                Canvas.SetTop(txtPi, ySample - 6);
+                canvas.Children.Add(txtPi);
             }
 
             // -------------------------------------------------------------
-            // 6. TITLE & LEGEND (TCVN 9362:2012 HÌNH C.1)
+            // 7. TITLE & LEGEND (TCVN 9362:2012 HÌNH C.1)
             // -------------------------------------------------------------
             var title = new TextBlock
             {
@@ -266,21 +346,18 @@ namespace FAE.Foundation.App.Features.RibbedRaft.Drawers
                 Margin = new Thickness(marginLeft, height - 22, 0, 0)
             };
 
-            // Legend item 1: sigma_zp
-            var leg1Dot = new Border { Width = 10, Height = 3, Background = new SolidColorBrush(Color.FromRgb(225, 29, 72)), VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(0,0,4,0) };
-            var leg1Txt = new TextBlock { Text = "σzp (Gây lún)", FontSize = 9, Foreground = Brushes.DarkSlateGray, Margin = new Thickness(0,0,10,0) };
+            var leg1Dot = new Border { Width = 10, Height = 3, Background = new SolidColorBrush(Color.FromRgb(22, 163, 74)), VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(0,0,4,0) };
+            var leg1Txt = new TextBlock { Text = "◄ pdz (Ứng suất bản thân - Tuyến tính)", FontSize = 9, Foreground = Brushes.DarkSlateGray, Margin = new Thickness(0,0,12,0) };
             legend.Children.Add(leg1Dot);
             legend.Children.Add(leg1Txt);
 
-            // Legend item 2: sigma_zg
-            var leg2Dot = new Border { Width = 10, Height = 3, Background = new SolidColorBrush(Color.FromRgb(22, 163, 74)), VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(0,0,4,0) };
-            var leg2Txt = new TextBlock { Text = "σzg (Bản thân)", FontSize = 9, Foreground = Brushes.DarkSlateGray, Margin = new Thickness(0,0,10,0) };
+            var leg2Dot = new Border { Width = 10, Height = 3, Background = new SolidColorBrush(Color.FromRgb(225, 29, 72)), VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(0,0,4,0) };
+            var leg2Txt = new TextBlock { Text = "poz (Ứng suất gây lún - Đường cong) ►", FontSize = 9, Foreground = Brushes.DarkSlateGray, Margin = new Thickness(0,0,12,0) };
             legend.Children.Add(leg2Dot);
             legend.Children.Add(leg2Txt);
 
-            // Legend item 3: 0.1 sigma_zg
             var leg3Dot = new Border { Width = 10, Height = 3, Background = new SolidColorBrush(Color.FromRgb(37, 99, 235)), VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(0,0,4,0) };
-            var leg3Txt = new TextBlock { Text = "0.1Σγ.h (Ranh giới)", FontSize = 9, Foreground = Brushes.DarkSlateGray };
+            var leg3Txt = new TextBlock { Text = "◄ 0.1 pdz (Ranh giới lún)", FontSize = 9, Foreground = Brushes.DarkSlateGray };
             legend.Children.Add(leg3Dot);
             legend.Children.Add(leg3Txt);
 
