@@ -273,10 +273,11 @@ namespace FAE.Foundation.App.Features.RibbedRaft.Calculations
             result.K_tr          = Math.Round(ktr_gov, 2);
             result.K_tr_Other    = Math.Round(ktr_other, 2);
 
-            // 3. TÍNH LÚN (Settlement Calculation)
+            // 3. TÍNH LÚN (Settlement Calculation according to TCVN 9362:2012 & Excel Sheet 55(+2)B)
             double z0_depth = foundation.HasSandCushion ? result.H_qu : effectiveDepth;
             double B_l = foundation.HasSandCushion ? result.B_qu : B;
             double L_l = foundation.HasSandCushion ? result.L_qu : L;
+
             double sigmaTb_z0_S = foundation.HasSandCushion ? result.SigmaTb2_GW_Surface : result.SigmaTb1_GW_Surface;
             double sigmaTb_z0_B = foundation.HasSandCushion ? result.SigmaTb2_GW_Base : result.SigmaTb1_GW_Base;
 
@@ -286,74 +287,98 @@ namespace FAE.Foundation.App.Features.RibbedRaft.Calculations
             double sigma0_S = Math.Max(0, sigmaTb_z0_S - sumGammaHi_S);
             double sigma0_B = Math.Max(0, sigmaTb_z0_B - sumGammaHi_B);
 
+            // Chọn trường hợp tính lún bất lợi nhất (Excel chọn MNN sát mặt đất)
+            bool isGWBase = sigma0_B > sigma0_S;
             double sigma0 = Math.Max(sigma0_S, sigma0_B);
             result.Sigma0 = Math.Round(sigma0, 4);
-            
-            // Chia lớp tính lún, hi = 0.425 theo excel = 0.025 B
-            double hi = 0.025 * B; // matching Excel's 0.425
+
+            double currentSumGamma = isGWBase ? sumGammaHi_B : sumGammaHi_S;
+
+            // Chia lớp tính lún hi = 0.025 * B_l (Khớp với Excel hi = 0.425m)
+            double hi = 0.025 * B_l;
             double currentZ = 0;
-            double currentSumGamma = Math.Max(sumGammaHi_S, sumGammaHi_B); // Assuming worst case overburden for depth check? Or using natural.
-            // Excel uses buoyant for sumGamma for check.
-            bool isGWBase = sigma0_B > sigma0_S;
-            currentSumGamma = isGWBase ? sumGammaHi_B : sumGammaHi_S;
-            
             double sumSettlement = 0;
             int step = 1;
-            
-            // Row 1 (z = 0)
+
+            result.SettlementLayers.Clear();
+
+            // Điểm z = 0 (đáy móng/đáy đệm cát)
+            double alpha_0 = GetSettlementAlpha(L_l / B_l, 0.0);
+            double sigma_z_prev = alpha_0 * sigma0;
+
+            var topSoil = GetSoilAtDepth(borehole, z0_depth);
+            double topEi = topSoil?.E ?? 180.0;
+            double topBeta = (topSoil?.LayerName.ToLower().Contains("cát") == true) ? 0.74 : 0.8;
+
             result.SettlementLayers.Add(new SettlementSublayer
             {
-                Id = step, Ratio2ZB = 0, Z = 0, K = 1.0, 
-                Ei = GetSoilAtDepth(borehole, z0_depth)?.E ?? 180,
-                Beta = 0.8,
-                SigmaZi = sigma0,
-                SumGammaHi = currentSumGamma,
+                Id = step,
+                Ratio2ZB = 0,
+                Z = 0,
+                K = Math.Round(alpha_0, 4),
+                Ei = Math.Round(topEi, 1),
+                Beta = topBeta,
+                SigmaZi = Math.Round(sigma_z_prev, 4),
+                SumGammaHi = Math.Round(currentSumGamma, 4),
                 Si = 0
             });
 
-            while (true)
+            while (step < 60)
             {
                 step++;
                 double nextZ = currentZ + hi;
-                double z_mid = currentZ + hi / 2.0;
-                double ratio2zb = 2 * nextZ / B;
-                double ratioLB = L / B;
+                double ratio2zb = 2.0 * nextZ / B_l;
+                double ratioLB = L_l / B_l;
 
                 double alpha = GetSettlementAlpha(ratioLB, ratio2zb);
-                double sigmaZi = alpha * sigma0;
+                double sigma_z_curr = alpha * sigma0;
 
-                // get soil at mid depth of sublayer
+                // Ứng suất trung bình trong phân lớp hi (Chuẩn công thức hình thang Excel L123..L145)
+                double sigma_z_avg = (sigma_z_prev + sigma_z_curr) / 2.0;
+
                 var subLayerSoil = GetSoilAtDepth(borehole, z0_depth + nextZ);
                 double Ei = subLayerSoil?.E ?? 180.0;
-                double beta = 0.8; // default bùn sét, có thể lấy theo loại đất
-                if (subLayerSoil?.LayerName.ToLower().Contains("cát") == true) beta = 0.74;
+                double beta = (subLayerSoil?.LayerName.ToLower().Contains("cát") == true) ? 0.74 : 0.8;
 
-                double gammaSub = isGWBase ? (subLayerSoil?.GammaW ?? 1.8) : (subLayerSoil?.GammaDn ?? 0.8);
-                if (!isGWBase) gammaSub = subLayerSoil?.GammaDn ?? (subLayerSoil != null ? subLayerSoil.GammaW - 1 : 0.8); // buoyant
+                double gammaSub = isGWBase 
+                    ? (subLayerSoil?.GammaW ?? 1.8) 
+                    : (subLayerSoil?.GammaDn ?? 0.74074);
+                if (!isGWBase && gammaSub == 0) gammaSub = subLayerSoil != null ? (subLayerSoil.GammaW - 1.0) : 0.74074;
 
                 currentSumGamma += gammaSub * hi;
 
-                double si = (beta / Ei) * sigmaZi * hi * 1000; // mm
+                // Độ lún từng phân lớp si = beta * hi * (sigma_z_avg / Ei) * 1000 (mm)
+                double si = beta * hi * (sigma_z_avg / Ei) * 1000.0;
                 sumSettlement += si;
 
                 result.SettlementLayers.Add(new SettlementSublayer
                 {
-                    Id = step, Ratio2ZB = Math.Round(ratio2zb, 2), Z = Math.Round(nextZ, 3),
-                    K = Math.Round(alpha, 3), Ei = Math.Round(Ei, 1), Beta = beta,
-                    SigmaZi = Math.Round(sigmaZi, 4), SumGammaHi = Math.Round(currentSumGamma, 4),
+                    Id = step,
+                    Ratio2ZB = Math.Round(ratio2zb, 3),
+                    Z = Math.Round(nextZ, 3),
+                    K = Math.Round(alpha, 4),
+                    Ei = Math.Round(Ei, 1),
+                    Beta = beta,
+                    SigmaZi = Math.Round(sigma_z_curr, 4),
+                    SumGammaHi = Math.Round(currentSumGamma, 4),
                     Si = Math.Round(si, 4)
                 });
 
-                if (sigmaZi <= 0.1 * currentSumGamma || step > 100)
+                // Điều kiện kết thúc vùng ảnh hưởng lún Hc theo TCVN 9362:2012:
+                // Với đất yếu/bùn sét (Ei < 500 T/m2 = 5 MPa): sigma_z <= 0.1 * sum_gamma
+                // Với đất thường (Ei >= 500 T/m2): sigma_z <= 0.2 * sum_gamma
+                double limitFactor = (Ei < 500.0) ? 0.10 : 0.20;
+                if (sigma_z_curr <= limitFactor * currentSumGamma || step >= 60)
                 {
                     result.InfluenceDepth = Math.Round(nextZ, 2);
                     break;
                 }
+
+                sigma_z_prev = sigma_z_curr;
                 currentZ = nextZ;
             }
-            
-            result.TotalSettlement = Math.Round(sumSettlement, 2);
 
+            result.TotalSettlement = Math.Round(sumSettlement, 2);
             return result;
         }
 
