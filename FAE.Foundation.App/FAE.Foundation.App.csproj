@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\AecDevHub\AecDevHub\src\WPFUI\WPFUI.csproj" />
+    <ProjectReference Include="..\WPF.UI\WPF.UI.csproj" />
   </ItemGroup>
 
 </Project>
