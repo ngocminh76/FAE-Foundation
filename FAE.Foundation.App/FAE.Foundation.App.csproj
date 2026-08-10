@@ -19,4 +19,18 @@
     <ProjectReference Include="..\WPF.UI\WPF.UI.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Functions\MongBan\Models\" />
+    <Folder Include="Functions\MongBan\Services\" />
+    <Folder Include="Functions\MongBan\ViewModels\" />
+    <Folder Include="Functions\MongCoc\Models\" />
+    <Folder Include="Functions\MongCoc\Services\" />
+    <Folder Include="Functions\MongCoc\ViewModels\" />
+    <Folder Include="Functions\MongCoc\Views\" />
+    <Folder Include="Functions\MongTru\Models\" />
+    <Folder Include="Functions\MongTru\Services\" />
+    <Folder Include="Functions\MongTru\ViewModels\" />
+    <Folder Include="Functions\MongTru\Views\" />
+  </ItemGroup>
+
 </Project>

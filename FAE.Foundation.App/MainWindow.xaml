@@ -1,73 +1,149 @@
 <Window x:Class="FAE.Foundation.App.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:loc="clr-namespace:FAE.Foundation.App.Services.Localization"
-        xmlns:home="clr-namespace:FAE.Foundation.App.Features.Home"
-        xmlns:ribbedRaft="clr-namespace:FAE.Foundation.App.Features.RibbedRaft"
-        xmlns:project="clr-namespace:FAE.Foundation.App.Features.Project"
-        Title="FAE Foundation Design App" Height="800" Width="1400" WindowStartupLocation="CenterScreen">
-    
+        Title="FAE Foundation Design"
+        Height="460"
+        Width="820"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="CanMinimize">
+
     <Window.Resources>
-        <!-- DataTemplates to map ViewModels to Views -->
-        <DataTemplate DataType="{x:Type home:HomeViewModel}">
-            <home:HomeView />
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type ribbedRaft:RibbedRaftViewModel}">
-            <ribbedRaft:RibbedRaftView />
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type project:ProjectViewModel}">
-            <project:ProjectView />
-        </DataTemplate>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/WPF.UI;component/Themes/Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <!-- Card style dùng inline, không dùng key từ thư viện -->
+            <Style x:Key="CardBorder"
+                   TargetType="Border">
+                <Setter Property="Background"
+                        Value="White" />
+                <Setter Property="BorderBrush"
+                        Value="{StaticResource BrushBorderGrayColor}" />
+                <Setter Property="BorderThickness"
+                        Value="1" />
+                <Setter Property="CornerRadius"
+                        Value="6" />
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver"
+                             Value="True">
+                        <Setter Property="Background"
+                                Value="{StaticResource BrushHoverColor}" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </ResourceDictionary>
     </Window.Resources>
 
-    <Grid Background="#F5F6FA">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        
-        <!-- SIDEBAR / MENU -->
-        <Border Grid.Column="0" Background="#34495E">
-            <Grid Margin="10">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                
-                <TextBlock Grid.Row="0" Text="FAE FOUNDATION" Foreground="White" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,20,0,20" TextWrapping="Wrap" TextAlignment="Center"/>
-                
-                <StackPanel Grid.Row="1" Orientation="Vertical">
-                    <Button Content="Trang Chủ" Command="{Binding NavigateHomeCommand}" Background="#1ABC9C" Foreground="White" Height="40" Margin="0,0,0,15" BorderThickness="0" Cursor="Hand" FontWeight="Bold" FontSize="14"/>
-                    <Button Content="Thiết Kế Mới" Background="#2C3E50" Foreground="White" Height="40" Margin="0,0,0,10" BorderThickness="0" Cursor="Hand"/>
-                    <Button Content="Mở File" Background="#2C3E50" Foreground="White" Height="40" Margin="0,0,0,10" BorderThickness="0" Cursor="Hand"/>
-                    <Button Content="Lưu File" Background="#2C3E50" Foreground="White" Height="40" Margin="0,0,0,10" BorderThickness="0" Cursor="Hand"/>
-                    <Button Content="Xuất Báo Cáo" Background="#2C3E50" Foreground="White" Height="40" Margin="0,0,0,10" BorderThickness="0" Cursor="Hand"/>
-                </StackPanel>
-                
-                <Button Grid.Row="2" Content="{Binding Path=Strings[BtnDesign], Source={x:Static loc:LocalizationService.Instance}}" Background="#2980B9" Foreground="White" Height="40" FontSize="14" FontWeight="Bold" Margin="0,20,0,10"/>
-                
-                <Button Grid.Row="3" Content="Xem Lý Thuyết Tính Toán" Command="{Binding OpenTheoryCommand}" Background="#27AE60" Foreground="White" Height="30" FontSize="12" FontWeight="SemiBold"/>
-            </Grid>
+    <Grid Background="{StaticResource BrushMauNen}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Grid.Row="0"
+                Background="{StaticResource BrushBackgroudPalette}"
+                Padding="24,16">
+            <TextBlock Text="FAE Foundation Design"
+                       Foreground="{StaticResource BrushForegroundColor}"
+                       FontSize="20"
+                       FontWeight="Bold"
+                       HorizontalAlignment="Center" />
         </Border>
-        
-        <!-- MAIN CONTENT AREA -->
-        <Grid Grid.Column="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            
-            <!-- HEADER (Language Toggle) -->
-            <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right" Margin="10">
-                <Button Content="VI" Command="{Binding SetLanguageViCommand}" Width="40" Height="30" Margin="0,0,5,0" Background="#34495E" Foreground="White" FontWeight="Bold"/>
-                <Button Content="EN" Command="{Binding SetLanguageEnCommand}" Width="40" Height="30" Background="#34495E" Foreground="White" FontWeight="Bold"/>
-            </StackPanel>
-            
-            <!-- CONTENT CONTROL FOR NAVIGATION -->
-            <ContentControl Grid.Row="1" Content="{Binding CurrentView}" Margin="0,10,0,0" />
-            
-        </Grid>
+
+        <!-- 3 Cards -->
+        <UniformGrid Grid.Row="1"
+                     Columns="3"
+                     Margin="36,32,36,32">
+
+            <!-- Móng Trụ -->
+            <Border Margin="10"
+                    Style="{StaticResource CardBorder}"
+                    Cursor="Hand">
+                <StackPanel VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Margin="16">
+                    <TextBlock Text="🏛"
+                               FontSize="48"
+                               HorizontalAlignment="Center"
+                               Margin="0,0,0,10" />
+                    <TextBlock Text="Móng Trụ"
+                               FontSize="15"
+                               FontWeight="SemiBold"
+                               HorizontalAlignment="Center"
+                               Foreground="{StaticResource BrushForegroundText}" />
+                    <TextBlock Text="Móng đơn dưới cột"
+                               FontSize="11"
+                               HorizontalAlignment="Center"
+                               Foreground="{StaticResource BrushTextMutedColor}"
+                               Margin="0,4,0,14" />
+                    <Button Content="Mở"
+                            Style="{StaticResource BtnStyleNormal}"
+                            HorizontalAlignment="Center"
+                            x:Name="BtnMongTru"
+                            Click="BtnMongTru_Click" />
+                </StackPanel>
+            </Border>
+
+            <!-- Móng Bản -->
+            <Border Margin="10"
+                    Style="{StaticResource CardBorder}"
+                    Cursor="Hand">
+                <StackPanel VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Margin="16">
+                    <TextBlock Text="⬛"
+                               FontSize="48"
+                               HorizontalAlignment="Center"
+                               Margin="0,0,0,10" />
+                    <TextBlock Text="Móng Bản"
+                               FontSize="15"
+                               FontWeight="SemiBold"
+                               HorizontalAlignment="Center"
+                               Foreground="{StaticResource BrushForegroundText}" />
+                    <TextBlock Text="Móng bè toàn diện tích"
+                               FontSize="11"
+                               HorizontalAlignment="Center"
+                               Foreground="{StaticResource BrushTextMutedColor}"
+                               Margin="0,4,0,14" />
+                    <Button Content="Mở"
+                            Style="{StaticResource BtnStyleNormal}"
+                            HorizontalAlignment="Center"
+                            x:Name="BtnMongBan"
+                            Click="BtnMongBan_Click" />
+                </StackPanel>
+            </Border>
+
+            <!-- Móng Cọc -->
+            <Border Margin="10"
+                    Style="{StaticResource CardBorder}"
+                    Cursor="Hand">
+                <StackPanel VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Margin="16">
+                    <TextBlock Text="🔩"
+                               FontSize="48"
+                               HorizontalAlignment="Center"
+                               Margin="0,0,0,10" />
+                    <TextBlock Text="Móng Cọc"
+                               FontSize="15"
+                               FontWeight="SemiBold"
+                               HorizontalAlignment="Center"
+                               Foreground="{StaticResource BrushForegroundText}" />
+                    <TextBlock Text="Móng cọc nhồi / cọc ép"
+                               FontSize="11"
+                               HorizontalAlignment="Center"
+                               Foreground="{StaticResource BrushTextMutedColor}"
+                               Margin="0,4,0,14" />
+                    <Button Content="Mở"
+                            Style="{StaticResource BtnStyleNormal}"
+                            HorizontalAlignment="Center"
+                            x:Name="BtnMongCoc"
+                            Click="BtnMongCoc_Click" />
+                </StackPanel>
+            </Border>
+
+        </UniformGrid>
     </Grid>
 </Window>
