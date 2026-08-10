@@ -1,0 +1,160 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Color x:Key="MainColor">#f0f0f0</Color>
+    <Color x:Key="SubColor">#e1e1e1</Color>
+    <Color x:Key="Hightlight">#5fbcfe</Color>
+    <Color x:Key="Hightlight2">#0078D7</Color>
+    <Color x:Key="Border">Gray</Color>
+    <Color x:Key="ForegroundColor">White</Color>
+    <!--<Color x:Key="Foreground">#FF555555</Color>-->
+    <!--<Color x:Key="Foreground">#3b4453</Color>-->
+    <Color x:Key="Foreground">Black</Color>
+
+    <Color x:Key="BackgroudPalette">#3b4453</Color>
+    <!--#0C336C-->
+    <Color x:Key="BorderLight1">#9E9E9E</Color>
+    <!-- Xám nhạt 1: Sáng hơn một chút -->
+    <Color x:Key="BorderLight2">#B2B2B2</Color>
+    <!-- Xám nhạt 2: Sáng hơn nữa -->
+    <Color x:Key="HoverColor">#E0E0E0</Color>
+    <!-- Màu hover: Nhạt hơn, subtle -->
+    <Color x:Key="PressedColor">#C0C0C0</Color>
+    <!-- Màu khi nhấn: Tối hơn hover -->
+    <Color x:Key="ShadowColor">#40000000</Color>
+    <!-- Màu shadow: Đen với opacity 25% -->
+    <Color x:Key="HoverShadowColor">#60000000</Color>
+    <!-- Màu shadow khi hover: Đen với opacity 37.5% -->
+    
+    <!-- Button Colors - Primary -->
+    <Color x:Key="PrimaryColor">#0078D7</Color>
+    <!-- Màu chủ đạo -->
+    <Color x:Key="PrimaryHoverColor">#005A9E</Color>
+    <!-- Hover: Tối hơn 1 bậc -->
+    <Color x:Key="PrimaryPressedColor">#3399E5</Color>
+    <!-- Pressed: Sáng hơn 1 bậc -->
+
+    
+    <!-- Button Colors - Success -->
+    <Color x:Key="SuccessColor">#28a745</Color>
+    <Color x:Key="SuccessHoverColor">#218838</Color>
+    <Color x:Key="SuccessPressedColor">#1e7e34</Color>
+    
+    <!-- Button Colors - Danger -->
+    <Color x:Key="DangerColor">#dc3545</Color>
+    <Color x:Key="DangerHoverColor">#c82333</Color>
+    <Color x:Key="DangerPressedColor">#bd2130</Color>
+    
+    <!-- Button Colors - Warning -->
+    <Color x:Key="WarningColor">#ffc107</Color>
+    <Color x:Key="WarningHoverColor">#e0a800</Color>
+    <Color x:Key="WarningPressedColor">#d39e00</Color>
+    
+    <!-- Button Colors - Info -->
+    <Color x:Key="InfoColor">#17a2b8</Color>
+    <Color x:Key="InfoHoverColor">#138496</Color>
+    <Color x:Key="InfoPressedColor">#117a8b</Color>
+    
+    <!-- DataGrid Selection Colors -->
+    <Color x:Key="SelectionColor">#B0B0B0</Color>
+    <!-- Xám đậm hơn HoverColor (#D0D0D0) -->
+    <Color x:Key="SelectionBorderColor">#909090</Color>
+    <!-- Xám đậm hơn nữa cho border -->
+    <Color x:Key="SelectionForegroundColor">Black</Color>
+    
+    <!-- Text Colors -->
+    <Color x:Key="TextSubtitleColor">#333333</Color>
+    <!-- Dark gray for subtitles -->
+    <Color x:Key="TextLabelColor">#555555</Color>
+    <!-- Medium gray for labels -->
+    <Color x:Key="TextMutedColor">#666666</Color>
+    <!-- Light gray for muted/italic text -->
+    
+    <SolidColorBrush x:Key="BrushBorderPalette"
+                     Color="{StaticResource Border}" />
+
+    <SolidColorBrush x:Key="BrushMauNen"
+                     Color="{StaticResource MainColor}" />
+    <SolidColorBrush x:Key="BrushMauHightlight"
+                     Color="{StaticResource Hightlight}" />
+    <SolidColorBrush x:Key="BrushMauHightlight2"
+                     Color="{StaticResource Hightlight2}" />
+    <SolidColorBrush x:Key="BrushSubColor"
+                     Color="{StaticResource SubColor}" />
+    <!--<SolidColorBrush x:Key="BrushHoverColor"
+                     Color="{StaticResource BorderLight2}" />-->
+    <SolidColorBrush x:Key="BrushBorderGrayColor"
+                     Color="{StaticResource Border}" />
+    <SolidColorBrush x:Key="BrushForegroundColor"
+                     Color="{StaticResource ForegroundColor}" />
+    <SolidColorBrush x:Key="BrushForegroundText"
+                     Color="{StaticResource Foreground}" />
+    <SolidColorBrush x:Key="BrushBackgroudPalette"
+                     Color="{StaticResource BackgroudPalette}" />
+    <SolidColorBrush x:Key="BrushHoverColor"
+                     Color="{StaticResource HoverColor}" />
+    <SolidColorBrush x:Key="BrushPressedColor"
+                     Color="{StaticResource PressedColor}" />
+    <SolidColorBrush x:Key="BrushShadowColor"
+                     Color="{StaticResource ShadowColor}" />
+    <SolidColorBrush x:Key="BrushHoverShadowColor"
+                     Color="{StaticResource HoverShadowColor}" />
+    
+    <!-- Button Brushes - Primary -->
+    <SolidColorBrush x:Key="BrushPrimaryColor"
+                     Color="{StaticResource PrimaryColor}" />
+    <SolidColorBrush x:Key="BrushPrimaryHoverColor"
+                     Color="{StaticResource PrimaryHoverColor}" />
+    <SolidColorBrush x:Key="BrushPrimaryPressedColor"
+                     Color="{StaticResource PrimaryPressedColor}" />
+    
+    <!-- Button Brushes - Success -->
+    <SolidColorBrush x:Key="BrushSuccessColor"
+                     Color="{StaticResource SuccessColor}" />
+    <SolidColorBrush x:Key="BrushSuccessHoverColor"
+                     Color="{StaticResource SuccessHoverColor}" />
+    <SolidColorBrush x:Key="BrushSuccessPressedColor"
+                     Color="{StaticResource SuccessPressedColor}" />
+    
+    <!-- Button Brushes - Danger -->
+    <SolidColorBrush x:Key="BrushDangerColor"
+                     Color="{StaticResource DangerColor}" />
+    <SolidColorBrush x:Key="BrushDangerHoverColor"
+                     Color="{StaticResource DangerHoverColor}" />
+    <SolidColorBrush x:Key="BrushDangerPressedColor"
+                     Color="{StaticResource DangerPressedColor}" />
+    
+    <!-- Button Brushes - Warning -->
+    <SolidColorBrush x:Key="BrushWarningColor"
+                     Color="{StaticResource WarningColor}" />
+    <SolidColorBrush x:Key="BrushWarningHoverColor"
+                     Color="{StaticResource WarningHoverColor}" />
+    <SolidColorBrush x:Key="BrushWarningPressedColor"
+                     Color="{StaticResource WarningPressedColor}" />
+    
+    <!-- Button Brushes - Info -->
+    <SolidColorBrush x:Key="BrushInfoColor"
+                     Color="{StaticResource InfoColor}" />
+    <SolidColorBrush x:Key="BrushInfoHoverColor"
+                     Color="{StaticResource InfoHoverColor}" />
+    <SolidColorBrush x:Key="BrushInfoPressedColor"
+                     Color="{StaticResource InfoPressedColor}" />
+    
+    <!-- DataGrid Selection Brushes -->
+    <SolidColorBrush x:Key="BrushSelectionColor"
+                     Color="{StaticResource SelectionColor}" />
+    <SolidColorBrush x:Key="BrushSelectionBorderColor"
+                     Color="{StaticResource SelectionBorderColor}" />
+    <SolidColorBrush x:Key="BrushSelectionForegroundColor"
+                     Color="{StaticResource SelectionForegroundColor}" />
+    
+    <!-- Text Color Brushes -->
+    <SolidColorBrush x:Key="BrushTextSubtitleColor"
+                     Color="{StaticResource TextSubtitleColor}" />
+    <SolidColorBrush x:Key="BrushTextLabelColor"
+                     Color="{StaticResource TextLabelColor}" />
+    <SolidColorBrush x:Key="BrushTextMutedColor"
+                     Color="{StaticResource TextMutedColor}" />
+
+
+</ResourceDictionary>

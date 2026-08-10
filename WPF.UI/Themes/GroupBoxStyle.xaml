@@ -1,0 +1,44 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/WPF.UI;component/Themes/Color.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <!-- Base GroupBox Style -->
+    <Style x:Key="GroupBoxBase" TargetType="{x:Type GroupBox}">
+        <Setter Property="FontFamily" Value="Segoe UI" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="FontWeight" Value="Normal" />
+        <Setter Property="BorderBrush" Value="{StaticResource BrushBorderGrayColor}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Foreground" Value="{StaticResource BrushForegroundText}" />
+        <Setter Property="Margin" Value="4" />
+        <!--<Setter Property="Padding" Value="8" />-->
+    </Style>
+
+    <!-- Normal GroupBox Style -->
+    <Style x:Key="GroupBoxNormal" TargetType="{x:Type GroupBox}" BasedOn="{StaticResource GroupBoxBase}">
+        <!-- Inherits all from GroupBoxBase -->
+    </Style>
+
+    <!-- Primary GroupBox Style - with accent color header -->
+    <Style x:Key="GroupBoxPrimary" TargetType="{x:Type GroupBox}" BasedOn="{StaticResource GroupBoxBase}">
+        <Setter Property="Foreground" Value="{StaticResource BrushPrimaryColor}" />
+        <Setter Property="BorderBrush" Value="{StaticResource BrushPrimaryColor}" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+    </Style>
+
+    <!-- Subtle GroupBox Style - lighter border -->
+    <Style x:Key="GroupBoxSubtle" TargetType="{x:Type GroupBox}" BasedOn="{StaticResource GroupBoxBase}">
+        <Setter Property="BorderBrush" Value="{StaticResource BrushSubColor}" />
+        <Setter Property="Foreground" Value="{StaticResource BrushForegroundColor}" />
+    </Style>
+
+    <!-- Bold GroupBox Style - thicker border -->
+    <Style x:Key="GroupBoxBold" TargetType="{x:Type GroupBox}" BasedOn="{StaticResource GroupBoxBase}">
+        <Setter Property="BorderThickness" Value="2" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+    </Style>
+
+</ResourceDictionary>

@@ -1,0 +1,131 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- ICONS -->
+    <Geometry x:Key="ChevronRight">M 0 0 L 6 6 L 0 12</Geometry>
+    <Geometry x:Key="ChevronDown">M 0 4 L 6 10 L 12 4</Geometry>
+
+    <!-- VS Code Colors -->
+    <Color x:Key="VSForeground">#CCCCCC</Color>
+    <Color x:Key="VSForegroundSelected">#FFFFFF</Color>
+    <Color x:Key="VSItemHover">#2A2D2E</Color>
+    <Color x:Key="VSItemSelected">#094771</Color>
+    <Color x:Key="VSBackground">#1E1E1E</Color>
+
+    <SolidColorBrush x:Key="VSForegroundBrush"
+                     Color="{StaticResource VSForeground}" />
+    <SolidColorBrush x:Key="VSForegroundSelectedBrush"
+                     Color="{StaticResource VSForegroundSelected}" />
+    <SolidColorBrush x:Key="VSItemHoverBrush"
+                     Color="{StaticResource VSItemHover}" />
+    <SolidColorBrush x:Key="VSItemSelectedBrush"
+                     Color="{StaticResource VSItemSelected}" />
+    <SolidColorBrush x:Key="VSBackgroundBrush"
+                     Color="{StaticResource VSBackground}" />
+
+    <!-- TEMPLATE -->
+    <HierarchicalDataTemplate x:Key="VSCodeTreeItemTemplate"
+                              ItemsSource="{Binding Children}">
+        <StackPanel Orientation="Horizontal"
+                    Margin="2">
+            <Path Width="10"
+                  Height="10"
+                  Stretch="Uniform">
+                <Path.Style>
+                    <Style TargetType="Path">
+                        <Setter Property="Visibility"
+                                Value="Visible" />
+                        <Setter Property="Fill"
+                                Value="{StaticResource VSForegroundBrush}" />
+                        <Setter Property="Data"
+                                Value="{StaticResource ChevronRight}" />
+
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Children.Count}"
+                                         Value="0">
+                                <Setter Property="Visibility"
+                                        Value="Collapsed" />
+                            </DataTrigger>
+
+                            <DataTrigger Binding="{Binding IsExpanded}"
+                                         Value="True">
+                                <Setter Property="Data"
+                                        Value="{StaticResource ChevronDown}" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Path.Style>
+            </Path>
+
+            <Image Width="16"
+                   Height="16"
+                   Source="{Binding Icon}"
+                   Margin="5,0,5,0" />
+
+            <TextBlock Text="{Binding Name}"
+                       VerticalAlignment="Center"
+                       Foreground="{StaticResource VSForegroundBrush}" />
+        </StackPanel>
+    </HierarchicalDataTemplate>
+
+
+    <!-- STYLE -->
+    <Style TargetType="TreeViewItem"
+           x:Key="VSCodeTreeViewItemStyle">
+        <Setter Property="Foreground"
+                Value="{StaticResource VSForegroundBrush}" />
+        <Setter Property="IsExpanded"
+                Value="{Binding IsExpanded, Mode=TwoWay}" />
+        <Setter Property="IsSelected"
+                Value="{Binding IsSelected, Mode=TwoWay}" />
+        <Setter Property="Padding"
+                Value="4" />
+        <Setter Property="Background"
+                Value="{StaticResource VSBackgroundBrush}" />
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TreeViewItem">
+
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+
+                        <Border x:Name="Bd"
+                                Background="{TemplateBinding Background}"
+                                Padding="2"
+                                CornerRadius="4">
+                            <ContentPresenter />
+                        </Border>
+
+                        <ItemsPresenter Grid.Row="1"
+                                        Margin="16,0,0,0" />
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+
+                        <Trigger Property="IsSelected"
+                                 Value="True">
+                            <Setter TargetName="Bd"
+                                    Property="Background"
+                                    Value="{StaticResource VSItemSelectedBrush}" />
+                            <Setter Property="Foreground"
+                                    Value="{StaticResource VSForegroundSelectedBrush}" />
+                        </Trigger>
+
+                        <Trigger Property="IsMouseOver"
+                                 Value="True">
+                            <Setter TargetName="Bd"
+                                    Property="Background"
+                                    Value="{StaticResource VSItemHoverBrush}" />
+                        </Trigger>
+
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

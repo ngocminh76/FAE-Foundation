@@ -1,0 +1,71 @@
+﻿<Window x:Class="WPF.UI.AriDialog.AriDialogWd"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPF.UI.AriDialog"
+        mc:Ignorable="d"
+        Title=""
+        Height="180"
+        Width="420"
+        WindowStartupLocation="CenterScreen">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Themes/Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Border BorderBrush="{DynamicResource MauNen}"
+            BorderThickness="1"
+            Padding="5"
+            CornerRadius="0"
+            Background="{StaticResource MauNen}">
+        <Grid Background="{DynamicResource MauNen}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="4" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="40" />
+                <RowDefinition Height="4" />
+
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="1"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Center">
+                <Image x:Name="IMG_Icon"
+                       Width="24"
+                       Height="24"
+                       Margin="8"
+                       Visibility="Collapsed" />
+
+                <TextBlock x:Name="TBLOCK_Message"
+                           Margin="0 8"
+                           Style="{StaticResource DataGridTextBlockStyle}"
+                           TextWrapping="Wrap"
+                           MaxWidth="350" />
+            </StackPanel>
+
+            <StackPanel Grid.Row="2"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Center">
+                <Button Content="OK"
+                        x:Name="BTN_OK"
+                        Click="BTN_OK_Click"
+                        Margin="10 0"
+                        Width="70"
+                        Height="25"
+                        Style="{StaticResource BtnStyleNormal}" />
+                <Button Content="Cancel"
+                        x:Name="BTN_CANCEL"
+                        Click="BTN_CANCEL_Click"
+                        Width="70"
+                        Height="25"
+                        Margin="10 0"
+                        Style="{StaticResource BtnStyleNormal}" />
+            </StackPanel>
+        </Grid>
+    </Border>
+
+
+</Window>

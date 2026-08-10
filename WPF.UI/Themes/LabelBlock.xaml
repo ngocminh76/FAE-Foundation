@@ -1,0 +1,26 @@
+﻿<UserControl x:Class="WPF.UI.Themes.LabelBlock"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WPF.UI.Themes"
+             mc:Ignorable="d" 
+              x:Name="root"
+             Height="Auto" Width="Auto">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>                                   
+    <StackPanel>
+        <TextBlock Text="{Binding LabelJP, ElementName=root}" 
+                  FontSize="12" Margin="0"
+                   Style="{StaticResource DataGridTextBlockStyle}"/>
+        <TextBlock Text="{Binding LabelEN, ElementName=root}" 
+               FontSize="12" Margin="0,-2,0,0"
+                    Style="{StaticResource DataGridTextBlockStyle}"/>
+    </StackPanel>
+</UserControl>

@@ -1,0 +1,175 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/WPF.UI;component/Themes/Color.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <Style x:Key="Ari_Block_Base"
+           TargetType="{x:Type TextBlock}">
+        <Setter Property="HorizontalAlignment"
+                Value="Left" />
+        <Setter Property="VerticalAlignment"
+                Value="Center" />
+        <Setter Property="FontSize"
+                Value="12" />
+        <Setter Property="FontFamily"
+                Value="Segoe UI" />
+        <Setter Property="FontWeight"
+                Value="Normal" />
+        <Setter Property="Margin"
+                Value="4" />
+    </Style>
+    <!-- Default TextBlock Style - Standard style for the application -->
+    <Style x:Key="TblDefault"
+           TargetType="{x:Type TextBlock}">
+        <Setter Property="FontFamily"
+                Value="Segoe UI" />
+        <Setter Property="FontSize"
+                Value="12" />
+        <Setter Property="FontWeight"
+                Value="Normal" />
+        <Setter Property="HorizontalAlignment"
+                Value="Left" />
+        <Setter Property="VerticalAlignment"
+                Value="Center" />
+        <Setter Property="Margin"
+                Value="4" />
+    </Style>
+    <Style x:Key="Ari_Block_Main"
+           TargetType="{x:Type TextBlock}"
+           BasedOn="{StaticResource Ari_Block_Base}">
+        <Setter Property="Foreground"
+                Value="{StaticResource BrushForegroundText}" />
+    </Style>
+
+    <Style x:Key="Ari_Block_Sub"
+           TargetType="{x:Type TextBlock}"
+           BasedOn="{StaticResource Ari_Block_Base}">
+        <Setter Property="Foreground"
+                Value="{StaticResource BrushForegroundColor}" />
+    </Style>
+
+    <Style x:Key="TblBase"
+           TargetType="{x:Type TextBlock}">
+        <Setter Property="HorizontalAlignment"
+                Value="Left" />
+        <Setter Property="VerticalAlignment"
+                Value="Center" />
+        <Setter Property="FontSize"
+                Value="12" />
+        <Setter Property="FontFamily"
+                Value="Segoe UI" />
+        <Setter Property="FontWeight"
+                Value="Normal" />
+        <Setter Property="Margin"
+                Value="4" />
+    </Style>
+
+    <Style x:Key="TblMain"
+           TargetType="{x:Type TextBlock}"
+           BasedOn="{StaticResource TblBase}">
+        <Setter Property="Foreground"
+                Value="{StaticResource BrushForegroundText}" />
+    </Style>
+
+    <Style x:Key="TblSub"
+           TargetType="{x:Type TextBlock}"
+           BasedOn="{StaticResource TblBase}">
+        <Setter Property="Foreground"
+                Value="{StaticResource BrushForegroundColor}" />
+    </Style>
+
+    <!-- Title Style -->
+    <Style x:Key="TblTitle"
+           TargetType="{x:Type TextBlock}"
+           BasedOn="{StaticResource TblBase}">
+        <Setter Property="FontSize"
+                Value="20" />
+        <Setter Property="Foreground"
+                Value="{StaticResource BrushPrimaryColor}" />
+        <Setter Property="Margin"
+                Value="4,4,4,10" />
+    </Style>
+
+    <!-- Subtitle Style -->
+    <Style x:Key="TblSubtitle"
+           TargetType="{x:Type TextBlock}"
+           BasedOn="{StaticResource TblBase}">
+        <Setter Property="FontSize"
+                Value="16" />
+        <Setter Property="Foreground"
+                Value="{StaticResource BrushTextSubtitleColor}" />
+        <Setter Property="Margin"
+                Value="4,10,4,5" />
+    </Style>
+
+    <!-- Label Style (for Field Names) -->
+    <Style x:Key="TblLabel"
+           TargetType="{x:Type TextBlock}"
+           BasedOn="{StaticResource TblBase}">
+        <Setter Property="Foreground"
+                Value="{StaticResource BrushTextLabelColor}" />
+    </Style>
+
+    <!-- Info Style -->
+    <Style x:Key="TblInfo"
+           TargetType="{x:Type TextBlock}"
+           BasedOn="{StaticResource TblBase}">
+        <Setter Property="Foreground"
+                Value="{StaticResource BrushPrimaryColor}" />
+        <!-- Blue -->
+    </Style>
+
+    <!-- Success Style -->
+    <Style x:Key="TblSuccess"
+           TargetType="{x:Type TextBlock}"
+           BasedOn="{StaticResource TblBase}">
+        <Setter Property="Foreground"
+                Value="{StaticResource BrushSuccessColor}" />
+        <!-- Green -->
+    </Style>
+
+    <!-- Warning Style -->
+    <Style x:Key="TblWarning"
+           TargetType="{x:Type TextBlock}"
+           BasedOn="{StaticResource TblBase}">
+        <Setter Property="Foreground"
+                Value="{StaticResource BrushWarningColor}" />
+        <!-- Orange/Redish -->
+    </Style>
+
+    <!-- Error Style -->
+    <Style x:Key="TblError"
+           TargetType="{x:Type TextBlock}"
+           BasedOn="{StaticResource TblBase}">
+        <Setter Property="Foreground"
+                Value="{StaticResource BrushDangerColor}" />
+        <!-- Dark Red -->
+    </Style>
+
+    <!-- Italic Gray Style -->
+    <Style x:Key="TblItalic"
+           TargetType="{x:Type TextBlock}"
+           BasedOn="{StaticResource TblBase}">
+        <Setter Property="Foreground"
+                Value="{StaticResource BrushTextMutedColor}" />
+        <Setter Property="FontStyle"
+                Value="Italic" />
+    </Style>
+
+    <!-- Bold Styles - Use these when you need bold text -->
+    <Style x:Key="TblBold"
+           TargetType="{x:Type TextBlock}"
+           BasedOn="{StaticResource TblBase}">
+        <Setter Property="FontWeight"
+                Value="Bold" />
+    </Style>
+
+    <Style x:Key="TblSemiBold"
+           TargetType="{x:Type TextBlock}"
+           BasedOn="{StaticResource TblBase}">
+        <Setter Property="FontWeight"
+                Value="SemiBold" />
+    </Style>
+
+</ResourceDictionary>

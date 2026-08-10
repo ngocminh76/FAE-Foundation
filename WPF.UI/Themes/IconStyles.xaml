@@ -1,0 +1,88 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Base glyph (Segoe MDL2) -->
+    <Style x:Key="IconGlyphStyle"
+           TargetType="TextBlock">
+        <Setter Property="FontFamily"
+                Value="Segoe MDL2 Assets" />
+        <Setter Property="FontSize"
+                Value="14" />
+        <Setter Property="VerticalAlignment"
+                Value="Center" />
+        <Setter Property="HorizontalAlignment"
+                Value="Center" />
+        <Setter Property="Foreground"
+                Value="{DynamicResource BrushTextSecondary}" />
+    </Style>
+
+    <!-- Button icon nền trong suốt, tái sử dụng BtnStyleIcon -->
+    <Style x:Key="IconButtonStyle"
+           TargetType="Button"
+           BasedOn="{StaticResource BtnStyleIcon}">
+        <Setter Property="Padding"
+                Value="2" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="Transparent">
+                        <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Apply glyph -->
+    <Style x:Key="ApplyGlyphStyle"
+           TargetType="TextBlock"
+           BasedOn="{StaticResource IconGlyphStyle}">
+        <Setter Property="Text"
+                Value="&#xE10B;" />
+        <!-- Accept -->
+        <Style.Triggers>
+            <!-- Khi ListViewItem selected -->
+            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListViewItem}, Path=IsSelected}"
+                         Value="True">
+                <Setter Property="Foreground"
+                        Value="White" />
+            </DataTrigger>
+          
+        </Style.Triggers>
+    </Style>
+
+    <!-- Export glyph -->
+    <Style x:Key="ExportGlyphStyle"
+           TargetType="TextBlock"
+           BasedOn="{StaticResource IconGlyphStyle}">
+        <Setter Property="Text"
+                Value="&#xE159;" />
+        <!-- Download -->
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListViewItem}, Path=IsSelected}"
+                         Value="True">
+                <Setter Property="Foreground"
+                        Value="White" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- Delete glyph -->
+    <Style x:Key="DeleteGlyphStyle"
+           TargetType="TextBlock"
+           BasedOn="{StaticResource IconGlyphStyle}">
+        <Setter Property="Text"
+                Value="&#xE107;" />
+        <!-- Delete -->
+        <Setter Property="Foreground"
+                Value="#E81123" />
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListViewItem}, Path=IsSelected}"
+                         Value="True">
+                <Setter Property="Foreground"
+                        Value="White" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+</ResourceDictionary>

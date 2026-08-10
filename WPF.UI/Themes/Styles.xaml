@@ -1,0 +1,121 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="./Color.xaml" />
+        <ResourceDictionary Source="./ScrollBarStyle.xaml" />
+        <ResourceDictionary Source="./DataGridStyle.xaml" />
+        <ResourceDictionary Source="./TextBoxStyle.xaml" />
+        <ResourceDictionary Source="./TextBlockStyle.xaml" />
+        <ResourceDictionary Source="./ButtonStyle.xaml" />
+        <ResourceDictionary Source="./ComboBoxStyle.xaml" />
+        <ResourceDictionary Source="./CheckBoxStyle.xaml" />
+        <ResourceDictionary Source="./RadiobuttonStyle.xaml" />
+        <ResourceDictionary Source="./ProgressBarStyle.xaml" />
+        <ResourceDictionary Source="./Canvas.xaml" />
+        <ResourceDictionary Source="./ContextMenu.xaml" />
+        <ResourceDictionary Source="./PasswordBoxStyle.xaml" />
+        <ResourceDictionary Source="./IconStyles.xaml" />
+        <ResourceDictionary Source="./ListViewNew.xaml" />
+        <ResourceDictionary Source="./TreeView.xaml" />
+        <ResourceDictionary Source="./TabControlStyle.xaml" />
+        <ResourceDictionary Source="./BorderStyle.xaml" />
+        <ResourceDictionary Source="./GroupBoxStyle.xaml" />
+        <ResourceDictionary Source="./ListViewStyle.xaml" />
+        <ResourceDictionary Source="./TreeViewStyle.xaml" />
+        <ResourceDictionary Source="./WrapPanelStyle.xaml" />
+
+    </ResourceDictionary.MergedDictionaries>
+    <SolidColorBrush x:Key="MauChu"
+                     Color="#cd6300" />
+    <SolidColorBrush x:Key="MauNen"
+                     Color="White" />
+
+    <Style TargetType="{x:Type TextBlock}">
+        <Setter Property="Margin"
+                Value="4" />
+        <Setter Property="VerticalAlignment"
+                Value="Center" />
+        <Setter Property="HorizontalAlignment"
+                Value="Left" />
+        <Setter Property="FontSize"
+                Value="12" />
+    </Style>
+
+    <Style TargetType="{x:Type ListBox}">
+        <Setter Property="BorderBrush"
+                Value="#e3e9ef" />
+        <Setter Property="Margin"
+                Value="0" />
+    </Style>
+
+    <Style TargetType="{x:Type DockPanel}">
+        <Setter Property="Margin"
+                Value="2" />
+    </Style>
+
+    <Style TargetType="{x:Type TreeView}">
+        <Setter Property="BorderBrush"
+                Value="#e3e9ef" />
+        <Setter Property="Margin"
+                Value="4" />
+    </Style>
+
+
+    <Style TargetType="{x:Type StackPanel}">
+        <Setter Property="Margin"
+                Value="4" />
+    </Style>
+
+    <Style TargetType="{x:Type Separator}">
+        <Setter Property="Margin"
+                Value="4" />
+    </Style>
+
+    <Style x:Key="MainGrid"
+           TargetType="{x:Type Grid}">
+        <Setter Property="Margin"
+                Value="2" />
+    </Style>
+    <!--<Style  TargetType="{x:Type GridViewColumn}">
+        <Setter Property="Width" Value="50"></Setter>
+    </Style>-->
+    <Style TargetType="Border">
+        <Setter Property="CornerRadius"
+                Value="0" />
+        <Setter Property="BorderBrush"
+                Value="GhostWhite" />
+        <Setter Property="BorderThickness"
+                Value="1" />
+    </Style>
+    <Style x:Key="BorderGrid"
+           TargetType="{x:Type Grid}">
+        <Setter Property="Background"
+                Value="#edebe6" />
+    </Style>
+
+    <Style x:Key="canvasMenu"
+           TargetType="{x:Type Canvas}">
+        <Setter Property="Width"
+                Value="32" />
+        <Setter Property="Height"
+                Value="32" />
+    </Style>
+    <Style TargetType="{x:Type GroupBox}">
+        <Setter Property="FontFamily"
+                Value="Segoe UI" />
+        <Setter Property="FontSize"
+                Value="12" />
+        <Setter Property="FontWeight"
+                Value="Normal" />
+        <Setter Property="BorderBrush"
+                Value="{StaticResource BrushBorderGrayColor}" />
+        <Setter Property="BorderThickness"
+                Value="1" />
+        <Setter Property="Foreground"
+                Value="{StaticResource BrushForegroundText}" />
+    </Style>
+    
+    
+    
+</ResourceDictionary>
