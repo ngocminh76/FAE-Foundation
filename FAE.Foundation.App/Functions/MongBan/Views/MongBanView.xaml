@@ -19,19 +19,15 @@
 
     <Grid Background="{StaticResource BrushMauNen}">
         <TabControl Style="{StaticResource TabControlTopStyle}">
-
-            <TabItem Header="Hình Học">
-                <local:GeometryView />
-            </TabItem>
-
-            <TabItem Header="Địa Chất">
-                <local:GeoView />
-            </TabItem>
-
             <TabItem Header="Tải Trọng">
                 <local:ForceView />
             </TabItem>
-
+            <TabItem Header="Địa Chất">
+                <local:GeoView />
+            </TabItem>
+            <TabItem Header="Hình Học">
+                <local:GeometryView />
+            </TabItem>
         </TabControl>
     </Grid>
 </Window>

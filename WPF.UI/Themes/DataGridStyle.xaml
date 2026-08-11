@@ -1,4 +1,4 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
 
@@ -56,54 +56,59 @@
                             BorderThickness="{TemplateBinding BorderThickness}"
                             Padding="{TemplateBinding Padding}"
                             SnapsToDevicePixels="True">
-                        <ScrollViewer x:Name="DG_ScrollViewer" Focusable="false">
+                        <ScrollViewer x:Name="DG_ScrollViewer"
+                                      Focusable="false">
                             <ScrollViewer.Template>
                                 <ControlTemplate TargetType="{x:Type ScrollViewer}">
                                     <Grid Background="{TemplateBinding Background}">
                                         <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto"/>
-                                            <RowDefinition Height="*"/>
-                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="*" />
+                                            <RowDefinition Height="Auto" />
                                         </Grid.RowDefinitions>
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
                                         </Grid.ColumnDefinitions>
 
                                         <!-- Column Headers -->
-                                        <DataGridColumnHeadersPresenter Grid.Row="0" Grid.Column="0"
-                                                                       x:Name="PART_ColumnHeadersPresenter"
-                                                                       Visibility="{Binding HeadersVisibility, ConverterParameter={x:Static DataGridHeadersVisibility.Column}, Converter={x:Static DataGrid.HeadersVisibilityConverter}, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
+                                        <DataGridColumnHeadersPresenter Grid.Row="0"
+                                                                        Grid.Column="0"
+                                                                        x:Name="PART_ColumnHeadersPresenter"
+                                                                        Visibility="{Binding HeadersVisibility, ConverterParameter={x:Static DataGridHeadersVisibility.Column}, Converter={x:Static DataGrid.HeadersVisibilityConverter}, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" />
 
                                         <!-- Data Rows -->
-                                        <ScrollContentPresenter Grid.Row="1" Grid.Column="0"
-                                                              x:Name="PART_ScrollContentPresenter"
-                                                              CanContentScroll="{TemplateBinding CanContentScroll}"/>
+                                        <ScrollContentPresenter Grid.Row="1"
+                                                                Grid.Column="0"
+                                                                x:Name="PART_ScrollContentPresenter"
+                                                                CanContentScroll="{TemplateBinding CanContentScroll}" />
 
                                         <!-- Vertical ScrollBar -->
                                         <ScrollBar x:Name="PART_VerticalScrollBar"
-                                                 Grid.Row="1" Grid.Column="1"
-                                                 Style="{StaticResource SlimVerticalScrollBar}"
-                                                 Maximum="{TemplateBinding ScrollableHeight}"
-                                                 Minimum="0"
-                                                 ViewportSize="{TemplateBinding ViewportHeight}"
-                                                 Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
-                                                 Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                                   Grid.Row="1"
+                                                   Grid.Column="1"
+                                                   Style="{StaticResource SlimVerticalScrollBar}"
+                                                   Maximum="{TemplateBinding ScrollableHeight}"
+                                                   Minimum="0"
+                                                   ViewportSize="{TemplateBinding ViewportHeight}"
+                                                   Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
+                                                   Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" />
 
                                         <!-- Horizontal ScrollBar -->
                                         <ScrollBar x:Name="PART_HorizontalScrollBar"
-                                                 Grid.Row="2" Grid.Column="0"
-                                                 Style="{StaticResource SlimHorizontalScrollBar}"
-                                                 Orientation="Horizontal"
-                                                 Maximum="{TemplateBinding ScrollableWidth}"
-                                                 Minimum="0"
-                                                 ViewportSize="{TemplateBinding ViewportWidth}"
-                                                 Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
-                                                 Value="{Binding HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                                   Grid.Row="2"
+                                                   Grid.Column="0"
+                                                   Style="{StaticResource SlimHorizontalScrollBar}"
+                                                   Orientation="Horizontal"
+                                                   Maximum="{TemplateBinding ScrollableWidth}"
+                                                   Minimum="0"
+                                                   ViewportSize="{TemplateBinding ViewportWidth}"
+                                                   Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
+                                                   Value="{Binding HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" />
                                     </Grid>
                                 </ControlTemplate>
                             </ScrollViewer.Template>
-                            <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                            <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                         </ScrollViewer>
                     </Border>
                 </ControlTemplate>
@@ -267,7 +272,7 @@
                 Value="Center" />
     </Style>
 
-    <!-- Row Style cho DgStyle - không set Background để cho phép alternating colors -->
+    <!-- Row Style cho DgStyle - khÃ´ng set Background Ä‘á»ƒ cho phÃ©p alternating colors -->
     <Style x:Key="DgRowStyle"
            TargetType="{x:Type DataGridRow}">
         <Setter Property="VerticalAlignment"
@@ -282,10 +287,10 @@
                 Value="0" />
         <Setter Property="BorderBrush"
                 Value="Transparent" />
-        <!-- Không set Background ở đây để DataGrid tự áp dụng alternating colors -->
+        <!-- KhÃ´ng set Background á»Ÿ Ä‘Ã¢y Ä‘á»ƒ DataGrid tá»± Ã¡p dá»¥ng alternating colors -->
         <Setter Property="MinHeight"
                 Value="32" />
-        
+
         <Style.Triggers>
             <Trigger Property="IsMouseOver"
                      Value="True">
@@ -295,20 +300,20 @@
         </Style.Triggers>
     </Style>
 
-    <!-- DataGrid Style với màu xen kẽ (trắng và vàng nhạt) -->
+    <!-- DataGrid Style vá»›i mÃ u xen káº½ (tráº¯ng vÃ  vÃ ng nháº¡t) -->
     <Style x:Key="DgStyle"
            TargetType="{x:Type DataGrid}"
            BasedOn="{StaticResource DataGridStyle}">
         <Setter Property="RowStyle"
                 Value="{DynamicResource DgRowStyle}" />
-        <!-- Màu xen kẽ: hàng chẵn = trắng, hàng lẻ = vàng nhạt -->
+        <!-- MÃ u xen káº½: hÃ ng cháºµn = tráº¯ng, hÃ ng láº» = vÃ ng nháº¡t -->
         <Setter Property="AlternationCount"
                 Value="2" />
         <Setter Property="RowBackground"
                 Value="White" />
         <Setter Property="AlternatingRowBackground"
                 Value="#FFFFFACD" />
-        <!-- Vàng nhạt (LemonChiffon) -->
+        <!-- VÃ ng nháº¡t (LemonChiffon) -->
         <Setter Property="Background"
                 Value="White" />
         <Setter Property="BorderBrush"
@@ -332,37 +337,41 @@
     <!-- ============================================ -->
     <!-- DataGrid Style Variants - Different Heights  -->
     <!-- ============================================ -->
-    
+
     <!-- Compact DataGrid (Row Height = 25px) -->
-    <Style x:Key="DataGridStyleCompact" 
-           TargetType="DataGrid" 
+    <Style x:Key="DataGridStyleCompact"
+           TargetType="DataGrid"
            BasedOn="{StaticResource DataGridStyle}">
-        <Setter Property="RowHeight" Value="25"/>
+        <Setter Property="RowHeight"
+                Value="25" />
     </Style>
 
     <!-- Large DataGrid (Row Height = 50px) -->
-    <Style x:Key="DataGridStyleLarge" 
-           TargetType="DataGrid" 
+    <Style x:Key="DataGridStyleLarge"
+           TargetType="DataGrid"
            BasedOn="{StaticResource DataGridStyle}">
-        <Setter Property="RowHeight" Value="50"/>
+        <Setter Property="RowHeight"
+                Value="50" />
     </Style>
 
     <!-- Compact DgStyle (Row Height = 25px) -->
-    <Style x:Key="DgStyleCompact" 
-           TargetType="DataGrid" 
+    <Style x:Key="DgStyleCompact"
+           TargetType="DataGrid"
            BasedOn="{StaticResource DgStyle}">
-        <Setter Property="RowHeight" Value="25"/>
+        <Setter Property="RowHeight"
+                Value="25" />
     </Style>
 
     <!-- Large DgStyle (Row Height = 50px) -->
-    <Style x:Key="DgStyleLarge" 
-           TargetType="DataGrid" 
+    <Style x:Key="DgStyleLarge"
+           TargetType="DataGrid"
            BasedOn="{StaticResource DgStyle}">
-        <Setter Property="RowHeight" Value="50"/>
+        <Setter Property="RowHeight"
+                Value="50" />
     </Style>
 
-    <!-- Styles cho DataGridTextColumn.ElementStyle (TextBlock khi không edit) -->
-    <!-- TextBlock căn trái -->
+    <!-- Styles cho DataGridTextColumn.ElementStyle (TextBlock khi khÃ´ng edit) -->
+    <!-- TextBlock cÄƒn trÃ¡i -->
     <Style x:Key="DgTextBlockLeft"
            TargetType="{x:Type TextBlock}">
         <Setter Property="FontFamily"
@@ -383,7 +392,7 @@
                 Value="6,4,6,4" />
     </Style>
 
-    <!-- TextBlock căn giữa -->
+    <!-- TextBlock cÄƒn giá»¯a -->
     <Style x:Key="DgTextBlockCenter"
            TargetType="{x:Type TextBlock}">
         <Setter Property="FontFamily"
@@ -404,7 +413,7 @@
                 Value="6,4,6,4" />
     </Style>
 
-    <!-- TextBlock căn phải -->
+    <!-- TextBlock cÄƒn pháº£i -->
     <Style x:Key="DgTextBlockRight"
            TargetType="{x:Type TextBlock}">
         <Setter Property="FontFamily"
@@ -425,8 +434,8 @@
                 Value="6,4,6,4" />
     </Style>
 
-    <!-- Styles cho DataGridTextColumn.EditingElementStyle (TextBox khi đang edit) -->
-    <!-- TextBox căn trái -->
+    <!-- Styles cho DataGridTextColumn.EditingElementStyle (TextBox khi Ä‘ang edit) -->
+    <!-- TextBox cÄƒn trÃ¡i -->
     <Style x:Key="DgTextBoxLeft"
            TargetType="{x:Type TextBox}">
         <Setter Property="HorizontalContentAlignment"
@@ -437,7 +446,7 @@
                 Value="4,0,4,0" />
     </Style>
 
-    <!-- TextBox căn giữa -->
+    <!-- TextBox cÄƒn giá»¯a -->
     <Style x:Key="DgTextBoxCenter"
            TargetType="{x:Type TextBox}">
         <Setter Property="HorizontalContentAlignment"
@@ -448,7 +457,7 @@
                 Value="4,0,4,0" />
     </Style>
 
-    <!-- TextBox căn phải -->
+    <!-- TextBox cÄƒn pháº£i -->
     <Style x:Key="DgTextBoxRight"
            TargetType="{x:Type TextBox}">
         <Setter Property="HorizontalContentAlignment"
@@ -457,6 +466,508 @@
                 Value="Center" />
         <Setter Property="Padding"
                 Value="4,0,4,0" />
+    </Style>
+    <!-- Style Ä‘áº·c thÃ¹ cho báº£ng Ná»™i lá»±c (Táº£i trá»ng) káº¿ thá»«a tá»« DgStyle -->
+    <Style x:Key="ForceColumnHeaderStyle"
+           TargetType="DataGridColumnHeader"
+           BasedOn="{StaticResource ColumnHeaderStyle}">
+        <Setter Property="Background"
+                Value="{StaticResource BrushWarningColor}" />
+        <Setter Property="Foreground"
+                Value="Black" />
+        <Setter Property="BorderBrush"
+                Value="{StaticResource BrushBorderGrayColor}" />
+        <Setter Property="BorderThickness"
+                Value="1,1,1,0" />
+        <Setter Property="FontWeight"
+                Value="Bold" />
+    </Style>
+
+    <Style x:Key="ForceDataGridStyle"
+           TargetType="{x:Type DataGrid}"
+           BasedOn="{StaticResource DgStyle}">
+        <Setter Property="ColumnHeaderStyle"
+                Value="{StaticResource ForceColumnHeaderStyle}" />
+        <Setter Property="AlternatingRowBackground"
+                Value="White" />
+        <Setter Property="RowBackground"
+                Value="White" />
+        <Setter Property="BorderBrush"
+                Value="{StaticResource BrushBorderGrayColor}" />
+        <Setter Property="BorderThickness"
+                Value="1" />
+        <Setter Property="HorizontalGridLinesBrush"
+                Value="{StaticResource BrushBorderGrayColor}" />
+        <Setter Property="VerticalGridLinesBrush"
+                Value="{StaticResource BrushBorderGrayColor}" />
+        <Setter Property="GridLinesVisibility"
+                Value="All" />
+        <Setter Property="RowHeight"
+                Value="32" />
+    </Style>
+
+    <!-- Style Bảng Nội Lực (ListBox Pseudo DataGrid) -->
+    <Style x:Key="ForceListBoxStyle"
+           TargetType="{x:Type ListBox}">
+        <Setter Property="BorderThickness"
+                Value="0" />
+        <Setter Property="Background"
+                Value="Transparent" />
+        <Setter Property="HorizontalContentAlignment"
+                Value="Stretch" />
+        <Setter Property="ItemContainerStyle">
+            <Setter.Value>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="Padding"
+                            Value="0" />
+                    <Setter Property="Margin"
+                            Value="0" />
+                    <Setter Property="BorderThickness"
+                            Value="0" />
+                </Style>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListBox}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <!-- Header -->
+                        <Border Grid.Row="0"
+                                Background="{StaticResource BrushPrimaryColor}"
+                                BorderBrush="{StaticResource BrushBorderGrayColor}"
+                                BorderThickness="1,1,1,0">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="150" />
+                                    <ColumnDefinition Width="150" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <!-- Dummy column for ScrollBar width -->
+                                    <ColumnDefinition Width="12" />
+                                </Grid.ColumnDefinitions>
+                                <Border Grid.Column="0"
+                                        BorderBrush="{StaticResource BrushBorderGrayColor}"
+                                        BorderThickness="0,0,1,0">
+                                    <TextBlock Text="TÊN CỘT (TRỤ)"
+                                               FontWeight="Bold"
+                                               Foreground="Black"
+                                               TextAlignment="Center"
+                                               Padding="8" />
+                                </Border>
+                                <Border Grid.Column="1"
+                                        BorderBrush="{StaticResource BrushBorderGrayColor}"
+                                        BorderThickness="0,0,1,0">
+                                    <TextBlock Text="TỔ HỢP LỰC"
+                                               FontWeight="Bold"
+                                               Foreground="Black"
+                                               TextAlignment="Center"
+                                               Padding="8" />
+                                </Border>
+                                <Border Grid.Column="2"
+                                        BorderBrush="{StaticResource BrushBorderGrayColor}"
+                                        BorderThickness="0,0,1,0">
+                                    <TextBlock Text="Qx"
+                                               FontWeight="Bold"
+                                               Foreground="Black"
+                                               TextAlignment="Center"
+                                               Padding="8" />
+                                </Border>
+                                <Border Grid.Column="3"
+                                        BorderBrush="{StaticResource BrushBorderGrayColor}"
+                                        BorderThickness="0,0,1,0">
+                                    <TextBlock Text="Qy"
+                                               FontWeight="Bold"
+                                               Foreground="Black"
+                                               TextAlignment="Center"
+                                               Padding="8" />
+                                </Border>
+                                <Border Grid.Column="4"
+                                        BorderBrush="{StaticResource BrushBorderGrayColor}"
+                                        BorderThickness="0,0,1,0">
+                                    <TextBlock Text="N"
+                                               FontWeight="Bold"
+                                               Foreground="Black"
+                                               TextAlignment="Center"
+                                               Padding="8" />
+                                </Border>
+                                <Border Grid.Column="5"
+                                        BorderBrush="{StaticResource BrushBorderGrayColor}"
+                                        BorderThickness="0,0,1,0">
+                                    <TextBlock Text="Mx"
+                                               FontWeight="Bold"
+                                               Foreground="Black"
+                                               TextAlignment="Center"
+                                               Padding="8" />
+                                </Border>
+                                <Border Grid.Column="6"
+                                        BorderBrush="{StaticResource BrushBorderGrayColor}"
+                                        BorderThickness="0,0,1,0">
+                                    <TextBlock Text="My"
+                                               FontWeight="Bold"
+                                               Foreground="Black"
+                                               TextAlignment="Center"
+                                               Padding="8" />
+                                </Border>
+                                <Border Grid.Column="7"
+                                        BorderBrush="{StaticResource BrushBorderGrayColor}"
+                                        BorderThickness="0,0,1,0">
+                                    <TextBlock Text="Mz"
+                                               FontWeight="Bold"
+                                               Foreground="Black"
+                                               TextAlignment="Center"
+                                               Padding="8" />
+                                </Border>
+                                <Border Grid.Column="8"
+                                        BorderThickness="0"
+                                        Background="Transparent" />
+                            </Grid>
+                        </Border>
+                        <!-- Content -->
+                        <ScrollViewer Grid.Row="1"
+                                      VerticalScrollBarVisibility="Visible"
+                                      Style="{StaticResource SlimScrollViewerStyle}">
+                            <ItemsPresenter />
+                        </ScrollViewer>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="ItemTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <Border BorderBrush="{StaticResource BrushBorderGrayColor}"
+                            BorderThickness="1,1,1,0"
+                            Background="White">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="35" />
+                                <RowDefinition Height="35" />
+                                <RowDefinition Height="35" />
+                                <RowDefinition Height="35" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="150" />
+                                <ColumnDefinition Width="150" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <Border Grid.RowSpan="4"
+                                    Grid.Column="0"
+                                    BorderBrush="{StaticResource BrushBorderGrayColor}"
+                                    BorderThickness="0,0,1,1"
+                                    Background="{StaticResource BrushMauNen}">
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding TowerName}"
+                                               FontWeight="Bold"
+                                               FontSize="16"
+                                               TextAlignment="Center"
+                                               Foreground="{StaticResource BrushPrimaryColor}"
+                                               TextWrapping="Wrap" />
+                                    <TextBlock Text="{Binding BaseDimension, StringFormat='Kích thước: {0:N0}'}"
+                                               FontSize="13"
+                                               TextAlignment="Center"
+                                               Foreground="{StaticResource BrushTextMutedColor}"
+                                               Margin="0,5,0,0" />
+                                </StackPanel>
+                            </Border>
+
+                            <Border Grid.Row="0"
+                                    Grid.Column="1"
+                                    BorderBrush="{StaticResource BrushBorderGrayColor}"
+                                    BorderThickness="0,0,1,1">
+                                <TextBlock Text="LỰC NHỔ MAX"
+                                           VerticalAlignment="Center"
+                                           Margin="10,0,0,0" />
+                            </Border>
+                            <Border Grid.Row="0"
+                                    Grid.Column="2"
+                                    BorderBrush="{StaticResource BrushBorderGrayColor}"
+                                    BorderThickness="0,0,1,1">
+                                <TextBox Text="{Binding MaxTensionLeg.Qx, StringFormat={}{0:N2}}"
+                                         TextAlignment="Right"
+                                         VerticalAlignment="Center"
+                                         BorderThickness="0"
+                                         Margin="2" />
+                            </Border>
+                            <Border Grid.Row="0"
+                                    Grid.Column="3"
+                                    BorderBrush="{StaticResource BrushBorderGrayColor}"
+                                    BorderThickness="0,0,1,1">
+                                <TextBox Text="{Binding MaxTensionLeg.Qy, StringFormat={}{0:N2}}"
+                                         TextAlignment="Right"
+                                         VerticalAlignment="Center"
+                                         BorderThickness="0"
+                                         Margin="2" />
+                            </Border>
+                            <Border Grid.Row="0"
+                                    Grid.Column="4"
+                                    BorderBrush="{StaticResource BrushBorderGrayColor}"
+                                    BorderThickness="0,0,1,1">
+                                <TextBox Text="{Binding MaxTensionLeg.N, StringFormat={}{0:N2}}"
+                                         TextAlignment="Right"
+                                         VerticalAlignment="Center"
+                                         BorderThickness="0"
+                                         Margin="2"
+                                         Foreground="{StaticResource BrushDangerColor}"
+                                         FontWeight="Bold" />
+                            </Border>
+                            <Border Grid.Row="0"
+                                    Grid.Column="5"
+                                    BorderBrush="{StaticResource BrushBorderGrayColor}"
+                                    BorderThickness="0,0,1,1">
+                                <TextBox Text="{Binding MaxTensionLeg.Mx, StringFormat={}{0:N2}}"
+                                         TextAlignment="Right"
+                                         VerticalAlignment="Center"
+                                         BorderThickness="0"
+                                         Margin="2" />
+                            </Border>
+                            <Border Grid.Row="0"
+                                    Grid.Column="6"
+                                    BorderBrush="{StaticResource BrushBorderGrayColor}"
+                                    BorderThickness="0,0,1,1">
+                                <TextBox Text="{Binding MaxTensionLeg.My, StringFormat={}{0:N2}}"
+                                         TextAlignment="Right"
+                                         VerticalAlignment="Center"
+                                         BorderThickness="0"
+                                         Margin="2" />
+                            </Border>
+                            <Border Grid.Row="0"
+                                    Grid.Column="7"
+                                    BorderBrush="{StaticResource BrushBorderGrayColor}"
+                                    BorderThickness="0,0,0,1">
+                                <TextBox Text="{Binding MaxTensionLeg.Mz, StringFormat={}{0:N2}}"
+                                         TextAlignment="Right"
+                                         VerticalAlignment="Center"
+                                         BorderThickness="0"
+                                         Margin="2" />
+                            </Border>
+
+                            <Border Grid.Row="1"
+                                    Grid.Column="1"
+                                    BorderBrush="{StaticResource BrushBorderGrayColor}"
+                                    BorderThickness="0,0,1,1">
+                                <TextBlock Text="LỰC NÉN MAX"
+                                           VerticalAlignment="Center"
+                                           Margin="10,0,0,0" />
+                            </Border>
+                            <Border Grid.Row="1"
+                                    Grid.Column="2"
+                                    BorderBrush="{StaticResource BrushBorderGrayColor}"
+                                    BorderThickness="0,0,1,1">
+                                <TextBox Text="{Binding MaxCompressionLeg.Qx, StringFormat={}{0:N2}}"
+                                         TextAlignment="Right"
+                                         VerticalAlignment="Center"
+                                         BorderThickness="0"
+                                         Margin="2" />
+                            </Border>
+                            <Border Grid.Row="1"
+                                    Grid.Column="3"
+                                    BorderBrush="{StaticResource BrushBorderGrayColor}"
+                                    BorderThickness="0,0,1,1">
+                                <TextBox Text="{Binding MaxCompressionLeg.Qy, StringFormat={}{0:N2}}"
+                                         TextAlignment="Right"
+                                         VerticalAlignment="Center"
+                                         BorderThickness="0"
+                                         Margin="2" />
+                            </Border>
+                            <Border Grid.Row="1"
+                                    Grid.Column="4"
+                                    BorderBrush="{StaticResource BrushBorderGrayColor}"
+                                    BorderThickness="0,0,1,1">
+                                <TextBox Text="{Binding MaxCompressionLeg.N, StringFormat={}{0:N2}}"
+                                         TextAlignment="Right"
+                                         VerticalAlignment="Center"
+                                         BorderThickness="0"
+                                         Margin="2"
+                                         Foreground="{StaticResource BrushPrimaryColor}"
+                                         FontWeight="Bold" />
+                            </Border>
+                            <Border Grid.Row="1"
+                                    Grid.Column="5"
+                                    BorderBrush="{StaticResource BrushBorderGrayColor}"
+                                    BorderThickness="0,0,1,1">
+                                <TextBox Text="{Binding MaxCompressionLeg.Mx, StringFormat={}{0:N2}}"
+                                         TextAlignment="Right"
+                                         VerticalAlignment="Center"
+                                         BorderThickness="0"
+                                         Margin="2" />
+                            </Border>
+                            <Border Grid.Row="1"
+                                    Grid.Column="6"
+                                    BorderBrush="{StaticResource BrushBorderGrayColor}"
+                                    BorderThickness="0,0,1,1">
+                                <TextBox Text="{Binding MaxCompressionLeg.My, StringFormat={}{0:N2}}"
+                                         TextAlignment="Right"
+                                         VerticalAlignment="Center"
+                                         BorderThickness="0"
+                                         Margin="2" />
+                            </Border>
+                            <Border Grid.Row="1"
+                                    Grid.Column="7"
+                                    BorderBrush="{StaticResource BrushBorderGrayColor}"
+                                    BorderThickness="0,0,0,1">
+                                <TextBox Text="{Binding MaxCompressionLeg.Mz, StringFormat={}{0:N2}}"
+                                         TextAlignment="Right"
+                                         VerticalAlignment="Center"
+                                         BorderThickness="0"
+                                         Margin="2" />
+                            </Border>
+
+                            <Border Grid.Row="2"
+                                    Grid.Column="1"
+                                    BorderBrush="{StaticResource BrushBorderGrayColor}"
+                                    BorderThickness="0,0,1,1">
+                                <TextBlock Text="GIÓ 90 ĐỘ"
+                                           VerticalAlignment="Center"
+                                           Margin="10,0,0,0" />
+                            </Border>
+                            <Border Grid.Row="2"
+                                    Grid.Column="2"
+                                    BorderBrush="{StaticResource BrushBorderGrayColor}"
+                                    BorderThickness="0,0,1,1">
+                                <TextBox Text="{Binding Wind90Tower.Qx, StringFormat={}{0:N2}}"
+                                         TextAlignment="Right"
+                                         VerticalAlignment="Center"
+                                         BorderThickness="0"
+                                         Margin="2" />
+                            </Border>
+                            <Border Grid.Row="2"
+                                    Grid.Column="3"
+                                    BorderBrush="{StaticResource BrushBorderGrayColor}"
+                                    BorderThickness="0,0,1,1">
+                                <TextBox Text="{Binding Wind90Tower.Qy, StringFormat={}{0:N2}}"
+                                         TextAlignment="Right"
+                                         VerticalAlignment="Center"
+                                         BorderThickness="0"
+                                         Margin="2" />
+                            </Border>
+                            <Border Grid.Row="2"
+                                    Grid.Column="4"
+                                    BorderBrush="{StaticResource BrushBorderGrayColor}"
+                                    BorderThickness="0,0,1,1">
+                                <TextBox Text="{Binding Wind90Tower.N, StringFormat={}{0:N2}}"
+                                         TextAlignment="Right"
+                                         VerticalAlignment="Center"
+                                         BorderThickness="0"
+                                         Margin="2" />
+                            </Border>
+                            <Border Grid.Row="2"
+                                    Grid.Column="5"
+                                    BorderBrush="{StaticResource BrushBorderGrayColor}"
+                                    BorderThickness="0,0,1,1">
+                                <TextBox Text="{Binding Wind90Tower.Mx, StringFormat={}{0:N2}}"
+                                         TextAlignment="Right"
+                                         VerticalAlignment="Center"
+                                         BorderThickness="0"
+                                         Margin="2" />
+                            </Border>
+                            <Border Grid.Row="2"
+                                    Grid.Column="6"
+                                    BorderBrush="{StaticResource BrushBorderGrayColor}"
+                                    BorderThickness="0,0,1,1">
+                                <TextBox Text="{Binding Wind90Tower.My, StringFormat={}{0:N2}}"
+                                         TextAlignment="Right"
+                                         VerticalAlignment="Center"
+                                         BorderThickness="0"
+                                         Margin="2" />
+                            </Border>
+                            <Border Grid.Row="2"
+                                    Grid.Column="7"
+                                    BorderBrush="{StaticResource BrushBorderGrayColor}"
+                                    BorderThickness="0,0,0,1">
+                                <TextBox Text="{Binding Wind90Tower.Mz, StringFormat={}{0:N2}}"
+                                         TextAlignment="Right"
+                                         VerticalAlignment="Center"
+                                         BorderThickness="0"
+                                         Margin="2" />
+                            </Border>
+
+                            <Border Grid.Row="3"
+                                    Grid.Column="1"
+                                    BorderBrush="{StaticResource BrushBorderGrayColor}"
+                                    BorderThickness="0,0,1,1">
+                                <TextBlock Text="GIÓ 45 ĐỘ"
+                                           VerticalAlignment="Center"
+                                           Margin="10,0,0,0" />
+                            </Border>
+                            <Border Grid.Row="3"
+                                    Grid.Column="2"
+                                    BorderBrush="{StaticResource BrushBorderGrayColor}"
+                                    BorderThickness="0,0,1,1">
+                                <TextBox Text="{Binding Wind45Tower.Qx, StringFormat={}{0:N2}}"
+                                         TextAlignment="Right"
+                                         VerticalAlignment="Center"
+                                         BorderThickness="0"
+                                         Margin="2" />
+                            </Border>
+                            <Border Grid.Row="3"
+                                    Grid.Column="3"
+                                    BorderBrush="{StaticResource BrushBorderGrayColor}"
+                                    BorderThickness="0,0,1,1">
+                                <TextBox Text="{Binding Wind45Tower.Qy, StringFormat={}{0:N2}}"
+                                         TextAlignment="Right"
+                                         VerticalAlignment="Center"
+                                         BorderThickness="0"
+                                         Margin="2" />
+                            </Border>
+                            <Border Grid.Row="3"
+                                    Grid.Column="4"
+                                    BorderBrush="{StaticResource BrushBorderGrayColor}"
+                                    BorderThickness="0,0,1,1">
+                                <TextBox Text="{Binding Wind45Tower.N, StringFormat={}{0:N2}}"
+                                         TextAlignment="Right"
+                                         VerticalAlignment="Center"
+                                         BorderThickness="0"
+                                         Margin="2" />
+                            </Border>
+                            <Border Grid.Row="3"
+                                    Grid.Column="5"
+                                    BorderBrush="{StaticResource BrushBorderGrayColor}"
+                                    BorderThickness="0,0,1,1">
+                                <TextBox Text="{Binding Wind45Tower.Mx, StringFormat={}{0:N2}}"
+                                         TextAlignment="Right"
+                                         VerticalAlignment="Center"
+                                         BorderThickness="0"
+                                         Margin="2" />
+                            </Border>
+                            <Border Grid.Row="3"
+                                    Grid.Column="6"
+                                    BorderBrush="{StaticResource BrushBorderGrayColor}"
+                                    BorderThickness="0,0,1,1">
+                                <TextBox Text="{Binding Wind45Tower.My, StringFormat={}{0:N2}}"
+                                         TextAlignment="Right"
+                                         VerticalAlignment="Center"
+                                         BorderThickness="0"
+                                         Margin="2" />
+                            </Border>
+                            <Border Grid.Row="3"
+                                    Grid.Column="7"
+                                    BorderBrush="{StaticResource BrushBorderGrayColor}"
+                                    BorderThickness="0,0,0,1">
+                                <TextBox Text="{Binding Wind45Tower.Mz, StringFormat={}{0:N2}}"
+                                         TextAlignment="Right"
+                                         VerticalAlignment="Center"
+                                         BorderThickness="0"
+                                         Margin="2" />
+                            </Border>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 
 </ResourceDictionary>

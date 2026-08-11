@@ -4,9 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:FAE.Foundation.App.Functions.MongBan.Views"
+             xmlns:vm="clr-namespace:FAE.Foundation.App.Functions.MongBan.ViewModels"
              mc:Ignorable="d"
-             d:DesignHeight="450"
-             d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <UserControl.DataContext>
+        <vm:GeoViewModel />
+    </UserControl.DataContext>
 
     <UserControl.Resources>
         <ResourceDictionary>
@@ -23,25 +27,24 @@
         </Grid.RowDefinitions>
 
         <!-- Toolbar -->
-        <StackPanel Grid.Row="0"
-                    Orientation="Horizontal">
-            <TextBlock Text="File"
-                       Style="{StaticResource DgTextBlockLeft}" />
-            <TextBox Width="300"
-                     Style="{StaticResource TxtLeft}" />
-            <Button Content="..."
-                    Style="{StaticResource BtnStyleNormal}" />
-            <TextBlock Text="Sheet"
-                       Style="{StaticResource DgTextBlockLeft}" />
-            <ComboBox Width="180"
-                      Style="{StaticResource ComboBoxStyle}" />
-            <Button Content="Nạp"
-                    Style="{StaticResource BtnStyleNormal}" />
+        <StackPanel Grid.Row="0" Orientation="Horizontal">
+            <TextBlock Text="File" Style="{StaticResource DgTextBlockLeft}" />
+            <TextBox Width="300" Style="{StaticResource TxtLeft}" Text="{Binding FilePath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" />
+            <Button Content="..." Style="{StaticResource BtnStyleNormal}" Command="{Binding BrowseCommand}" />
+            
+            <TextBlock Text="Sheet" Style="{StaticResource DgTextBlockLeft}" />
+            <ComboBox Width="180" Style="{StaticResource ComboBoxStyle}" 
+                      ItemsSource="{Binding Sheets}" 
+                      SelectedItem="{Binding SelectedSheet, Mode=TwoWay}" />
+                      
+            <Button Content="Nạp" Style="{StaticResource BtnStyleNormal}" Command="{Binding RunCommand}" />
         </StackPanel>
 
         <!-- DataGrid -->
         <Grid Grid.Row="1">
-            <DataGrid Style="{StaticResource DataGridStyle}" />
+            <DataGrid Style="{StaticResource DataGridStyle}" 
+                      ItemsSource="{Binding SelectedBorehole.Layers}" 
+                      AutoGenerateColumns="True" />
         </Grid>
     </Grid>
 </UserControl>

@@ -128,111 +128,12 @@
                             </StackPanel>
                         </Grid>
                         
-                        <!-- Pseudo DataGrid Header -->
-                        <Border Grid.Row="1" Background="#F1C40F" BorderBrush="#BDC3C7" BorderThickness="1,1,1,0" Margin="0,0,0,0">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="150"/> <!-- Tên Trụ -->
-                                    <ColumnDefinition Width="150"/> <!-- Lực -->
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                
-                                <Border Grid.Column="0" BorderBrush="#BDC3C7" BorderThickness="0,0,1,0"><TextBlock Text="TÊN CỘT (TRỤ)" FontWeight="Bold" TextAlignment="Center" Padding="8"/></Border>
-                                <Border Grid.Column="1" BorderBrush="#BDC3C7" BorderThickness="0,0,1,0"><TextBlock Text="TỔ HỢP LỰC" FontWeight="Bold" TextAlignment="Center" Padding="8"/></Border>
-                                <Border Grid.Column="2" BorderBrush="#BDC3C7" BorderThickness="0,0,1,0"><TextBlock Text="Qx" FontWeight="Bold" TextAlignment="Center" Padding="8"/></Border>
-                                <Border Grid.Column="3" BorderBrush="#BDC3C7" BorderThickness="0,0,1,0"><TextBlock Text="Qy" FontWeight="Bold" TextAlignment="Center" Padding="8"/></Border>
-                                <Border Grid.Column="4" BorderBrush="#BDC3C7" BorderThickness="0,0,1,0"><TextBlock Text="N" FontWeight="Bold" TextAlignment="Center" Padding="8"/></Border>
-                                <Border Grid.Column="5" BorderBrush="#BDC3C7" BorderThickness="0,0,1,0"><TextBlock Text="Mx" FontWeight="Bold" TextAlignment="Center" Padding="8"/></Border>
-                                <Border Grid.Column="6" BorderBrush="#BDC3C7" BorderThickness="0,0,1,0"><TextBlock Text="My" FontWeight="Bold" TextAlignment="Center" Padding="8"/></Border>
-                                <TextBlock Grid.Column="7" Text="Mz" FontWeight="Bold" TextAlignment="Center" Padding="8"/>
-                            </Grid>
-                        </Border>
-
-                        <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
-                            <ListBox ItemsSource="{Binding TowersView}" SelectedItem="{Binding SelectedTower}" BorderThickness="0" Background="Transparent" HorizontalContentAlignment="Stretch">
-                                <ListBox.ItemContainerStyle>
-                                    <Style TargetType="ListBoxItem">
-                                        <Setter Property="Padding" Value="0"/>
-                                        <Setter Property="Margin" Value="0"/>
-                                        <Setter Property="BorderThickness" Value="0"/>
-                                    </Style>
-                                </ListBox.ItemContainerStyle>
-                                <ListBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <!-- One Tower = 4 Rows -->
-                                        <Border BorderBrush="#BDC3C7" BorderThickness="1,1,1,0" Background="White">
-                                            <Grid>
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition Height="35"/>
-                                                    <RowDefinition Height="35"/>
-                                                    <RowDefinition Height="35"/>
-                                                    <RowDefinition Height="35"/>
-                                                </Grid.RowDefinitions>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="150"/> <!-- Tên Trụ -->
-                                                    <ColumnDefinition Width="150"/> <!-- Lực -->
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="*"/>
-                                                </Grid.ColumnDefinitions>
-
-                                                <!-- Tên Trụ (Merged 4 rows) -->
-                                                <Border Grid.RowSpan="4" Grid.Column="0" BorderBrush="#BDC3C7" BorderThickness="0,0,1,1" Background="#F8F9F9">
-                                                    <StackPanel VerticalAlignment="Center">
-                                                        <TextBlock Text="{Binding TowerName}" FontWeight="Bold" FontSize="16" TextAlignment="Center" Foreground="#2980B9" TextWrapping="Wrap"/>
-                                                        <TextBlock Text="{Binding BaseDimension, StringFormat='Kích thước: {0:N0}'}" FontSize="13" TextAlignment="Center" Foreground="#7F8C8D" Margin="0,5,0,0"/>
-                                                    </StackPanel>
-                                                </Border>
-
-                                                <!-- Nhổ -->
-                                                <Border Grid.Row="0" Grid.Column="1" BorderBrush="#BDC3C7" BorderThickness="0,0,1,1"><TextBlock Text="LỰC NHỔ MAX" VerticalAlignment="Center" Margin="10,0,0,0"/></Border>
-                                                <Border Grid.Row="0" Grid.Column="2" BorderBrush="#BDC3C7" BorderThickness="0,0,1,1"><TextBox Text="{Binding MaxTensionLeg.Qx, StringFormat={}{0:N2}}" TextAlignment="Right" VerticalAlignment="Center" BorderThickness="0" Margin="2"/></Border>
-                                                <Border Grid.Row="0" Grid.Column="3" BorderBrush="#BDC3C7" BorderThickness="0,0,1,1"><TextBox Text="{Binding MaxTensionLeg.Qy, StringFormat={}{0:N2}}" TextAlignment="Right" VerticalAlignment="Center" BorderThickness="0" Margin="2"/></Border>
-                                                <Border Grid.Row="0" Grid.Column="4" BorderBrush="#BDC3C7" BorderThickness="0,0,1,1"><TextBox Text="{Binding MaxTensionLeg.N, StringFormat={}{0:N2}}" TextAlignment="Right" VerticalAlignment="Center" BorderThickness="0" Margin="2" Foreground="Red" FontWeight="Bold"/></Border>
-                                                <Border Grid.Row="0" Grid.Column="5" BorderBrush="#BDC3C7" BorderThickness="0,0,1,1"><TextBox Text="{Binding MaxTensionLeg.Mx, StringFormat={}{0:N2}}" TextAlignment="Right" VerticalAlignment="Center" BorderThickness="0" Margin="2"/></Border>
-                                                <Border Grid.Row="0" Grid.Column="6" BorderBrush="#BDC3C7" BorderThickness="0,0,1,1"><TextBox Text="{Binding MaxTensionLeg.My, StringFormat={}{0:N2}}" TextAlignment="Right" VerticalAlignment="Center" BorderThickness="0" Margin="2"/></Border>
-                                                <Border Grid.Row="0" Grid.Column="7" BorderBrush="#BDC3C7" BorderThickness="0,0,0,1"><TextBox Text="{Binding MaxTensionLeg.Mz, StringFormat={}{0:N2}}" TextAlignment="Right" VerticalAlignment="Center" BorderThickness="0" Margin="2"/></Border>
-
-                                                <!-- Nén -->
-                                                <Border Grid.Row="1" Grid.Column="1" BorderBrush="#BDC3C7" BorderThickness="0,0,1,1"><TextBlock Text="LỰC NÉN MAX" VerticalAlignment="Center" Margin="10,0,0,0"/></Border>
-                                                <Border Grid.Row="1" Grid.Column="2" BorderBrush="#BDC3C7" BorderThickness="0,0,1,1"><TextBox Text="{Binding MaxCompressionLeg.Qx, StringFormat={}{0:N2}}" TextAlignment="Right" VerticalAlignment="Center" BorderThickness="0" Margin="2"/></Border>
-                                                <Border Grid.Row="1" Grid.Column="3" BorderBrush="#BDC3C7" BorderThickness="0,0,1,1"><TextBox Text="{Binding MaxCompressionLeg.Qy, StringFormat={}{0:N2}}" TextAlignment="Right" VerticalAlignment="Center" BorderThickness="0" Margin="2"/></Border>
-                                                <Border Grid.Row="1" Grid.Column="4" BorderBrush="#BDC3C7" BorderThickness="0,0,1,1"><TextBox Text="{Binding MaxCompressionLeg.N, StringFormat={}{0:N2}}" TextAlignment="Right" VerticalAlignment="Center" BorderThickness="0" Margin="2" Foreground="Blue" FontWeight="Bold"/></Border>
-                                                <Border Grid.Row="1" Grid.Column="5" BorderBrush="#BDC3C7" BorderThickness="0,0,1,1"><TextBox Text="{Binding MaxCompressionLeg.Mx, StringFormat={}{0:N2}}" TextAlignment="Right" VerticalAlignment="Center" BorderThickness="0" Margin="2"/></Border>
-                                                <Border Grid.Row="1" Grid.Column="6" BorderBrush="#BDC3C7" BorderThickness="0,0,1,1"><TextBox Text="{Binding MaxCompressionLeg.My, StringFormat={}{0:N2}}" TextAlignment="Right" VerticalAlignment="Center" BorderThickness="0" Margin="2"/></Border>
-                                                <Border Grid.Row="1" Grid.Column="7" BorderBrush="#BDC3C7" BorderThickness="0,0,0,1"><TextBox Text="{Binding MaxCompressionLeg.Mz, StringFormat={}{0:N2}}" TextAlignment="Right" VerticalAlignment="Center" BorderThickness="0" Margin="2"/></Border>
-
-                                                <!-- 90 Độ -->
-                                                <Border Grid.Row="2" Grid.Column="1" BorderBrush="#BDC3C7" BorderThickness="0,0,1,1"><TextBlock Text="GIÓ 90 ĐỘ" VerticalAlignment="Center" Margin="10,0,0,0"/></Border>
-                                                <Border Grid.Row="2" Grid.Column="2" BorderBrush="#BDC3C7" BorderThickness="0,0,1,1"><TextBox Text="{Binding Wind90Tower.Qx, StringFormat={}{0:N2}}" TextAlignment="Right" VerticalAlignment="Center" BorderThickness="0" Margin="2"/></Border>
-                                                <Border Grid.Row="2" Grid.Column="3" BorderBrush="#BDC3C7" BorderThickness="0,0,1,1"><TextBox Text="{Binding Wind90Tower.Qy, StringFormat={}{0:N2}}" TextAlignment="Right" VerticalAlignment="Center" BorderThickness="0" Margin="2"/></Border>
-                                                <Border Grid.Row="2" Grid.Column="4" BorderBrush="#BDC3C7" BorderThickness="0,0,1,1"><TextBox Text="{Binding Wind90Tower.N, StringFormat={}{0:N2}}" TextAlignment="Right" VerticalAlignment="Center" BorderThickness="0" Margin="2"/></Border>
-                                                <Border Grid.Row="2" Grid.Column="5" BorderBrush="#BDC3C7" BorderThickness="0,0,1,1"><TextBox Text="{Binding Wind90Tower.Mx, StringFormat={}{0:N2}}" TextAlignment="Right" VerticalAlignment="Center" BorderThickness="0" Margin="2"/></Border>
-                                                <Border Grid.Row="2" Grid.Column="6" BorderBrush="#BDC3C7" BorderThickness="0,0,1,1"><TextBox Text="{Binding Wind90Tower.My, StringFormat={}{0:N2}}" TextAlignment="Right" VerticalAlignment="Center" BorderThickness="0" Margin="2"/></Border>
-                                                <Border Grid.Row="2" Grid.Column="7" BorderBrush="#BDC3C7" BorderThickness="0,0,0,1"><TextBox Text="{Binding Wind90Tower.Mz, StringFormat={}{0:N2}}" TextAlignment="Right" VerticalAlignment="Center" BorderThickness="0" Margin="2"/></Border>
-
-                                                <!-- 45 Độ -->
-                                                <Border Grid.Row="3" Grid.Column="1" BorderBrush="#BDC3C7" BorderThickness="0,0,1,1"><TextBlock Text="GIÓ 45 ĐỘ" VerticalAlignment="Center" Margin="10,0,0,0"/></Border>
-                                                <Border Grid.Row="3" Grid.Column="2" BorderBrush="#BDC3C7" BorderThickness="0,0,1,1"><TextBox Text="{Binding Wind45Tower.Qx, StringFormat={}{0:N2}}" TextAlignment="Right" VerticalAlignment="Center" BorderThickness="0" Margin="2"/></Border>
-                                                <Border Grid.Row="3" Grid.Column="3" BorderBrush="#BDC3C7" BorderThickness="0,0,1,1"><TextBox Text="{Binding Wind45Tower.Qy, StringFormat={}{0:N2}}" TextAlignment="Right" VerticalAlignment="Center" BorderThickness="0" Margin="2"/></Border>
-                                                <Border Grid.Row="3" Grid.Column="4" BorderBrush="#BDC3C7" BorderThickness="0,0,1,1"><TextBox Text="{Binding Wind45Tower.N, StringFormat={}{0:N2}}" TextAlignment="Right" VerticalAlignment="Center" BorderThickness="0" Margin="2"/></Border>
-                                                <Border Grid.Row="3" Grid.Column="5" BorderBrush="#BDC3C7" BorderThickness="0,0,1,1"><TextBox Text="{Binding Wind45Tower.Mx, StringFormat={}{0:N2}}" TextAlignment="Right" VerticalAlignment="Center" BorderThickness="0" Margin="2"/></Border>
-                                                <Border Grid.Row="3" Grid.Column="6" BorderBrush="#BDC3C7" BorderThickness="0,0,1,1"><TextBox Text="{Binding Wind45Tower.My, StringFormat={}{0:N2}}" TextAlignment="Right" VerticalAlignment="Center" BorderThickness="0" Margin="2"/></Border>
-                                                <Border Grid.Row="3" Grid.Column="7" BorderBrush="#BDC3C7" BorderThickness="0,0,0,1"><TextBox Text="{Binding Wind45Tower.Mz, StringFormat={}{0:N2}}" TextAlignment="Right" VerticalAlignment="Center" BorderThickness="0" Margin="2"/></Border>
-                                            </Grid>
-                                        </Border>
-                                    </DataTemplate>
-                                </ListBox.ItemTemplate>
-                            </ListBox>
-                        </ScrollViewer>
+                        <!-- Bảng Nội Lực (Sử dụng Style từ thư viện) -->
+                        <Grid Grid.Row="1" Margin="0,10,0,0">
+                            <ListBox Style="{StaticResource ForceListBoxStyle}" 
+                                     ItemsSource="{Binding TowersView}" 
+                                     SelectedItem="{Binding SelectedTower}" />
+                        </Grid>
                     </Grid>
                 </Grid>
             </TabItem>
